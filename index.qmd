@@ -1,5 +1,5 @@
 ---
-title: "MY COURSE CODE - MY COURSE NAME"
+title: "SOC9035 - Análisis Avanzado de Datos II"
 format:
   html:
     include-before-body: helpers/remove-nav.html
@@ -25,7 +25,7 @@ format:
 
 **Select Academic Year/Term:**
 
-<a href="2023/index.qmd">
-    <button class="button-61">2022/23</button>
+<a href="2026/index.qmd">
+    <button class="button-61">2026</button>
 </a>
 

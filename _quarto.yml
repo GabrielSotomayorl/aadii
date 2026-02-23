@@ -1,14 +1,14 @@
 project:
   type: "website"
-  title: "MY_COURSE_NAME 2022/23"
+  title: "Análisis Avanzado de Datos II 2026"
   output-dir: _output
   render:
     - "index.qmd"
-    - "2023/*.qmd"
-    - "2023/weeks/week01/*.qmd"
+    - "2026/*.qmd"
+    - "2026/weeks/week01/*.qmd"
 
 website:
-  title: "MY_COURSE_NAME 2022/23"
+  title: "Análisis Avanzado de Datos II 2026"
   page-navigation: true
   reader-mode: true
   open-graph: true
@@ -22,38 +22,38 @@ website:
   sidebar:
     style: docked
     contents:
-      - href: 2023/index.qmd
-        text: "🏠 Home"
-      # - href: 2023/syllabus.qmd
-      #   text: "📓 Syllabus"
-      # - href: 2023/communication.qmd
+      - href: 2026/index.qmd
+        text: "🏠 Inicio"
+      - href: 2026/syllabus.qmd
+        text: "📓 Programa"
+      # - href: 2026/communication.qmd
       #   text: "📟 Communication"
-      # - href: 2023/assignments.qmd
+      # - href: 2026/assignments.qmd
       #   text: "✍️ Assignments"
       #   contents:
-      #     - href: 2023/assignments/assignment01.qmd
+      #     - href: 2026/assignments/assignment01.qmd
       #       text: "📝 Assignment 01"
-      #     - href: 2023/assignments/assignment02.qmd
+      #     - href: 2026/assignments/assignment02.qmd
       #       text: "📝 Assignment 02"
-      #     - href: 2023/assignments/group_project.qmd
+      #     - href: 2026/assignments/group_project.qmd
       #       text: "👥 Group Project"
-      - section: "🗓️ Weeks"
+      - section: "🗓️Semanas"
         contents:
-         - href: 2023/weeks/week01/page.qmd
-           text: Week 01
+         - href: 2026/weeks/week01/page.qmd
+           text: Semana 01
            contents:
-             - href: 2023/weeks/week01/page.qmd
-               text: 👨‍🏫 Lecture Material
-            #  - href: 2023/weeks/week01/lab.qmd
+             - href: 2026/weeks/week01/page.qmd
+               text: 👨‍🏫 Material de clase
+            #  - href: 2026/weeks/week01/lab.qmd
             #    text: 💻 Lab Roadmap
-            #  - href: 2023/weeks/week01/appendix.qmd
+            #  - href: 2026/weeks/week01/appendix.qmd
             #    text: 🔖 Appendix
 
   navbar:
     background: primary
   page-footer:
     background: light
-    left: "Copyright 2023, MY INSTITUTION" 
+    left: "Copyright 2026,Universidad Deigo Portales" 
 
 
 
@@ -63,8 +63,8 @@ csl: references/chicago-author-date.csl
 
 format:
   html:
-    author: Dr. [MY NAME](#)
-    author-meta: Dr. MY NAME
+    author:    Gabriel Sotomayor
+    author-meta: Gabriel Sotomayor
     date-format: "DD MMMM YYYY"
 
     email-obfuscation: javascript

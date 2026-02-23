@@ -1,0 +1,83 @@
+---
+title: "Programa del curso"
+subtitle: "SOC9035 - Análisis Avanzado de Datos II"
+format: html
+---
+
+::: {.callout-important collapse=false}
+## 📢 Important
+
+(12/03/2026)
+
+- [🗓️ Week 01 lecture material](/2026/weeks/week01/page.qmd) is now available!
+
+:::
+
+
+# 🧑🏻‍🏫 Equipo Docente
+
+::: {.panel-tabset}
+## Profesor
+
+
+![](/figures/people/profesor.jpg){fig-align="left" fig-alt="Foto de Gabriel Sotomayor" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
+**[Gabriel Sotomayor](https://gabrielsotomayorl.github.io/)** <br/>
+_Profesor_ <br/>
+[Univerisdad Diego Portales](https://sociologia.udp.cl/)</a><br/>
+📧 [gabriel.sotomayor@mail.udp.cl](mailto:gabriel.sotomayor@mail.udp.cl)
+
+Office Hours: 
+
+- When:
+- Where:
+- How to book:
+
+## Ayudantes
+
+![](/figures/people/ta_octopunian.png){fig-align="left" fig-alt="Photo of TA_NAME" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
+**[Felipe Adasme](#)** <br/>
+Licenciado en Sociología<br> 
+📧 [felipe.adasme@mail.udp.cl](mailto:felipe.adasme@mail.udp.cl)
+
+![](/figures/people/ta_octopunian2.png){fig-align="left" fig-alt="Photo of TA_NAME" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
+**[Francisca Hernández](#)** <br/>
+Licenciada en Sociología <br> 
+📧 [francisca.hernandez_c@mail.udp.cl](mailto:francisca.hernandez_c@mail.udp.cl)
+
+
+:::
+
+# 📍 Cátedra
+
+Lunes de 10:00 a 12:50 en SALA POR CONFIRMAR
+
+# 💻 Class Groups
+
+::: {style="display:inline-block;width: 28.5%;border-style: dotted;border-width: 1px;border-color: &quot;#fefefe&quot;; margin:1%;padding:1.5%;background-color:#fafafa"}
+**Group 01**
+
+- 📆 Mondays
+- ⌚ 09:00 - 10:30
+- 📍 
+- 🧑‍🏫 _TA_NAME_
+:::
+
+::: {style="display:inline-block;width: 28.5%;border-style: dotted;border-width: 1px;border-color: &quot;#fefefe&quot;; margin:1%;padding:1.5%;background-color:#fafafa"}
+**Group 02**
+
+            
+- 📆 Mondays
+- ⌚ 10:30 - 12:00
+- 📍 
+- 🧑‍🏫 _TA_NAME_
+            
+:::
+
+::: {style="display:inline-block;width: 28.5%;border-style: dotted;border-width: 1px;border-color: &quot;#fefefe&quot;; margin:1%;padding:1.5%;background-color:#fafafa"}
+**Group 03**
+
+- 📆 Fridays
+- ⌚ 16:00 - 17:30
+- 📍 
+- 🧑‍🏫 _TA_NAME_
+:::
