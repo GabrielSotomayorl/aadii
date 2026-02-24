@@ -1,4 +1,70 @@
 /*-- scss:defaults --*/
 
+/* Mantenemos tu color principal (verde) por si lo usas en botones u otros elementos */
 $blue:    #20794D !default;
+
+/* Definimos un color de fondo base para la barra que combine con tu banner 
+   (un azul oscuro) para evitar el salto visual verde inicial */
+$navbar-bg: #1a365d !default; 
+
 /*-- scss:rules --*/
+
+/* ==========================================
+   Configuración del Banner del Encabezado
+   ========================================== */
+
+/* Apuntamos a la clase principal de la barra de navegación de Bootstrap */
+.navbar {
+  /* Color de respaldo (fallback) mientras carga la imagen */
+  background-color: #1a365d;
+
+  /* 1. Define la imagen de fondo */
+  background-image: url("figures/banner.png");
+
+  /* 2. Hacemos que la imagen cubra todo el espacio sin deformarse */
+  background-size: cover;
+
+  /* 3. Centramos la imagen para que el foco se mantenga al cambiar el tamaño de ventana */
+  background-position: center center;
+
+  /* 4. Evitamos que la imagen se repita tipo mosaico */
+  background-repeat: no-repeat;
+
+  /* 5. Altura mínima */
+  min-height: 160px; 
+
+  /* 6. Sombra para separarlo del contenido */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+
+  /* Si aumentas la altura, esto ayuda a centrar verticalmente el título y menú */
+  align-items: center;
+}
+
+/* ==========================================
+   Legibilidad del texto sobre la imagen
+   ========================================== */
+
+.navbar .navbar-brand, 
+.navbar .navbar-title, 
+.navbar .nav-link,
+.navbar-text {
+  /* Texto blanco con sombra negra fuerte para que resalte sobre cualquier color de la foto */
+  color: #ffffff !important;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* Ajuste fino para el menú en móviles */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    /* En móvil, le damos un fondo sólido oscuro para que se lea bien el texto blanco */
+    background-color: #1a365d; 
+    padding: 1rem;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  
+  /* Quitamos la sombra del texto en el menú móvil porque ya tiene fondo oscuro sólido */
+  .navbar-collapse .nav-link {
+    text-shadow: none;
+  }
+}

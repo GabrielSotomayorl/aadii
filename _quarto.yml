@@ -80,7 +80,7 @@ format:
       - css/custom_style.css
       - css/syllabus.css
     toc: true
+    margin-header: |
+      ![](/figures/logos/MY_INSTITUTION.png)
 
-#margin-header: |
-# ![](/figures/logos/MY_INSTITUTION.png)
 
