@@ -1,36 +1,52 @@
-on:
-  workflow_dispatch:
-  push:
-    branches: main
+name: Deploy Quarto site
 
-name: Quarto Publish
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install jupyter
-        run: python3 -m pip install jupyterlab==3.6.0 pandas==1.5.3 numpy==1.24
-
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-
-      - name: Install rmarkdown
-        run: install.packages("rmarkdown");install.packages("ggplot2")
-        shell: Rscript {0}
-
-      - name: Set up Quarto
+      - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render and Publish
-        uses: quarto-dev/quarto-actions/publish@v2
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
         with:
-          target: gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          use-public-rspm: true # Acelera drásticamente la instalación de paquetes en Linux
+
+      # Paso agregado: Instala los paquetes de R leyendo tu renv.lock
+      - name: Setup renv
+        uses: r-lib/actions/setup-renv@v2
+
+      - name: Render site
+        run: quarto render
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _output # Corregido: Coincide con el output-dir de tu _quarto.yml
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
