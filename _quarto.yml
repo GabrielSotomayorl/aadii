@@ -2,10 +2,10 @@ project:
   type: "website"
   title: "Análisis Avanzado de Datos II 2026"
   output-dir: _output
-  render:
+render:
     - "index.qmd"
     - "2026/*.qmd"
-    - "2026/weeks/week01/*.qmd"
+    - "2026/weeks/**/*.qmd"
 
 website:
   title: "Análisis Avanzado de Datos II 2026"
@@ -13,8 +13,8 @@ website:
   reader-mode: true
   open-graph: true
   twitter-card: 
-    creator: "@<twitter-handle>"
-    site: "\\@<twitter-handle>"
+    creator: "@<GSotomayorL>"
+    site: "\\@<GSotomayorL>"
   favicon: "figures/icons/course_favicon.png"
   search:
     location: navbar
@@ -44,8 +44,8 @@ website:
            contents:
              - href: 2026/weeks/week01/page.qmd
                text: 👨‍🏫 Material de clase
-            #  - href: 2026/weeks/week01/lab.qmd
-            #    text: 💻 Lab Roadmap
+             - href: 2026/weeks/week01/lab.qmd
+               text: 💻 Práctico
             #  - href: 2026/weeks/week01/appendix.qmd
             #    text: 🔖 Appendix
 
@@ -53,7 +53,7 @@ website:
     background: primary
   page-footer:
     background: light
-    left: "Copyright 2026,Universidad Deigo Portales" 
+    left: "Copyright 2026, Universidad Diego Portales" 
 
 
 

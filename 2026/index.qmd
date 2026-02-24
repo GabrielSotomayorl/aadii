@@ -5,13 +5,13 @@ format: html
 ---
 
 ::: {.callout-important collapse=false}
-## 📢 Important
+## 📢 Avisos
 
-(12/03/2026)
+(Marzo 2026)
 
-- [🗓️ Week 01 lecture material](/2026/weeks/week01/page.qmd) is now available!
-
+- ¡Bienvenidos al curso! Revisa el [📓 Programa del curso](/2026/syllabus.qmd) para conocer las fechas importantes.
 :::
+
 
 
 # 🧑🏻‍🏫 Equipo Docente
@@ -26,11 +26,12 @@ _Profesor_ <br/>
 [Univerisdad Diego Portales](https://sociologia.udp.cl/)</a><br/>
 📧 [gabriel.sotomayor@mail.udp.cl](mailto:gabriel.sotomayor@mail.udp.cl)
 
-Office Hours: 
 
-- When:
-- Where:
-- How to book:
+Horario de consultas: 
+
+- Cuando: Martes entre 16:00 y 17:00
+- Donde: Virtual vía Google Meet
+- Para agendar: https://calendar.app.google/z4iY6NKWfBEC39kR8 
 
 ## Ayudantes
 
@@ -47,37 +48,13 @@ Licenciada en Sociología <br>
 
 :::
 
-# 📍 Cátedra
+# 📍 Horario y Sala
 
-Lunes de 10:00 a 12:50 en SALA POR CONFIRMAR
+::: {style="display:inline-block;width: 45%;border-style: dotted;border-width: 1px;border-color: &quot;#fefefe&quot;; margin:1%;padding:1.5%;background-color:#fafafa"}
+**Cátedra y Laboratorio**
 
-# 💻 Class Groups
-
-::: {style="display:inline-block;width: 28.5%;border-style: dotted;border-width: 1px;border-color: &quot;#fefefe&quot;; margin:1%;padding:1.5%;background-color:#fafafa"}
-**Group 01**
-
-- 📆 Mondays
-- ⌚ 09:00 - 10:30
-- 📍 
-- 🧑‍🏫 _TA_NAME_
-:::
-
-::: {style="display:inline-block;width: 28.5%;border-style: dotted;border-width: 1px;border-color: &quot;#fefefe&quot;; margin:1%;padding:1.5%;background-color:#fafafa"}
-**Group 02**
-
-            
-- 📆 Mondays
-- ⌚ 10:30 - 12:00
-- 📍 
-- 🧑‍🏫 _TA_NAME_
-            
-:::
-
-::: {style="display:inline-block;width: 28.5%;border-style: dotted;border-width: 1px;border-color: &quot;#fefefe&quot;; margin:1%;padding:1.5%;background-color:#fafafa"}
-**Group 03**
-
-- 📆 Fridays
-- ⌚ 16:00 - 17:30
-- 📍 
-- 🧑‍🏫 _TA_NAME_
+- 📆 Lunes (Módulos 2 y 3)
+- ⌚ 10:00 a 11:20 hrs. y 11:30 a 12:50 hrs.
+- 📍 Sala por confirmar
+- 📌 Asistencia: 70%
 :::
