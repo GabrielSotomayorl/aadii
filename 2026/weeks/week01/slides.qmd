@@ -1,14 +1,14 @@
 ---
-subtitle: "MY_COURSE_CODE -- MY_COURSE_NAME"
-title: "<font style='font-size:1em;'>🗓️ Week 01<br/> Introduction</font>"
-author: Prof. [Octopian](#)
-institute: '[University of Octopus Studies](#)'
-date: 14 March 2023
-date-meta: 14 March 2023
+subtitle: "SOC9035 -- Análisis Avanzado de Datos II"
+title: "<font style='font-size:1em;'>🗓️ Semana 01<br/> Introducción</font>"
+author: Prof. [Gabriel Sotomayor](https://gabrielsotomayorl.github.io/)
+institute: '[Universidad Diego Portales](https://sociologia.udp.cl/)'
+date: 09 March 2026
+date-meta: 06 March 2026
 date-format: "DD MMM YYYY"
 toc: true
 toc-depth: 1
-toc-title: "What we will cover today:"
+toc-title: "Contenidos de hoy:"
 center-title-slide: false
 from: markdown+emoji
 format:
@@ -20,76 +20,72 @@ format:
     preview-links: auto
     logo: /figures/icons/course_favicon.png
     css: /css/styles_slides.css
-    footer: 'MY_COURSE_CODE -- MY_COURSE_NAME'
+    footer: 'Análisis Avanzado de Datos II'
 ---
 
-# Who are we
+# Equipo Docente
 
-## Your lecturer {.smaller}
+## Profesor {.smaller}
 
 ::: columns
 
 ::: {.column style="display:inline-block;width:40%;height:60%;border-radius:1em;margin:1%;padding:1.5%;background-color:#f5f5f5"}
 <figure>
-    <img src="/figures/people/professor_octopus.png" alt="Photo of Professor Octopian" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
+    <img src="/figures/people/profesor.jpg" alt="Imagen de Gabriel Sotomayor" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
     <figcaption>
-        <strong>Prof.&nbsp;<span><a href="#" target="_blank" class="external">Octopian</a></span></strong> 
-        <br/>Professor of Octopus Issues
-        <br/>Head of the Python vs R Debate Society
+        <strong>Prof.&nbsp;<span><a href="https://gabrielsotomayorl.github.io/" target="_blank" class="external">Gabriel Sotomayor</a></span></strong> 
+        <br/>Profesor de Cátedra
+        <br/>Universidad Diego Portales
     </figcaption>
 </figure>
 :::
 
 ::: {.column style="width:50%;font-size:0.85em;margin-left:3%;"}
-- PhD in Octopi Engineering
-- **Background**: Engineering of Deep Ocean constructions
-- Former **Lead Data Scientist**
+- Sociólogo (Universidad de Chile) y MSc en Sociología (LSE).
+- Analista en el Observatorio Social del Ministerio de Desarrollo Social (Diseño de encuestas y producción de estadísticas oficiales).
+- Intereses: estratificación, desigualdad y sociología del trabajo.
 
-<span class="tag" style="background-color:var(--quarto-hl-st-color)">deep ocean</span>
+<span class="tag" style="background-color:var(--quarto-hl-st-color)">r-project</span>
 <br/>
-<span class="tag" style="background-color:var(--quarto-hl-fu-color)">engineering</span>
+<span class="tag" style="background-color:var(--quarto-hl-fu-color)">ciencia abierta</span>
 <br/>
-<span class="tag" style="background-color:var(--quarto-hl-dv-color)">octopus</span>
+<span class="tag" style="background-color:var(--quarto-hl-dv-color)">estadística oficial</span>
 
 :::
 
 :::
 
-## Teaching Assistants {.smaller}
+## Ayudantes {.smaller}
 
 ::: columns
 
 ::: {.column style="display:inline-block;width:40%;height:60%;border-radius:1em;margin:1%;padding:1.5%;background-color:#f5f5f5"}
 <figure>
-    <img src="/figures/people/ta_octopunian.png" alt="Image Created with DALL·E. Prompt: 'octopus-like alien futuristic non-binary happy teaching assistant, phd student Octopunian, award-winning professional high-quality studio headshot'" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
+    <img src="/figures/people/ta_octopunian.png" alt="Foto de Felipe Adasme (Placeholder)" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
     <figcaption>
-        <strong><span><a href="#" target="_blank" class="external">Octopnuian Arveda</a></span></strong>
+        <strong><span>Felipe Adasme</span></strong>
         <br/> 
-        PhD Candidate at [OctopusLab, OUN](#) <br>
-        MSc in Octopus Transportation<br/>
-        📧 
-        <br/>
+        Licenciado en Sociología <br>
+        📧 felipe.adasme@mail.udp.cl <br/>
     </figcaption>
 </figure>
 :::
 
 ::: {.column style="display:inline-block;width:40%;height:60%;border-radius:1em;margin:1%;padding:1.5%;background-color:#f5f5f5"}
 <figure>
-    <img src="/figures/people/ta_octopunian2.png" alt="Image Created with DALL·E. Prompt: 'octopus-like alien futuristic non-binary happy teaching assistant, phd student Octopunian, award-winning professional high-quality studio headshot'" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
+    <img src="/figures/people/ta_octopunian2.png" alt="Foto de Francisca Hernández (Placeholder)" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
     <figcaption>
-        <strong><span><a href="#" target="_blank" class="external">Octopnuian Arveda</a></span></strong>
+        <strong><span>Francisca Hernández</span></strong>
         <br/> 
-        PhD Candidate at [OctopusLab, UOS](#) <br>
-        MSc in Octopus Transportation<br/>
-        📧 
-        <br/>
+        Licenciada en Sociología <br>
+        📧 francisca.hernandez_c@mail.udp.cl <br/>
     </figcaption>
 </figure>
 :::
 
 :::
 
-
+# Presentación del curso
 
 ## Presentación {.smaller background-color="white"}
 
@@ -232,7 +228,8 @@ Las comunicaciones del curso con el equipo docente para temas colectivos deberá
 
 Esto es particularmente relevante para solicitudes respecto a evaluaciones.
 
-------------------------------------------------------------------------
+
+# Introducción a R y Rstudio
 
 ## Objetivos de la Sesión {background-color="white"}
 
@@ -240,9 +237,9 @@ Reflexionar sobre el uso de software estadístico en ciencias sociales. Introduc
 
 ## ¿Donde se sitúa la estadística en el proceso de investigación? {background-color="white"}
 
-![](img/01/inv.jpg)
+![](img/inv.jpg)
 
-## USO DE SOFTWARE EN CIENCIAS SOCIALES {.smaller background-color="white"}
+## Uso de software en ciencias sociales {.smaller background-color="white"}
 
 Progresivamente se ha generalizado el uso de software estadístico en ciencias sociales, abriendo grandes posibilidades de realizar análisis más complejos y facilitando su uso.
 
@@ -255,9 +252,9 @@ Dos niveles de manejo del software:
 
 ## ¿QUÉ SOFTWARE EXISTEN Y CUÁL UTILIZAR? {.smaller background-color="white"}
 
-![](img/01/imagensoft.png)
+![](img/imagensoft.png)
 
-## ¿QUÉ SOFTWARE EXISTEN Y CUÁL UTILIZAR? {.smaller background-color="white"}
+## ¿Qué software existen y cual utilizar? {.smaller background-color="white"}
 
 ::: {style="font-size: 1.2rem;"}
 | Dimensión / Lenguaje | R | Python | SPSS | Excel | Stata |
@@ -273,7 +270,7 @@ Dos niveles de manejo del software:
 (Boccardo y Ruiz, 2018)
 :::
 
-## ¿QUÉ ES R? {.smaller background-color="white"}
+## ¿Qué es R? {.smaller background-color="white"}
 
 ::::: columns
 ::: {.column width="60%"}
@@ -289,13 +286,13 @@ Su interfaz es poco amigable, la solución: R Studio.
 :::
 
 ::: {.column width="40%"}
-![](img/01/Imagen4.png)
+![](img/Imagen4.png)
 :::
 :::::
 
-## ¿PORQUÉ APRENDER Y USAR R Y RSTUDIO? {.smaller background-color="white"}
+## ¿Porque aprender y usar R? {.smaller background-color="white"}
 
-![](img/01/Imagen5.png) ![](img/01/Imagen6.png)
+![](img/Imagen5.png) ![](img/Imagen6.png)
 
 ## ¿PORQUÉ USAR R? {.smaller background-color="white"}
 
@@ -304,7 +301,7 @@ Su interfaz es poco amigable, la solución: R Studio.
 3.  Amplia y creciente comunidad de usuarios desarrollando funciones y resolviendo problemas en internet (la mayoría en inglés).
 4.  Su sintaxis es simple e intuitiva.
 
-## ¿PORQUÉ TRABAJAR CON SINTAXIS? {.smaller background-color="white"}
+## ¿Porque trabajar con código? {.smaller background-color="white"}
 
 1.  **Replicabilidad**: Permite a otros entender como construimos nuestros resultados y replicarlos, cada vez más importante en la ciencia.
 2.  **Eficiencia**: En condiciones "reales” de trabajo resulta más eficiente que trabajar con botones (aunque ahora pueda parecer contraintuitivo)
@@ -320,18 +317,18 @@ Es una interfaz gráfica para R que nos permite tener mejor visualización y con
 
 Tiene 4 partes principales:
 
-1.  **Editor de Sintaxis**: formato de block de notas donde podemos construir nuestra sintaxis.
+1.  **Editor de código**: formato de block de notas donde podemos construir nuestra código.
 2.  **Ambiente de trabajo (Environment)**: muestra los objetos que hemos creado (memoria temporal – RAM).
 3.  **Consola de R**: Aquí es donde podemos ver los resultados de nuestros análisis, las operaciones ejecutadas y mensajes de error.
 4.  **Panel de visualización**: Aquí aparecen los gráficos que ejecutemos, además de tener la pestaña *help* y nuestro directorio de trabajo.
 :::
 
 ::: {.column width="40%"}
-![](img/01/Imagen7.png)
+![](img/Imagen7.png)
 :::
 :::::
 
-## INSTALAR R Y RSTUDIO {.smaller background-color="white"}
+## Instalar R y Rstudio {.smaller background-color="white"}
 
 ::::: columns
 ::: {.column width="60%"}
@@ -343,7 +340,7 @@ Debemos descargar el paquete base, luego ejecutar el instalador, e instalarlo se
 :::
 
 ::: {.column width="40%"}
-![](img/01/Imagen8.png)
+![](img/Imagen8.png)
 :::
 :::::
 
@@ -357,17 +354,17 @@ Debemos fijarnos en elegir el sistema operativo correcto.
 
 Igualmente lo ejecutamos e instalamos según las opciones predeterminadas
 
-![](img/01/imagen9.png)
+![](img/imagen9.png)
 
-## EL PROBLEMA DE JAVA X64 {.smaller background-color="white"}
+## El problema de Java x64 {.smaller background-color="white"}
 
 Para algunos análisis R se basa en Javα, el problema es que nuestros computadores suelen instalar de manera automática la versión de 32 bits, porque los navegadores de internet funcionan (o funcionaban) en esta arquitectura, pero nuestro computadores y R funcionan a 64 bits.
 
 Para resolverlo debemos descargar e instalar la versión offline de 64 bits de Java [https://www.java.com/es/download/manual.jsp](https://www.java.com/es/download/manual.jsp){preview-link="true"}
 
-![](img/01/imagen10.png)
+![](img/imagen10.png)
 
-## PROGRAMACIÓN POR OBJETOS Y FUNCIONES {.smaller background-color="white"}
+## Programación por objetos y funciones {.smaller background-color="white"}
 
 **Tipos de estructuras de datos en R**
 
@@ -379,7 +376,7 @@ Para resolverlo debemos descargar e instalar la versión offline de 64 bits de J
 
 *Data.frame (base de datos)*: Matriz de datos en el que las columnas tienen asignado nombres, y que permite usar todo tipo de datos.
 
-## PROGRAMACIÓN POR OBJETOS Y FUNCIONES {.smaller background-color="white"}
+## Programación por objetos y funciones {.smaller background-color="white"}
 
 **Tipos de variables en R**
 
@@ -393,9 +390,9 @@ Para resolverlo debemos descargar e instalar la versión offline de 64 bits de J
 
 *Factores (factor): para variables cualitativas (nominales)*
 
-![](img/01/imagen11.png)
+![](img/imagen11.png)
 
-## ¿COMO CONTINUAR? {.smaller background-color="white"}
+## ¿Como continuar? {.smaller background-color="white"}
 
 Dominar R es un camino de mediano plazo y es importante desarrollar habilidad de “hacking”, es decir:
 
@@ -414,7 +411,7 @@ Dominar R es un camino de mediano plazo y es importante desarrollar habilidad de
 
 Además hay múltiples recursos web para aprender R de manera profunda y guiada.
 
-## BIBLIOGRAFÍA Y OTROS RECURSOS PARA PROFUNDIZAR {.smaller background-color="white"}
+## Bibliografía y otros recursos para profundizar {.smaller background-color="white"}
 
 Boccardo, Giorgio y Ruiz, Felipe. Uso de RStudio para Estadística Univariada en Ciencias Sociales. Manual de apoyo docente para la asignatura Estadística Descriptiva. Santiago: Departamento de Sociología, Facultad de Ciencias Sociales, Universidad de Chile. [Disponible aquí.](link-a-reemplazar)
 

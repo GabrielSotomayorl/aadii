@@ -1,29 +1,37 @@
 ---
-title: "🗓️ Week 01 - Introduction, Context & Key Concepts"
+title: "🗓️ Semana 01: Introducción al curso y nivelación en R"
 ---
 
-In this first week, we will cover what you can expect to learn from this course and the course logistics: all you need to know about the structure of the lectures, classes, assessments, and how we will interact throughout this course. 
+En esta primera semana revisaremos los objetivos, evaluaciones y la estructura de trabajo del curso. Además, reflexionaremos sobre la importancia del uso de software estadístico mediante código en las ciencias sociales (fomentando la reproducibilidad, eficiencia y el control sobre nuestros datos). 
 
-## 👨‍🏫 Lecture Slides 
+En la sección aplicada, realizaremos una **nivelación de los fundamentos de R**, repasando la creación de objetos, el manejo de vectores y la estructura de los *data frames*, preparando así el terreno para el uso intensivo de *Tidyverse* en las siguientes sesiones. 
 
-Either click on the slide area below or click [here](slides.qmd) to view it in fullscreen.
-Use your keypad to navigate the slides.
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
 
 <div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
 <iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
 </div>
 
-🎥 Looking for lecture recordings? You can only find those on Moodle.
+🎥 *¿Buscas las grabaciones de la cátedra? Recuerda que esos registros estarán disponibles en el portal online de la UDP.*
 
-## ✍️ Coursework
+## 💻 Taller Aplicado (Práctico 1)
 
-🚧 Come back after the lecture to read the coursework instructions for the week 🚧
+En nuestro primer bloque de laboratorio soltaremos las manos con la consola de RStudio repasando la programación por objetos.
+
+👉 **[Ir al Práctico 1: Nivelación de fundamentos en R](lab.qmd)**
 
 
-## 📚 Recommended Reading
+## 📚 Lecturas Obligatorias
 
-- Check the end of slides for the list of references cited in the lecture.
+Para acompañar los contenidos de esta semana, por favor revisa el siguiente material:
 
-## 📟 Communication
+- **Boccardo, G. & Ruiz, F. (2019).** *RStudio para estadística descriptiva en ciencias sociales: Manual de apoyo docente para la asignatura Estadística Descriptiva*. Departamento de Sociología, Facultad de Ciencias Sociales, Universidad de Chile. 
+- **Wickham, H. (2019).** *R para ciencia de datos*. [Versión en español disponible aquí](https://es.r4ds.hadley.nz/index.html).
 
-- If you feel like it, introduce yourself in the `#introductions` channel on Slack
+
+## 📟 Dudas y Comunicación
+
+Si tuviste problemas para instalar las versiones correctas de **R**, **RStudio** o **Java x64** (como vimos en la clase), recuerda que puedes escribirle directamente al equipo de ayudantes o acercarte a consultar en los horarios de atención.
+
