@@ -97,27 +97,16 @@ El sentido de cada una de estas etapas debe estar guiada por una **pregunta de i
 
 Tomemos un ejemplo simple: **¿Cómo se relaciona la pobreza y la ruralidad en Chile?**
 
-## Importar Datos a R: Ejemplo con CASEN 2022 {.smaller background-color="white"}
+## Importar Datos a R: Ejemplo con CASEN 2024 {.smaller background-color="white"}
 
 Para comenzar a trabajar con datos en R, el primer paso es **importarlos**.
 
-Veamos un ejemplo práctico descargando y cargando la base de datos CASEN 2022:
 
-```{r echo=FALSE, eval=TRUE}
-library(haven)
+
+```{r echo=TRUE, eval=TRUE}
+library(haven) #Cargamos haven porque internamente el objeto que estaos cargando esta creado con dicho paquete
+casen <- readRDS("../../data/casen24.rds")
 ```
-
-```{r echo=TRUE, eval=TRUE, cache=TRUE}
-temp <- tempfile() # Creamos un archivo temporal
-download.file("https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2022/Base%20de%20datos%20Casen%202022%20SPSS.sav.zip",temp) #descargamos los datos
-casen <- haven::read_sav(unz(temp, "Base de datos Casen 2022 SPSS.sav")) #cargamos los datos
-unlink(temp); remove(temp) #eliminamos el archivo temporal
-```
-
--   `tempfile()`: Crea un archivo temporal para guardar la descarga.
--   `download.file()`: Descarga el archivo ZIP de la CASEN desde la URL.
--   `haven::read_sav(unz(...))`: Lee el archivo `.sav` (SPSS) dentro del ZIP descargado, utilizando el paquete `haven`.
--   `unlink(temp); remove(temp)`: Elimina el archivo temporal descargado para limpiar el
 
 ## Ordenar (Tidy) {.smaller background-color="white"}
 

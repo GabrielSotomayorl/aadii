@@ -15,7 +15,7 @@ format:
 # 0. Objetivo del práctico
 
 El objetivo de este práctico es aprender el uso de funciones y paquetes en R, con el fin de cargar bases de datos, realizar análisis descriptivos y representaciones gráficas básicas.   
-Para esto haremos uso de la encuesta [CASEN (2022)](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2022), la mayor encuesta de hogares realizada en Chile, a cargo del Ministerio de Desarrollo Social, de carácter transversal y multipropósito, es el principal instrumento de medición socioeconómica para el diseño y evaluación de la política social. Permite conocer periódicamente la situación socioeconómica de los hogares y de la población que reside en viviendas particulares, a través de preguntas referidas a composición familiar, educación, salud, vivienda, trabajo e ingresos, entre otros aspectos. 
+Para esto haremos uso de la encuesta [CASEN (2024)](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2024), la mayor encuesta de hogares realizada en Chile, a cargo del Ministerio de Desarrollo Social, de carácter transversal y multipropósito, es el principal instrumento de medición socioeconómica para el diseño y evaluación de la política social. Permite conocer periódicamente la situación socioeconómica de los hogares y de la población que reside en viviendas particulares, a través de preguntas referidas a composición familiar, educación, salud, vivienda, trabajo e ingresos, entre otros aspectos. 
 
 
 # 1. Paquetes y funciones en R   
@@ -44,16 +44,13 @@ setwd("C:/Users/Gabriel/Desktop/Directorio R")
 Una vez que hemos fijado nuestro directorio de trabajo podemos cargar nuestra base de datos y asignarla como objeto, para que se guarde en el ambiente y poder usarla posteriormente en nuestros análisis.
 
 ```{r, eval = FALSE}
-casen <- read_spss("Base de datos Casen 2022 SPSS.sav")
+load("casen_2024.RData")
+casen <- casen_2024
 ```
 
-Una forma alternativa de realizar este proceso es descargar directamente los datos mediante el uso de código. Esto ofrece la ventaja de que nos permite ejecutar el código en otros computadores y obtener automáticamente los datos. Un posible problema de esta forma de cargar los datos es que cuando usamos archivos de gran tamaño puede ser muy poco eficiente.  
 
-```{r load}
-temp <- tempfile() #Creamos un archivo temporal
-download.file("https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2022/Base%20de%20datos%20Casen%202022%20SPSS.sav.zip",temp) #descargamos los datos
-casen <- haven::read_sav(unz(temp, "Base de datos Casen 2022 SPSS.sav")) #cargamos los datos
-unlink(temp); remove(temp) #eliminamos el archivo temporal
+```{r load, eval=TRUE, echo=FALSE}
+casen <- readRDS("../../data/casen24.rds")
 ```
 
 # 2. Gestión de datos
@@ -289,11 +286,11 @@ casen %>%
   ggplot() + 
   aes(x = edad) +
   geom_histogram(fill = "#40E0D0", color = "white", bins = 30) +  # Ajusta la cantidad de barras con bins
-  labs(title = "Distribución de Edades en la Encuesta Casen 2022",
+  labs(title = "Distribución de Edades en la Encuesta Casen 2024",
        subtitle = "Histograma de edades de los encuestados",
        x = "Edad",
        y = "Frecuencia",
-       caption = "Fuente: Encuesta Casen 2022") +
+       caption = "Fuente: Encuesta Casen 2024") +
   theme_minimal() +
   theme(plot.title = element_text(face = "bold", size = 20),  # Ajusta el estilo del título
         plot.subtitle = element_text(face = "italic", size = 16),  # Estilo del subtítulo
@@ -337,7 +334,7 @@ casen %>%
   scale_y_continuous(name = "Ingresos por Trabajo (CLP)", labels = scales::comma) +  # Renombrar eje Y y formatear como números
   labs(title = "Relación entre Escolaridad e Ingresos por Trabajo",
        subtitle = "Región de Valparaíso, Encuesta Casen",
-       caption = "Fuente: Encuesta Casen 2022") +
+       caption = "Fuente: Encuesta Casen 2024") +
   theme_bw() +  # Usar un tema de fondo blanco y negro para claridad
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotar las etiquetas del eje X para mejorar la legibilidad
 ```
@@ -353,8 +350,8 @@ ggplot(aes(x = as_factor(sexo))) +
   geom_bar(width = 0.4,  fill=rgb(0.1,1,0.5,0.7)) + 
   scale_x_discrete("Sexo") +  
   scale_y_continuous("Frecuencia") +
-  labs(title = "Frecuencia relativa de sexo en Casen 2022",
-       caption = "Fuente: Encuesta Casen 2022") + 
+  labs(title = "Frecuencia relativa de sexo en Casen 2024",
+       caption = "Fuente: Encuesta Casen 2024") + 
   theme_bw()
 ```
 
@@ -367,8 +364,8 @@ ggplot(aes(x = as_factor(sexo))) +
   geom_bar(width = 0.4,  fill= rgb(0.1,0.3,0.5,0.7), aes(y = (..count..)/sum(..count..))) + 
   scale_x_discrete("Sexo") +  
   scale_y_continuous("Porcentaje",labels=scales::percent)+
-  labs(title = "Frecuencia absoluta de sexo en Casen 2022",
-       caption = "Fuente: Encuesta Casen 2022") + 
+  labs(title = "Frecuencia absoluta de sexo en Casen 2024",
+       caption = "Fuente: Encuesta Casen 2024") + 
   theme_bw()
 ```
 
@@ -393,12 +390,12 @@ head(casen_pob)
 casen_pob %>%
   ggplot(aes(x = edad, y = pob)) +
   geom_line(color = "#40E0D0") +
-  ylim(0, 17) +
+  ylim(0, 35) +
   geom_point(shape = 21, fill = "#40E0D0", size = 1) +
   ylab("% Pobreza") +
   xlab("Edad") +
   labs(title = "Porcentaje de pobreza según edad",
-       caption = "Fuente: Encuesta Casen 2022") + 
+       caption = "Fuente: Encuesta Casen 2024") + 
   theme_bw()
 
 ```
@@ -420,16 +417,16 @@ head(casen_pob_a)
 casen_pob_a %>% 
   ggplot(aes(x = edad, y = pob)) +
   geom_line(color = "#40E0D0") +
-  ylim(0, 25) +
+  ylim(0, 45) +
   geom_point(shape = 21, fill = "#40E0D0", size = 1) +
   ylab("% Pobreza") +
   xlab("Edad") +
   labs(title = "Porcentaje de pobreza según edad por zona",
-       caption = "Fuente: Encuesta Casen 2022") + 
+       caption = "Fuente: Encuesta Casen 2024") + 
   theme_bw() +
   facet_wrap(as_factor(casen_pob_a$area))
 
 ```
 
 
-Para ver material adicional pueden revisar la siguiente [Introducción al uso del paquete ggplot2](https://bookdown.org/gboccardo/manual-ED-UCH/construccion-de-graficos-usando-rstudio-funcionalidades-basicas-y-uso-del-paquete-ggplot2.html#introduccion-al-uso-del-paquete-ggplot2). Para una revisión más profunda pueden revisar los capítulos 3 y 28 del libro [R para ciencia de datos](https://es.r4ds.hadley.nz/visualizaci%C3%B3n-de-datos.html)
+Para ver material adicional pueden revisar la siguiente [Introducción al uso del paquete ggplot2](https://bookdown.org/gboccardo/manual-ED-UCH/construccion-de-graficos-usando-rstudio-funcionalidades-basicas-y-uso-del-paquete-ggplot2.html#introduccion-al-uso-del-paquete-ggplot2). Para una revisión más profunda pueden revisar los capítulos 3 y 28 del libro [R para ciencia de datos](https://es.r4ds.hadley.nz/03-visualize.html)
