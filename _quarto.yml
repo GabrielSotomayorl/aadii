@@ -20,34 +20,43 @@ website:
     location: navbar
     type: textbox
   sidebar:
-    style: docked
-    contents:
-      - href: 2026/index.qmd
-        text: "🏠 Inicio"
-      - href: 2026/syllabus.qmd
-        text: "📓 Programa"
-      # - href: 2026/communication.qmd
-      #   text: "📟 Communication"
-      # - href: 2026/assignments.qmd
-      #   text: "✍️ Assignments"
-      #   contents:
-      #     - href: 2026/assignments/assignment01.qmd
-      #       text: "📝 Assignment 01"
-      #     - href: 2026/assignments/assignment02.qmd
-      #       text: "📝 Assignment 02"
-      #     - href: 2026/assignments/group_project.qmd
-      #       text: "👥 Group Project"
-      - section: "🗓️Semanas"
-        contents:
-         - href: 2026/weeks/week01/page.qmd
-           text: Semana 01
-           contents:
-             - href: 2026/weeks/week01/page.qmd
-               text: 👨‍🏫 Material de clase
-             - href: 2026/weeks/week01/lab.qmd
-               text: 💻 Práctico
-            #  - href: 2026/weeks/week01/appendix.qmd
-            #    text: 🔖 Appendix
+      style: docked
+      collapse-level: 2 # 1️⃣ Abre automáticamente hasta el 2do nivel del menú
+      contents:
+        - href: 2026/index.qmd
+          text: "🏠 Inicio"
+        - href: 2026/syllabus.qmd
+          text: "📓 Programa"
+        # - href: 2026/communication.qmd
+        #   text: "📟 Communication"
+        # - href: 2026/assignments.qmd
+        #   text: "✍️ Assignments"
+        #   contents:
+        #     - href: 2026/assignments/assignment01.qmd
+        #       text: "📝 Assignment 01"
+        #     - href: 2026/assignments/assignment02.qmd
+        #       text: "📝 Assignment 02"
+        #     - href: 2026/assignments/group_project.qmd
+        #       text: "👥 Group Project"
+        - section: "🗓️ Semanas"
+          collapse: false # 2️⃣ Obliga a la sección "Semanas" a estar siempre abierta
+          contents:
+            - section: "Semana 01" # 3️⃣ Cambiamos 'href' por 'section' para que actúe solo como carpeta
+              collapse: false # 4️⃣ Obliga a la Semana 01 a estar siempre abierta
+              contents:
+                - href: 2026/weeks/week01/page.qmd
+                  text: "👨‍🏫 Material de clase"
+                - href: 2026/weeks/week01/lab.qmd
+                  text: "💻 Práctico"
+                # - href: 2026/weeks/week01/appendix.qmd
+                #   text: "🔖 Appendix"
+            - section: "Semana 02" 
+              collapse: false 
+              contents:
+                - href: 2026/weeks/week02/page.qmd
+                  text: "👨‍🏫 Material de clase"
+                - href: 2026/weeks/week02/lab.qmd
+                  text: "💻 Práctico"
 
   navbar:
     background: primary

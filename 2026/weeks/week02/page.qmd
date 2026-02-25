@@ -1,0 +1,36 @@
+---
+title: "🗓️ Semana 02: Análisis de datos con Tidyverse y visualización"
+---
+
+En esta segunda semana daremos un salto cualitativo en nuestra forma de programar introduciendo el ecosistema **Tidyverse**. Discutiremos el concepto de *Tidy Data* (datos ordenados) y el ciclo de vida del análisis de datos. 
+
+En la sección aplicada, pasaremos de los vectores básicos a trabajar con una encuesta real y masiva (CASEN 2022). Aprenderemos a importar bases de datos, filtrar, seleccionar, transformar variables y, finalmente, a explorar visualmente la información utilizando la gramática de gráficos del paquete **ggplot2**.
+
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## 💻 Taller Aplicado (Práctico 2)
+
+En este laboratorio comenzaremos a utilizar funciones de `dplyr` y `ggplot2` para la gestión y visualización de datos, usando la Encuesta de Caracterización Socioeconómica Nacional (CASEN).
+
+👉 **[Ir al Práctico 2: Gestión y visualización de datos con CASEN](lab.qmd)**
+
+
+## 📚 Lecturas Recomendadas
+
+Para profundizar en los contenidos de esta semana, te sugerimos revisar los siguientes capítulos:
+
+- **Wickham, H. (2019).** *R para ciencia de datos*. [Versión en español disponible aquí](https://es.r4ds.hadley.nz/).
+  - Particularmente los capítulos sobre [Transformación de datos](https://es.r4ds.hadley.nz/transform.html) y [Visualización de datos](https://es.r4ds.hadley.nz/data-visualisation.html).
+- **Boccardo, G. & Ruiz, F. (2019).** *RStudio para estadística descriptiva en ciencias sociales*. 
+  - Capítulos correspondientes a la construcción de gráficos con `ggplot2`.
+
+
+## 📟 Dudas y Comunicación
+
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte a los horarios de atención de las ayudantes si tienes dificultades cargando la base de datos CASEN en tu computador.
