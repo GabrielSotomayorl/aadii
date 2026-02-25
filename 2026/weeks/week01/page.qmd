@@ -14,8 +14,6 @@ Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer
 <iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
 </div>
 
-🎥 *¿Buscas las grabaciones de la cátedra? Recuerda que esos registros estarán disponibles en el portal online de la UDP.*
-
 ## 💻 Taller Aplicado (Práctico 1)
 
 En nuestro primer bloque de laboratorio soltaremos las manos con la consola de RStudio repasando la programación por objetos.

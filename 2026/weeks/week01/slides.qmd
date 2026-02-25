@@ -220,7 +220,7 @@ También les acompañarán en la realización de tareas y trabajos de investigac
 
 ## Página del Curso {background-color="white"}
 
-[https://aadii2025.netlify.app/](https://aadii2025.netlify.app/){preview-link="true"}
+[https://gabrielsotomayorl.github.io/aadii/2026/](https://gabrielsotomayorl.github.io/aadii/2026/){preview-link="true"}
 
 ## Delegado de Curso {.dark-background}
 
