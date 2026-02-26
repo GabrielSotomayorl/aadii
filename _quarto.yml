@@ -85,9 +85,6 @@ format:
       light: 
         - journal
         - css/custom.scss # I use this just to change the default colour
-    css: 
-      - css/custom_style.css
-      - css/syllabus.css
     toc: true
     margin-header: |
       ![](/figures/logos/MY_INSTITUTION.png)

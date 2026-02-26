@@ -1,70 +1,73 @@
 /*-- scss:defaults --*/
 
-/* Mantenemos tu color principal (verde) por si lo usas en botones u otros elementos */
-$blue:    #20794D !default;
+// 1. PALETA DE COLORES (Basada en el Banner)
+$brand-main:    #1a365d; 
+$brand-accent:  #e67e22; 
+$brand-link:    #2980b9;
 
-/* Definimos un color de fondo base para la barra que combine con tu banner 
-   (un azul oscuro) para evitar el salto visual verde inicial */
-$navbar-bg: #1a365d !default; 
+$primary:       $brand-main;
+$navbar-bg:     $brand-main;
+$link-color:    $brand-link;
 
 /*-- scss:rules --*/
 
-/* ==========================================
-   Configuración del Banner del Encabezado
-   ========================================== */
-
-/* Apuntamos a la clase principal de la barra de navegación de Bootstrap */
+// ==========================================
+// 2. BANNER Y NAVEGACIÓN
+// ==========================================
 .navbar {
-  /* Color de respaldo (fallback) mientras carga la imagen */
-  background-color: #1a365d;
-
-  /* 1. Define la imagen de fondo */
-  background-image: url("figures/banner.png");
-
-  /* 2. Hacemos que la imagen cubra todo el espacio sin deformarse */
+  background-color: $navbar-bg;
+  // Ruta ajustada según tu estructura de proyecto
+  background-image: linear-gradient(rgba(26, 54, 93, 0.0), rgba(26, 54, 93, 0.0)), url("figures/banner.png");
   background-size: cover;
-
-  /* 3. Centramos la imagen para que el foco se mantenga al cambiar el tamaño de ventana */
   background-position: center center;
-
-  /* 4. Evitamos que la imagen se repita tipo mosaico */
-  background-repeat: no-repeat;
-
-  /* 5. Altura mínima */
-  min-height: 160px; 
-
-  /* 6. Sombra para separarlo del contenido */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-
-  /* Si aumentas la altura, esto ayuda a centrar verticalmente el título y menú */
+  min-height: 140px; 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   align-items: center;
-}
 
-/* ==========================================
-   Legibilidad del texto sobre la imagen
-   ========================================== */
-
-.navbar .navbar-brand, 
-.navbar .navbar-title, 
-.navbar .nav-link,
-.navbar-text {
-  /* Texto blanco con sombra negra fuerte para que resalte sobre cualquier color de la foto */
-  color: #ffffff !important;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
-}
-
-/* Ajuste fino para el menú en móviles */
-@media (max-width: 991.98px) {
-  .navbar-collapse {
-    /* En móvil, le damos un fondo sólido oscuro para que se lea bien el texto blanco */
-    background-color: #1a365d; 
-    padding: 1rem;
-    border-radius: 0 0 10px 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  .navbar-brand, .navbar-title, .nav-link, .navbar-text {
+    color: #ffffff !important;
+    font-weight: 600;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
   }
+}
+
+// ==========================================
+// 3. TABLAS Y COMPONENTES
+// ==========================================
+table.syllabus {
+  td { vertical-align: text-top; border: 0; }
+  tr.odd { 
+    background-color: $brand-main; 
+    color: white; 
+  }
+}
+
+.callout.callout-style-default {
+  border-left-width: 5px;
+  border-radius: 5px;
+  &.callout-important { border-left-color: $brand-accent; background-color: rgba($brand-accent, 0.05); }
+  &.callout-note { border-left-color: $brand-main; background-color: rgba($brand-main, 0.05); }
+}
+
+// ==========================================
+// 4. BOTONES (Contraste Corregido)
+// ==========================================
+.button-61 {
+  background-color: $brand-main;
+  color: #ffffff !important; // Texto blanco para legibilidad
+  border-radius: 8px;
+  text-transform: none; 
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
   
-  /* Quitamos la sombra del texto en el menú móvil porque ya tiene fondo oscuro sólido */
-  .navbar-collapse .nav-link {
-    text-shadow: none;
+  &:hover {
+    background-color: $brand-accent;
+    color: #ffffff !important;
+    transform: translateY(-2px);
   }
+}
+
+div.csl-entry {
+  margin-top: 1rem;
+  a { color: $brand-link; font-weight: 500; }
 }

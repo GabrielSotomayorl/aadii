@@ -5,13 +5,12 @@ date: "2026-03-09"
 lang: es
 format:
   html:
-    theme: cosmo
     toc: true
-    toc-title: "Índice del Práctico"
     code-fold: false
     code-tools: true
     df-print: paged
 ---
+
 
 ::: {.callout-note icon=false title="🎯 Antes de empezar"}
 Antes de sumergirnos en el análisis de encuestas masivas y paquetes modernos (como veremos en las próximas semanas), necesitamos entender cómo "piensa" y cómo se estructura R por debajo. Este práctico es una nivelación esencial para soltar las manos con la consola, perderle el miedo al código y entender la lógica del programa.

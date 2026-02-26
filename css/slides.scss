@@ -1,0 +1,79 @@
+/*-- scss:defaults --*/
+$brand-main:    #1a365d; // Azul profundo
+$brand-accent:  #e67e22; // Naranja acento
+
+/*-- scss:rules --*/
+
+// ==========================================
+// 1. LIMPIEZA DE FONDOS (No más banners ni bloques)
+// ==========================================
+
+// Quitamos cualquier fondo predefinido de las secciones
+.reveal section.level1, 
+.reveal section.title-slide {
+  background: none !important;
+  background-color: transparent !important;
+}
+
+// ==========================================
+// 2. TÍTULOS (Azul sobre blanco)
+// ==========================================
+.reveal h1 { 
+  font-size: 2.2em; 
+  color: $brand-main; 
+  font-weight: 800;
+  text-align: center;
+}
+
+.reveal h2 { 
+  font-size: 1.6em; 
+  color: $brand-main; 
+  border-bottom: 3px solid $brand-accent; 
+  padding-bottom: 10px;
+}
+
+// ==========================================
+// 3. CÓDIGO (Balance de tamaños 0.9 / 0.85)
+// ==========================================
+.reveal div.sourceCode { 
+  font-size: 0.9em; 
+  border-radius: 10px;
+  border: 1px solid rgba($brand-main, 0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.reveal div.cell-output pre { 
+  font-size: 0.85em; 
+  background-color: #f8f9fa;
+  border-left: 4px solid $brand-main;
+  color: #222;
+  margin-top: 0;
+}
+
+// ==========================================
+// 4. ELEMENTOS REINTEGRADOS (Necesarios)
+// ==========================================
+
+// Tags para la bio del profesor y ayudantes
+span.tag {
+    display: inline-block;
+    padding: 0.2em 0.8em;
+    font-size: 0.85em;
+    font-weight: 600;
+    border-radius: 10px;
+    background-color: $brand-accent;
+    color: #ffffff;
+    margin-bottom: 0.5em;
+}
+
+// Ajuste de tablas
+.reveal table {
+  tr.header { background-color: $brand-main; color: #ffffff; }
+  tr.odd { background-color: rgba($brand-main, 0.04); }
+}
+
+// Fix crítico para columnas: evita que el texto se pegue a los bordes
+.reveal .columns > .column > :not(ul,ol) {
+    margin-left: 0;
+    margin-right: 0;
+}

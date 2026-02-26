@@ -14,16 +14,15 @@ from: markdown+emoji
 format:
   revealjs: 
     fig-responsive: true
-    theme: simple
+    theme: [simple, ../../../css/slides.scss]
     slide-number: true
     mouse-wheel: false
     preview-links: auto
     logo: /figures/icons/course_favicon.png
-    css: /css/styles_slides.css
     footer: 'Análisis Avanzado de Datos II'
 ---
 
-# Equipo Docente {background-color="#f8f9fa"}
+# Equipo Docente
 
 ## Profesor {.smaller}
 

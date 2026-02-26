@@ -1,6 +1,6 @@
 ---
 title: "Práctico 2: Uso de bases de datos en R, estadística descriptiva y visualización"
-subtitle: "Uso de bases de datos en R, estadística descriptiva y visualización"
+subtitle: "Trabajando con CASEN 2022"
 date: "2026-03-16"
 lang: es
 format:
