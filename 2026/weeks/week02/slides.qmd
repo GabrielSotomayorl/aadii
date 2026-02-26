@@ -1,6 +1,6 @@
 ---
 subtitle: "SOC9035 -- Análisis Avanzado de Datos II"
-title: "<font style='font-size:1em;'>🗓️ Semana 02<br/> Introducción</font>"
+title: "<font style='font-size:1em;'>🗓️ Semana 02<br/> Análisis de datos con tidyverse y visualización de datos</font>"
 author: Prof. [Gabriel Sotomayor](https://gabrielsotomayorl.github.io/)
 institute: '[Universidad Diego Portales](https://sociologia.udp.cl/)'
 date: 09 March 2026

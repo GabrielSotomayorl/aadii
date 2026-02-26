@@ -23,16 +23,15 @@ format:
     footer: 'Análisis Avanzado de Datos II'
 ---
 
-# Equipo Docente
+# Equipo Docente {background-color="#f8f9fa"}
 
 ## Profesor {.smaller}
 
 ::: columns
-
-::: {.column style="display:inline-block;width:40%;height:60%;border-radius:1em;margin:1%;padding:1.5%;background-color:#f5f5f5"}
-<figure>
-    <img src="/figures/people/profesor.jpg" alt="Imagen de Gabriel Sotomayor" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
-    <figcaption>
+::: {.column style="display:inline-block;width:40%;height:60%;border-radius:1em;margin:1%;padding:1.5%;background-color:#ffffff; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"}
+<figure style="text-align: center;">
+    <img src="/figures/people/profesor.jpg" alt="Imagen de Gabriel Sotomayor" role="presentation" style="object-fit: cover;width:6em;height:6em;border-radius: 50%;font-size:1em; margin: 0 auto;" class="img-responsive atto_image_button_text-bottom">
+    <figcaption style="margin-top: 15px;">
         <strong>Prof.&nbsp;<span><a href="https://gabrielsotomayorl.github.io/" target="_blank" class="external">Gabriel Sotomayor</a></span></strong> 
         <br/>Profesor de Cátedra
         <br/>Universidad Diego Portales
@@ -40,200 +39,236 @@ format:
 </figure>
 :::
 
-::: {.column style="width:50%;font-size:0.85em;margin-left:3%;"}
-- Sociólogo (Universidad de Chile) y MSc en Sociología (LSE).
-- Analista en el Observatorio Social del Ministerio de Desarrollo Social (Diseño de encuestas y producción de estadísticas oficiales).
-- Intereses: estratificación, desigualdad y sociología del trabajo.
-
-<span class="tag" style="background-color:var(--quarto-hl-st-color)">r-project</span>
-<br/>
-<span class="tag" style="background-color:var(--quarto-hl-fu-color)">ciencia abierta</span>
-<br/>
-<span class="tag" style="background-color:var(--quarto-hl-dv-color)">estadística oficial</span>
-
+::: {.column style="width:50%;font-size:1em;margin-left:3%; margin-top:5%;"}
+- **Formación:** Sociólogo (Universidad de Chile) y MSc en Sociología (LSE).
+- **Experiencia:** Analista en el Observatorio Social del Ministerio de Desarrollo Social (Diseño de encuestas y producción de estadísticas oficiales).
+- **Intereses de investigación:** Estratificación, desigualdad y sociología del trabajo.
 :::
-
-:::
-
-## Ayudantes {.smaller}
-
-::: columns
-
-::: {.column style="display:inline-block;width:40%;height:60%;border-radius:1em;margin:1%;padding:1.5%;background-color:#f5f5f5"}
-<figure>
-    <img src="/figures/people/ta_octopunian.png" alt="Foto de Felipe Adasme (Placeholder)" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
-    <figcaption>
-        <strong><span>Felipe Adasme</span></strong>
-        <br/> 
-        Licenciado en Sociología <br>
-        📧 felipe.adasme@mail.udp.cl <br/>
-    </figcaption>
-</figure>
-:::
-
-::: {.column style="display:inline-block;width:40%;height:60%;border-radius:1em;margin:1%;padding:1.5%;background-color:#f5f5f5"}
-<figure>
-    <img src="/figures/people/ta_octopunian2.png" alt="Foto de Francisca Hernández (Placeholder)" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
-    <figcaption>
-        <strong><span>Francisca Hernández</span></strong>
-        <br/> 
-        Licenciada en Sociología <br>
-        📧 francisca.hernandez_c@mail.udp.cl <br/>
-    </figcaption>
-</figure>
-:::
-
 :::
 
 # Presentación del curso
 
-## Presentación {.smaller background-color="white"}
+## ¿De qué trata este curso? {.smaller background-color="white"}
 
-Este curso profundiza en las técnicas de análisis multivariante, permitiendo examinar de manera integrada la interacción de múltiples factores en el estudio de problemas sociales. Se enfatiza la comprensión de los procedimientos y la interpretación rigurosa de los resultados, con un enfoque aplicado mediante el uso de herramientas computacionales, principalmente **R y RStudio**.
+Este curso profundiza en las técnicas de **análisis multivariante**, permitiendo examinar de manera integrada la interacción de múltiples factores en el estudio de problemas sociales. 
 
-El curso prioriza la aplicación práctica de los métodos estadísticos sin requerir una profundización en sus fundamentos matemáticos. Al finalizar, el estudiante será capaz de analizar datos primarios y secundarios, identificar la técnica estadística adecuada según el contexto y generar informes que comuniquen de manera efectiva los hallazgos obtenidos.
+::: {.callout-note icon=false title="Enfoque Pedagógico"}
+Se enfatiza la **comprensión de los procedimientos** y la **interpretación rigurosa** de los resultados, con un enfoque cien por ciento aplicado mediante el uso de herramientas computacionales, principalmente **R y RStudio**.
+:::
+
+El curso prioriza la aplicación práctica de los métodos estadísticos sin requerir una profundización en sus fundamentos matemáticos. Al finalizar, el estudiante será capaz de:
+
+1. Analizar datos primarios y secundarios.  
+2. Identificar la técnica estadística adecuada según el contexto.  
+3. Generar informes que comuniquen de manera efectiva los hallazgos obtenidos.  
 
 ## Resultados de Aprendizaje {background-color="white"}
 
-**Resultado general:** Desarrollar la capacidad de aplicar técnicas de estadística multivariante descriptiva e inferencial para analizar datos, formular hipótesis y construir modelos explicativos en investigaciones sociales, asegurando la correcta interpretación y comunicación de los resultados.
+::: {.callout-tip title="Resultado General"}
+Desarrollar la capacidad de aplicar técnicas de estadística multivariante descriptiva e inferencial para **analizar datos, formular hipótesis y construir modelos explicativos** en investigaciones sociales, asegurando la correcta interpretación y comunicación de los resultados.
+:::
 
 ## Resultados Específicos {.smaller background-color="white"}
 
-1.  Gestionar bases de datos complejas, asegurando su preparación y estructuración para el análisis.
-2.  Definir y estructurar problemas de análisis multivariante, formulando preguntas de investigación con sustento metodológico.
-3.  Seleccionar técnicas estadísticas adecuadas, justificando su aplicación en función del tipo de datos y los objetivos del análisis.
-4.  Utilizar herramientas computacionales especializadas, aplicando modelos en R y RStudio de manera efectiva.
-5.  Interpretar de forma rigurosa los resultados del análisis, identificando sus alcances y limitaciones.
-6.  Redactar informes técnicos y académicos, comunicando los hallazgos de manera clara, estructurada y fundamentada.
+Al finalizar el semestre, ustedes serán capaces de:
 
-## Contenidos {.smaller .dark-background}
+::: incremental
+1. **Gestionar** bases de datos complejas, asegurando su preparación y estructuración para el análisis.
+2. **Definir** y estructurar problemas de análisis multivariante, formulando preguntas de investigación con sustento metodológico.
+3. **Seleccionar** técnicas estadísticas adecuadas, justificando su aplicación en función del tipo de datos y los objetivos del análisis.
+4. **Utilizar** herramientas computacionales especializadas, aplicando modelos en R y RStudio de manera efectiva.
+5. **Interpretar** de forma rigurosa los resultados del análisis, identificando sus alcances y limitaciones.
+6. **Redactar** informes técnicos y académicos, comunicando los hallazgos de manera clara, estructurada y fundamentada.
+:::
 
-### 1. Gestión de Datos con R
+# Estructura de Contenidos
 
--   Introducción a la manipulación de datos con tidyverse.
--   Cálculo e interpretación de estadísticos descriptivos.
--   Visualización de información con ggplot2.
--   Elementos introductorios de investigación reproducible.
+## 1 y 2: Gestión y Muestras Complejas {.smaller .dark-background}
 
-### 2. Introducción al uso de muestras complejas en R
+::: columns
+::: {.column width="50%"}
+### 💻 1. Gestión de Datos con R
+- Introducción a la manipulación de datos con `tidyverse`.
+- Cálculo e interpretación de estadísticos descriptivos.
+- Visualización de información con `ggplot2`.
+- Elementos introductorios de investigación reproducible.
+:::
 
--   Conceptos fundamentales de muestreo complejo.
--   Diseño de encuestas y aplicación de ponderaciones.
--   Inferencia estadística en muestras complejas.
--   Manejo de encuestas con los paquetes survey y svyr.
+::: {.column width="50%"}
+### 📊 2. Uso de muestras complejas en R
+- Conceptos fundamentales de muestreo complejo.
+- Diseño de encuestas y aplicación de ponderaciones.
+- Inferencia estadística en muestras complejas.
+- Manejo de encuestas con los paquetes `survey` y `srvyr`.
+:::
+:::
 
-## Contenidos {.smaller .dark-background}
+## 3 y 4: Modelos y Regresiones {.smaller .dark-background}
 
-### 3. Introducción a los Modelos Multivariados
+::: columns
+::: {.column width="50%"}
+### 🧠 3. Introducción a Modelos Multivariados
+- Rol de los modelos en las ciencias sociales.
+- Diferencias entre enfoques exploratorios y confirmatorios.
+- Repaso de conceptos estadísticos clave: covarianza, correlación e inferencia.
+- Supuestos del análisis multivariante y su importancia.
+:::
 
--   Rol de los modelos en las ciencias sociales.
--   Diferencias entre enfoques exploratorios y confirmatorios.
--   Repaso de conceptos estadísticos clave: covarianza, correlación e inferencia.
--   Supuestos del análisis multivariante y su importancia.
+::: {.column width="50%"}
+### 📈 4. Repaso de modelos de regresión
+- Relevancia del control estadístico.
+- Regresión lineal múltiple.
+- Regresión logística binaria.
+:::
+:::
 
-### 4. Repaso de modelos de regresión
+## 5 y 6: Análisis Factorial {.smaller .dark-background}
 
--   Relevancia del control estadístico.
--   Regresión lineal múltiple.
--   Regresión logística binaria.
+::: columns
+::: {.column width="50%"}
+### 🔍 5. Análisis Factorial Exploratorio (AFE)
+- Aplicación en la investigación sociológica.
+- Comparación entre componentes principales y factor común; supuestos.
+- Extracción de factores, selección y rotación.
+- Interpretación de matriz, evaluación del ajuste y puntuaciones.
+- Introducción al paquete `psych`.
+:::
 
-## Contenidos {.smaller .dark-background}
+::: {.column width="50%"}
+### 🎯 6. Análisis Factorial Confirmatorio (AFC)
+- Diferencias principales con el AFE.
+- Especificación e identificación del modelo, estimación de parámetros.
+- Evaluación del ajuste, reespecificación y validez.
+- Ejemplo práctico de análisis confirmatorio.
+- Introducción al paquete `lavaan`.
+:::
+:::
 
-### 5. Análisis Factorial Exploratorio
+## 7 y 8: Ecuaciones Estructurales {.smaller .dark-background}
 
--   Aplicación en la investigación sociológica.
--   Comparación entre análisis de componentes principales y factor común; supuestos del método.
--   Métodos de extracción de factores, criterios de selección y técnicas de rotación.
--   Interpretación de la matriz factorial y evaluación del ajuste. Cálculo de puntuaciones factoriales.
--   Introducción al paquete psych.
+::: columns
+::: {.column width="50%"}
+### 🛤️ 7. Análisis de Sendero (Path Analysis)
+- Fundamentos y aplicación en ciencias sociales.
+- Especificación del modelo de sendero y verificación de supuestos.
+- Evaluación de la medición y capacidad confirmatoria.
+- Ejemplo aplicado en investigación sociológica.
+:::
 
-## Contenidos {.smaller .dark-background}
+::: {.column width="50%"}
+### 🏗️ 8. Modelos de Ecuaciones Estructurales (SEM)
+- Definición y aplicación de los SEM en ciencias sociales.
+- Estructura del modelo y supuestos de la técnica.
+- Estimación, evaluación del modelo y modificaciones.
+- Ejemplos de modelamiento en investigación.
+:::
+:::
 
-### 6. Análisis Factorial Confirmatorio
+## Bibliografía Principal {.smaller background-color="white"}
 
--   Diferencias principales con el análisis factorial exploratorio.
--   Especificación e identificación del modelo, estimación de parámetros.
--   Evaluación del ajuste, reespecificación y validez (convergente y discriminante).
--   Ejemplo práctico de análisis confirmatorio.
--   Introducción al paquete lavaan.
-
-## Contenidos {.smaller .dark-background}
-
-### 7. Análisis de Sendero
-
--   Fundamentos y aplicación en ciencias sociales.
--   Especificación del modelo de sendero y verificación de supuestos.
--   Evaluación de la medición y capacidad confirmatoria.
--   Ejemplo aplicado en investigación sociológica.
-
-### 8. Modelos de Ecuaciones Estructurales
-
--   Definición y aplicación de los SEM en ciencias sociales.
--   Estructura del modelo y supuestos de la técnica.
--   Estimación y evaluación del modelo, introducción de modificaciones.
--   Ejemplos de modelamiento de ecuaciones estructurales.
-
-## Bibliografía {.smaller background-color="white"}
-
+::: {style="font-size: 1.2rem;"}
 | Ítem | Título | Autor | Año |
-|:-------------|:------------------------------|:-------------|:-------------|
-| 1 | Analisis Estadistico Multivariante -<br>Un Enfoque Teorico y Practico | De La Garza<br>Garcia, Jorge | 2013 |
-| 2 | Análisis de datos multivariantes. | Peña, Daniel | 2002 |
-| 3 | Análisis Multivariado Aplicado | Uriel Y Aldas | 2005, 1ª Edición |
-| 4 | Análisis Multivariante para las Ciencias Sociales | Levi J.P. y<br>Varela J. | 2001 |
-| 5 | Modelos de Ecuaciones Estructurales Cuadernos de estadística | Batista, J.M. y Coenders G. | 2012 |
+|:---|:---|:---|:---|
+| 1 | Análisis Estadístico Multivariante - Un Enfoque Teórico y Práctico | De La Garza García, J. | 2013 |
+| 2 | Análisis de datos multivariantes | Peña, Daniel | 2002 |
+| 3 | Análisis Multivariado Aplicado | Uriel y Aldás | 2005 |
+| 4 | Análisis Multivariante para las Ciencias Sociales | Levi, J.P. y Varela, J. | 2001 |
+| 5 | Modelos de Ecuaciones Estructurales (Cuadernos de estadística) | Batista, J.M. y Coenders, G. | 2012 |
 | 6 | Introducción al Análisis de Regresión Lineal | Montgomery, Peck y Vining | 2006 |
 | 7 | El análisis factorial como técnica de investigación en Psicología | Ferrando, P. J., & Anguiano-Carrasco, C. | 2010 |
+:::
 
-## Bibliografía {.smaller background-color="white"}
+## Bibliografía Complementaria {.smaller background-color="white"}
 
+
+::: {style="font-size: 1.2rem;"}
 | Ítem | Título | Autor | Año |
-|:-------------|:------------------------------|:-------------|:-------------|
-| 8 | Análisis factorial confirmatorio. Su utilidad en la validación de cuestionarios relacionados con la salud. | Batista-Foguet, J.M., Coenders, G., & Alonso, J. | 2004 |
-| 9 | El Path Analysis: conceptos básicos y ejemplos de aplicación. | Pérez, E., Medrano, L. A., & Rosas, J. S | 2013 |
+|:---|:---|:---|:---|
+| 8 | Análisis factorial confirmatorio. Su utilidad en la validación de cuestionarios relacionados con la salud. | Batista-Foguet, J.M. et al. | 2004 |
+| 9 | El Path Analysis: conceptos básicos y ejemplos de aplicación. | Pérez, E. et al. | 2013 |
 | 10 | Modelos de ecuaciones estructurales | Ruiz, M.A | 2010 |
-| 11 | RStudio para Estadística Descriptiva en Ciencias Sociales. Manual de apoyo docente para la asignatura Estadística Descriptiva | Boccardo, G. y Ruiz, F. | 2019 |
-| 12 | R para Ciencia de Datos <https://es.r4ds.hadley.nz/index.html> | Wickham, H | 2019 |
-| 13 | Exploring complex survey data analysis using R: A tidy introduction with {srvyr} and {survey} | Zimmer, S. A | 2024 |
+| 11 | RStudio para Estadística Descriptiva en Ciencias Sociales. | Boccardo, G. y Ruiz, F. | 2019 |
+| 12 |[R para Ciencia de Datos](https://es.r4ds.hadley.nz/index.html) | Wickham, H | 2019 |
+| 13 | Exploring complex survey data analysis using R: A tidy intro with {srvyr} and {survey} | Zimmer, S. A | 2024 |
+:::
+
 
 ## Evaluaciones {.smaller .dark-background}
 
-| Evaluación | Fechas | Porcentaje |
-|:--------------------------|:-------------------------|:------------------|
-| Tareas uso de R | 24 de marzo<br>28 de abril<br>2 de junio<br>16 de junio | 30% |
-| Prueba | 19 de mayo | 35% |
-| Trabajo final | 1 de julio | 35% |
 
-## Ayudantías {background-color="white"}
 
-El curso tiene dos ayudantes:
+| Evaluación | Fechas (Semana de entrega) | Ponderación |
+|:---|:---|:---|
+| **Tareas uso de R (4 en total)** | 24 de marzo <br> 28 de abril <br> 2 de junio <br> 16 de junio | **30%** |
+| **Prueba Solemne** | 19 de mayo | **35%** |
+| **Trabajo Final** | 1 de julio | **35%** |
 
-Fernanda Hurtado [fernanda.hurtado\@mail.udp.cl](mailto:fernanda.hurtado@mail.udp.cl)
+::: {.callout-important title="¡Fechas Clave!"}
+Por favor, agenden desde ya estas fechas en sus calendarios para evitar topes a fin de semestre.
+:::
 
-Francisca Hernández [francisca.hernandez_c\@mail.udp.cl](mailto:francisca.hernandez_c@mail.udp.cl)
+# Apoyo y Logística del Curso
 
-Están disponibles para responder las dudas que puedan tener a lo largo del curso, tanto estadísticas como de uso de software.
+## Ayudantes del Curso {.smaller background-color="white"}
 
-Habrá sesiones de ayudantía cada 2 semanas aproximadamente, centradas en la aplicación de las técnicas que revisaremos en R.
+::: columns
+::: {.column style="display:inline-block;width:45%;border-radius:1em;margin:1%;padding:1.5%;background-color:#f5f5f5"}
+<figure style="text-align: center;">
+    <img src="/figures/people/felipe.jpeg" alt="Foto de Felipe Adasme" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
+    <figcaption style="margin-top: 10px;">
+        <strong><span>Felipe Adasme</span></strong>
+        <br/> Licenciado en Sociología <br>
+        📧 <a href="mailto:felipe.adasme@mail.udp.cl">felipe.adasme@mail.udp.cl</a>
+    </figcaption>
+</figure>
+:::
 
-También les acompañarán en la realización de tareas y trabajos de investigación.
+::: {.column style="display:inline-block;width:45%;border-radius:1em;margin:1%;padding:1.5%;background-color:#f5f5f5"}
+<figure style="text-align: center;">
+    <img src="/figures/people/francisca.jpeg" alt="Foto de Francisca Hernández" role="presentation" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;font-size:1em;" class="img-responsive atto_image_button_text-bottom">
+    <figcaption style="margin-top: 10px;">
+        <strong><span>Francisca Hernández</span></strong>
+        <br/> Licenciada en Sociología <br>
+        📧 <a href="mailto:francisca.hernandez_c@mail.udp.cl">francisca.hernandez_c@mail.udp.cl</a>
+    </figcaption>
+</figure>
+:::
+:::
 
-## Página del Curso {background-color="white"}
+::: {.callout-tip title="Dinámica de las Ayudantías"}
+- Están disponibles para responder **dudas teóricas** y **de código en R**.
+- Habrá sesiones de ayudantía **cada 2 semanas** aproximadamente, centradas en la aplicación de las técnicas de cátedra.
+- Les acompañarán directamente en la realización de tareas y trabajos de investigación.
+:::
 
-[https://gabrielsotomayorl.github.io/aadii/2026/](https://gabrielsotomayorl.github.io/aadii/2026/){preview-link="true"}
+## Plataformas y Comunicación {.smaller .dark-background}
 
-## Delegado de Curso {.dark-background}
+### 🌐 Página Web del Curso
 
-Las comunicaciones del curso con el equipo docente para temas colectivos deberán gestionarse de manera centralizada mediante un delegado, especialmente considerando que hay alumnos de distintas generaciones.
+Todo el material, presentaciones y guías prácticas estarán alojados de manera centralizada en la web del curso. Guarden este enlace en sus favoritos:
 
-Esto es particularmente relevante para solicitudes respecto a evaluaciones.
+::: {.callout-note icon=false}
+**[https://gabrielsotomayorl.github.io/aadii/2026/](https://gabrielsotomayorl.github.io/aadii/2026/){preview-link="true"}**
+:::
 
+<br>
+
+### 🗣️ Delegado/a de Curso
+
+Las comunicaciones con el equipo docente para **temas colectivos** deberán gestionarse de manera centralizada mediante un delegado o delegada, especialmente considerando que en la sala hay alumnos de distintas generaciones. 
+
+*Esto es estrictamente necesario y particularmente relevante para solicitudes respecto a fechas de evaluaciones.*
 
 # Introducción a R y Rstudio
 
-## Objetivos de la Sesión {background-color="white"}
+## Objetivos de la Sesión 
 
-Reflexionar sobre el uso de software estadístico en ciencias sociales. Introducir el uso de R y Rstudio para ciencias sociales.
+::: {.callout-note icon=false title="En esta clase buscaremos:"}
+1. **Reflexionar** sobre el uso de software estadístico en la investigación en Ciencias Sociales.
+2. **Introducir** el ecosistema de R y RStudio: qué son, por qué usarlos y cómo instalarlos.
+3. **Comprender** la lógica básica de la programación orientada a objetos y funciones.
+:::
+
 
 ## ¿Donde se sitúa la estadística en el proceso de investigación? {background-color="white"}
 
@@ -243,14 +278,18 @@ Reflexionar sobre el uso de software estadístico en ciencias sociales. Introduc
 
 Progresivamente se ha generalizado el uso de software estadístico en ciencias sociales, abriendo grandes posibilidades de realizar análisis más complejos y facilitando su uso.
 
-Riesgo de falta de formación estadística y reflexividad (calidad del análisis)
+::: {.callout-warning title="El riesgo tecnológico"}
+Existe el riesgo de una **falta de formación estadística y reflexividad**. Apretar botones sin entender qué hace el software afecta directamente la calidad y validez del análisis.
+:::
 
-Dos niveles de manejo del software:
+**Dos niveles de manejo del software:**
 
-1.  Ejecución básica y correcta interpretación de las salidas estadísticas (necesario mínimo para utilizar la herramienta e interpretar otras investigaciones).
-2.  Manejo avanzado de software y procedimientos estadísticos. Nivel deseable para un uso reflexivo de las herramientas y lectura crítica de otras investigaciones.
+1. **Nivel Usuario (Básico):** Ejecución básica y correcta interpretación de las salidas estadísticas. Es el piso mínimo necesario para utilizar la herramienta y comprender investigaciones de terceros.
+2. **Nivel Analista (Avanzado):** Manejo avanzado del software y sus procedimientos estadísticos. Es el nivel deseable para un uso reflexivo de las herramientas, personalización de análisis y lectura crítica profunda.
 
-## ¿QUÉ SOFTWARE EXISTEN Y CUÁL UTILIZAR? {.smaller background-color="white"}
+## ¿Qué software existen y cual utilizar? {.smaller background-color="white"}
+
+En el mercado laboral y académico existe una gran variedad de herramientas. La elección dependerá de nuestros objetivos, presupuesto y área de especialización.
 
 ![](img/imagensoft.png)
 
@@ -267,102 +306,124 @@ Dos niveles de manejo del software:
 | Minería Datos | Intermedio, poca eficiencia | Avanzado, amplia eficiencia | No | No | No |
 | Sistema operativo | Windows, Mac OS, Linux | Windows, Mac OS, Linux | Windows, Mac OS | Windows, Mac OS | Windows, Mac OS |
 
-(Boccardo y Ruiz, 2018)
+*Fuente: Boccardo y Ruiz, 2018.*
 :::
 
 ## ¿Qué es R? {.smaller background-color="white"}
 
-::::: columns
-::: {.column width="60%"}
-R es un software y un lenguaje de programación, ambos de carácter libre, enfocado principalmente en el análisis y visualización de datos. Es desarrollado por The R Foundation for Statistical Computing.
 
-Funciona con una lógica de objetos, sobre los que podemos trabajar con operadores y funciones.
+**R** es un software y un lenguaje de programación de código abierto (libre), enfocado principalmente en el análisis estadístico y la visualización de datos.
 
-El hecho de que sea un lenguaje de programación nos permite programar funciones, por lo que es posible pasar de ser usuarios a programadores.
+*   **Lógica de trabajo:** Funciona mediante **objetos**, sobre los cuales aplicamos operadores y **funciones**.
+*   **Lenguaje de programación:** Al no ser solo un programa cerrado, podemos crear nuestras propias funciones. *Pasamos de ser simples usuarios a programadores.*
+*   **Modularidad:** Instalamos una versión base y luego la expandimos agregando **paquetes** (librerías) creados por la comunidad.
 
-Instalamos una versión básica y podemos agregar paquetes con nuevas funciones.
-
-Su interfaz es poco amigable, la solución: R Studio.
+::: {.callout-important title="El problema"}
+Su interfaz nativa es muy poco amigable, parece una simple calculadora de texto. **La solución a esto es RStudio.**
 :::
 
-::: {.column width="40%"}
-![](img/Imagen4.png)
+## ¿Qué es R? {.smaller background-color="white"}
+
+
+![](img/Imagen4.png){fig-align="center"}
+
+
+## ¿Por qué aprender y usar R? {.smaller background-color="white"}
+
+::::: columns
+::: {.column width="50%"}
+![](img/Imagen5.png){fig-align="center"}
+:::
+::: {.column width="50%"}
+![](img/Imagen6.png){fig-align="center"}
 :::
 :::::
 
-## ¿Porque aprender y usar R? {.smaller background-color="white"}
+## Razones prácticas para usar R {.smaller background-color="white"}
 
-![](img/Imagen5.png) ![](img/Imagen6.png)
+1. **Es libre y gratis:** No dependes de las licencias de la universidad o de tu futuro empleador.
+2. **Personalización y vanguardia:** Ofrece posibilidades ilimitadas para personalizar análisis. Las nuevas técnicas estadísticas llegan primero a R antes que al software comercial.
+3. **Comunidad:** Existe una gigantesca y creciente comunidad de usuarios desarrollando funciones y resolviendo dudas en foros de internet (la gran mayoría del soporte está en inglés).
+4. **Sintaxis moderna:** Con paquetes recientes (como `tidyverse`), su sintaxis se ha vuelto mucho más simple e intuitiva de leer.
 
-## ¿PORQUÉ USAR R? {.smaller background-color="white"}
 
-1.  Es libre y gratis.
-2.  Por lo anterior ofrece grandes posibilidades de personalización de los análisis y amplitud de herramientas (en actualización).
-3.  Amplia y creciente comunidad de usuarios desarrollando funciones y resolviendo problemas en internet (la mayoría en inglés).
-4.  Su sintaxis es simple e intuitiva.
+## ¿Por qué trabajar con código y no con botones? {.smaller background-color="white"}
 
-## ¿Porque trabajar con código? {.smaller background-color="white"}
+Aprender código puede parecer contraintuitivo y frustrante al principio, pero tiene tres ventajas innegables:
 
-1.  **Replicabilidad**: Permite a otros entender como construimos nuestros resultados y replicarlos, cada vez más importante en la ciencia.
-2.  **Eficiencia**: En condiciones "reales” de trabajo resulta más eficiente que trabajar con botones (aunque ahora pueda parecer contraintuitivo)
-3.  **Control**: Permite tener claridad de todas las etapas de nuestros análisis, cuestión que en otros software son realizadas por defecto.
 
-(Elousa, 2009 en Boccardo y Ruiz, 2018: 8-9)
+* 🔍 **Replicabilidad:** Permite a otros (y a ti mismo en el futuro) entender paso a paso cómo construiste tus resultados y replicarlos. Hoy esto es una exigencia básica en la ciencia de calidad.
+* 🚀 **Eficiencia:** En condiciones "reales" de trabajo (bases de datos grandes, tareas repetitivas), un *script* de código es infinitamente más rápido que hacer cientos de clics.
+* 🧠 **Control total:** Tienes claridad absoluta de todas las etapas del análisis. En programas de botones, muchas decisiones metodológicas se toman "por defecto" sin que el investigador se dé cuenta.
 
-## R STUDIO {.smaller background-color="white"}
+
+*(Elousa, 2009 en Boccardo y Ruiz, 2018: 8-9)*
+
+## ¿Qué es RStudio? {.smaller background-color="white"}
+
+
+Es un **Entorno de Desarrollo Integrado (IDE)**. En palabras simples: es una interfaz gráfica que "envuelve" a R para hacernos la vida mucho más fácil.
+
+**Se divide en 4 paneles principales:**
+
+1. **Editor de código (Script):** El bloc de notas donde escribimos, guardamos y ejecutamos nuestro código.
+2. **Ambiente de trabajo (Environment):** Muestra todas las bases de datos y objetos que tenemos cargados en la memoria RAM temporal.
+3. **Consola (Console):** El "motor" de R. Aquí vemos los resultados numéricos, la ejecución paso a paso y las advertencias o errores.
+4. **Panel multipropósito:** Contiene los gráficos (*Plots*), los paquetes instalados (*Packages*), la ayuda (*Help*) y el explorador de archivos (*Files*).
+
+## ¿Qué es RStudio? {.smaller background-color="white"}
+
+![](img/Imagen7.png){fig-align="center"}
+
+
+## Instalación: Paso 1, Instalar R {.smaller background-color="white"}
 
 ::::: columns
 ::: {.column width="60%"}
-Es una interfaz gráfica para R que nos permite tener mejor visualización y control de los procesos que realizamos.
+::: {.callout-tip title="Regla de oro"}
+**Siempre** se debe instalar R primero, y RStudio después.
+:::
 
-Tiene 4 partes principales:
+Podemos encontrar el instalador de R para Windows, Linux y Mac en el sitio oficial del CRAN:  
+🔗 [https://cloud.r-project.org/](https://cloud.r-project.org/){preview-link="true"}
 
-1.  **Editor de código**: formato de block de notas donde podemos construir nuestra código.
-2.  **Ambiente de trabajo (Environment)**: muestra los objetos que hemos creado (memoria temporal – RAM).
-3.  **Consola de R**: Aquí es donde podemos ver los resultados de nuestros análisis, las operaciones ejecutadas y mensajes de error.
-4.  **Panel de visualización**: Aquí aparecen los gráficos que ejecutemos, además de tener la pestaña *help* y nuestro directorio de trabajo.
+**Instrucciones:**
+Debemos descargar el "paquete base" (base R), luego ejecutar el archivo descargado e instalarlo dándole "Siguiente" a todas las opciones predeterminadas.
 :::
 
 ::: {.column width="40%"}
-![](img/Imagen7.png)
+![](img/Imagen8.png){fig-align="center"}
 :::
 :::::
 
-## Instalar R y Rstudio {.smaller background-color="white"}
+## Instalación: Paso 2, Instalar RStudio {.smaller background-color="white"}
 
 ::::: columns
 ::: {.column width="60%"}
-**Instalar R**
+Una vez que R ya está en nuestro computador, procedemos a instalar la interfaz.
 
-Podemos encontrar R para Windows, Linux y Mac en [https://cloud.r-project.org/](https://cloud.r-project.org/){preview-link="true"}
+Podemos encontrar RStudio en su sitio web. Debemos descargar la **versión gratis (RStudio Desktop)**, que es totalmente funcional para nuestros propósitos:  
+🔗[https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/){preview-link="true"} *(Nota: RStudio ahora es parte de la empresa Posit).*
 
-Debemos descargar el paquete base, luego ejecutar el instalador, e instalarlo según las opciones predeterminadas
+Debemos fijarnos en elegir el instalador correcto para nuestro sistema operativo (Windows o Mac). Igualmente, lo instalamos usando las opciones predeterminadas.
 :::
 
 ::: {.column width="40%"}
-![](img/Imagen8.png)
+![](img/imagen9.png){fig-align="center"}
 :::
 :::::
 
-## INSTALAR R Y RSTUDIO {.smaller background-color="white"}
+## Advertencia: El problema de Java x64 {.smaller background-color="white"}
 
-**Instalar R Studio**
+::: {.callout-warning title="Atención usuarios de Windows"}
+Para algunos análisis específicos (o al leer ciertos archivos de Excel viejos), R utiliza el software Java. El problema es que los computadores suelen tener instalada la versión antigua de 32 bits, mientras que RStudio opera en **64 bits**. Esto genera un error de incompatibilidad.
+:::
 
-Podemos encontrar R Studio en su sitio web, y bajar la versión gratis, que contiene todas las funciones [https://www.rstudio.com/products/rstudio/download/](https://www.rstudio.com/products/rstudio/download/){preview-link="true"}
+**¿Cómo resolverlo?**
+Si te encuentras con este error en el futuro, debes descargar e instalar la versión **offline de 64 bits** de Java desde su página oficial:  
+🔗[https://www.java.com/es/download/manual.jsp](https://www.java.com/es/download/manual.jsp){preview-link="true"}
 
-Debemos fijarnos en elegir el sistema operativo correcto.
-
-Igualmente lo ejecutamos e instalamos según las opciones predeterminadas
-
-![](img/imagen9.png)
-
-## El problema de Java x64 {.smaller background-color="white"}
-
-Para algunos análisis R se basa en Javα, el problema es que nuestros computadores suelen instalar de manera automática la versión de 32 bits, porque los navegadores de internet funcionan (o funcionaban) en esta arquitectura, pero nuestro computadores y R funcionan a 64 bits.
-
-Para resolverlo debemos descargar e instalar la versión offline de 64 bits de Java [https://www.java.com/es/download/manual.jsp](https://www.java.com/es/download/manual.jsp){preview-link="true"}
-
-![](img/imagen10.png)
+![](img/imagen10.png){fig-align="center" width="60%"}
 
 ## Programación por objetos y funciones {.smaller background-color="white"}
 
@@ -376,55 +437,59 @@ Para resolverlo debemos descargar e instalar la versión offline de 64 bits de J
 
 *Data.frame (base de datos)*: Matriz de datos en el que las columnas tienen asignado nombres, y que permite usar todo tipo de datos.
 
-## Programación por objetos y funciones {.smaller background-color="white"}
+## Conceptos clave: Estructuras de datos {.smaller background-color="white"}
 
-**Tipos de variables en R**
+R organiza la información en diferentes "envases". Los principales son:
 
-*Numérico (numeric; números con decimales)*
+*   `Vector` **(Vector):** Una columna o fila de datos de un mismo tipo. Es la estructura más básica (equivale a *una variable individual*).
+*   `List` **(Listas):** Cajas complejas que nos permiten agrupar múltiples objetos que pueden ser de distinto tamaño o tipo.
+*   `Matrix` **(Matrices):** Arreglo de dos dimensiones (filas y columnas) donde **todos** los datos deben ser exactamente del mismo tipo (por ejemplo, solo números).
+*   `Data.frame` **(Base de datos):** Es la estructura reina en Ciencias Sociales. Es una matriz de datos bidimensional donde cada columna tiene un nombre (variable) y cada fila es un caso. A diferencia de la matriz, **permite combinar distintos tipos de datos** (una columna de texto, otra de números, etc.).
 
-*Números enteros (integer)*
+## Conceptos clave: Tipos de variables {.smaller background-color="white"}
 
-*Lógicos: Verdadero o Falso*
+Dentro de las estructuras (como un vector o una columna de un data.frame), los datos pueden tener distintas naturalezas:
 
-*Variables cadena o texto (string / character)*
+::: {style="font-size: 1.4rem;"}
+| Tipo en R | Descripción | Ejemplo |
+|:---|:---|:---|
+| `numeric` | Números (pueden contener decimales) | 1.5, 3.14, 100 |
+| `integer` | Números enteros estrictos | 1, 2, 3 |
+| `logical` | Valores booleanos | `TRUE` (Verdadero) o `FALSE` (Falso) |
+| `character` / `string` | Cadenas de texto. Siempre van entre comillas | `"Santiago"`, `"Femenino"` |
+| `factor` | Variables categóricas/nominales. Tienen "niveles" subyacentes | Nivel 1: `"Bajo"`, Nivel 2: `"Alto"` |
+:::
 
-*Factores (factor): para variables cualitativas (nominales)*
+![](img/imagen11.png){fig-align="center" width="50%"}
 
-![](img/imagen11.png)
+## ¿Cómo sobrevivir y continuar aprendiendo? {.smaller background-color="white"}
 
-## ¿Como continuar? {.smaller background-color="white"}
+Dominar R es un camino de mediano plazo. Es normal que el código arroje error (¡le pasa a los expertos todos los días!). Lo importante es desarrollar **habilidad de “hacking”**:  
 
-Dominar R es un camino de mediano plazo y es importante desarrollar habilidad de “hacking”, es decir:
+1. No frustrarse ante el error en rojo.  
+2. Estar dispuesto a buscar respuestas de manera autónoma.  
+3. Saber dónde buscar la información.  
 
-1.  estar dispuesto a buscar respuestas de manera autónoma
-2.  saber donde buscar la información
-3.  utilizar nuevos datos y paquetes por su cuenta
+::: {.callout-tip title="Tus mejores aliados para buscar ayuda"}
+- **¡GOOGLE!** (Preferentemente busca en inglés, ej: *"how to filter rows in R dplyr"*).
+- La pestaña **Help** dentro de RStudio (escribiendo `?nombrefuncion`).
+- Foros como [StackOverflow](https://stackoverflow.com/){preview-link="true"}.
+- **Inteligencia Artificial (ChatGPT, Claude, Gemini):** Son excelentes tutores de R. *Tip: Cópiales tu código, diles qué intentas hacer y pégales el mensaje de error exacto que te dio R.*
+:::
 
-**Donde buscar:**
+## Bibliografía y recursos recomendados {.smaller background-color="white"}
 
--   GOOGLE! (preferentemente en inglés) y youtube
--   Pedir ayuda a otros usuarios
--   Pestaña "help"
--   [https://www.rdocumentation.org/](https://www.rdocumentation.org/){preview-link="true"}
--   [https://stackoverflow.com/](https://stackoverflow.com/){preview-link="true"}
--   Chat GPT y otros LLM (Gemini, Claude, Deepseek, Grok, etc)\*
+**Textos base:**
 
-Además hay múltiples recursos web para aprender R de manera profunda y guiada.
+* Boccardo, G. y Ruiz, F. (2018). *Uso de RStudio para Estadística Univariada en Ciencias Sociales*. Universidad de Chile. [Enlace al documento]
+* Wickham, H. y Grolemund, G. (2019). *R para Ciencia de Datos*.[https://es.r4ds.hadley.nz/](https://es.r4ds.hadley.nz/){preview-link="true"}
+* Paradis, E. (2003). *R para Principiantes*. [Enlace PDF CRAN](https://cran.r-project.org/doc/contrib/rdebuts_es.pdf){preview-link="true"}
 
-## Bibliografía y otros recursos para profundizar {.smaller background-color="white"}
+**Sitios web útiles:**
 
-Boccardo, Giorgio y Ruiz, Felipe. Uso de RStudio para Estadística Univariada en Ciencias Sociales. Manual de apoyo docente para la asignatura Estadística Descriptiva. Santiago: Departamento de Sociología, Facultad de Ciencias Sociales, Universidad de Chile. [Disponible aquí.](link-a-reemplazar)
+* [http://www.sthda.com](http://www.sthda.com) (Excelente para visualización y estadística).
 
-Grolemund, Garrett y Wickham Hadley. R para Ciencia de Datos. [https://es.r4ds.hadley.nz/](https://es.r4ds.hadley.nz/){preview-link="true"}
+**Cursos online (Inglés):**
 
-Paradis, E. (2003). R para Principiantes. Francia: Institut des Sciences de l'Évolution. Disponible en: [https://cran.r-project.org/doc/contrib/rdebuts_es.pdf](https://cran.r-project.org/doc/contrib/rdebuts_es.pdf){preview-link="true"}
-
-**Sitios web útiles**
-
-[http://www.sthda.com](http://www.sthda.com){preview-link="true"}
-
-**Cursos online (inglés)**
-
-Especialización en Ciencia de Datos Universidad John Hopkins [https://www.coursera.org/specializations/jhu-data-science](https://www.coursera.org/specializations/jhu-data-science){preview-link="true"}
-
-Data Camp [https://www.datacamp.com/courses/tech:r](https://www.datacamp.com/courses/tech:r){preview-link="true"}
+* Especialización en Data Science, Johns Hopkins (Coursera): [Enlace](https://www.coursera.org/specializations/jhu-data-science)
+* DataCamp (Módulos de R): [Enlace](https://www.datacamp.com/courses/tech:r)

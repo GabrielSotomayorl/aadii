@@ -35,12 +35,12 @@ Horario de consultas:
 
 ## Ayudantes
 
-![](/figures/people/ta_octopunian.png){fig-align="left" fig-alt="Photo of TA_NAME" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
+![](/figures/people/felipe.jpeg){fig-align="left" fig-alt="Photo of TA_NAME" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
 **[Felipe Adasme](#)** <br/>
 Licenciado en Sociología<br> 
 📧 [felipe.adasme@mail.udp.cl](mailto:felipe.adasme@mail.udp.cl)
 
-![](/figures/people/ta_octopunian2.png){fig-align="left" fig-alt="Photo of TA_NAME" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
+![](/figures/people/francisca.jpeg){fig-align="left" fig-alt="Photo of TA_NAME" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
 **[Francisca Hernández](#)** <br/>
 Licenciada en Sociología <br> 
 📧 [francisca.hernandez_c@mail.udp.cl](mailto:francisca.hernandez_c@mail.udp.cl)
