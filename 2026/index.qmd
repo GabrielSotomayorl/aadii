@@ -5,62 +5,101 @@ format: html
 ---
 
 ::: {.callout-important collapse=false}
-## 📢 Avisos
+## Avisos
 
-(Marzo 2026)
+*(Marzo 2026)*
 
-- ¡Bienvenidos al curso! Revisa el [📓 Programa del curso](/2026/syllabus.qmd) para conocer las fechas importantes.
+- ¡Bienvenidos al curso! Revisa el [Programa del curso](/2026/syllabus.qmd) para conocer las fechas importantes y el calendario de evaluaciones.
+- La primera sesión corresponde a la **Clase 0 de nivelación** (lunes 2 de marzo). El inicio formal del semestre es el **9 de marzo**.
 :::
 
+---
 
-
-# 🧑🏻‍🏫 Equipo Docente
+## Equipo Docente
 
 ::: {.panel-tabset}
 ## Profesor
 
+![](/figures/people/profesor.jpg){fig-align="left" fig-alt="Foto de Gabriel Sotomayor, Profesor" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;border:3px solid rgba(26,54,93,0.15);"}
 
-![](/figures/people/profesor.jpg){fig-align="left" fig-alt="Foto de Gabriel Sotomayor" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
-**[Gabriel Sotomayor](https://gabrielsotomayorl.github.io/)** <br/>
-_Profesor_ <br/>
-[Univerisdad Diego Portales](https://sociologia.udp.cl/)</a><br/>
+**[Gabriel Sotomayor](https://gabrielsotomayorl.github.io/)**
+_Profesor_
+[Universidad Diego Portales](https://sociologia.udp.cl/)
 📧 [gabriel.sotomayor@mail.udp.cl](mailto:gabriel.sotomayor@mail.udp.cl)
 
+**Horario de consultas:**
 
-Horario de consultas: 
-
-- Cuando: Martes entre 16:00 y 17:00
-- Donde: Virtual vía Google Meet
-- Para agendar: [https://calendar.app.google/z4iY6NKWfBEC39kR8](https://calendar.app.google/z4iY6NKWfBEC39kR8) 
+- **Cuándo:** Martes 16:00–17:00 hrs.
+- **Dónde:** Virtual vía Google Meet
+- **Agendar:** [calendar.app.google/z4iY6NKWfBEC39kR8](https://calendar.app.google/z4iY6NKWfBEC39kR8)
 
 ## Ayudantes
 
-![](/figures/people/felipe.jpeg){fig-align="left" fig-alt="Photo of TA_NAME" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
-**[Felipe Adasme](#)** <br/>
-Licenciado en Sociología<br> 
+![](/figures/people/felipe.jpeg){fig-align="left" fig-alt="Foto de Felipe Adasme, Ayudante" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;border:3px solid rgba(26,54,93,0.15);"}
+
+**Felipe Adasme**
+Licenciado en Sociología
 📧 [felipe.adasme@mail.udp.cl](mailto:felipe.adasme@mail.udp.cl)
 
-![](/figures/people/francisca.jpeg){fig-align="left" fig-alt="Photo of TA_NAME" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
-**[Francisca Hernández](#)** <br/>
-Licenciada en Sociología <br> 
+---
+
+![](/figures/people/francisca.jpeg){fig-align="left" fig-alt="Foto de Francisca Hernández, Ayudante" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;border:3px solid rgba(26,54,93,0.15);"}
+
+**Francisca Hernández**
+Licenciada en Sociología
 📧 [francisca.hernandez_c@mail.udp.cl](mailto:francisca.hernandez_c@mail.udp.cl)
-
-
 :::
 
-# 📍 Horario y Sala
+---
 
-::: {style="display:inline-block;width: 45%;border-style: dotted;border-width: 1px;border-color: &quot;#fefefe&quot;; margin:1%;padding:1.5%;background-color:#fafafa"}
-**Cátedra y Laboratorio**
+## Horario y Sala
 
-- 📆 Lunes (Módulos 2 y 3)
-- ⌚ 10:00 a 11:20 hrs. y 11:30 a 12:50 hrs.
-- 📍 Sala por confirmar
-- 📌 Asistencia: 70%
+::: {.info-card}
+::: {.info-card-title}
+Cátedra y Laboratorio
+:::
+- 📆 **Día:** Lunes (Módulos 2 y 3)
+- ⌚ **Horario:** 10:00–11:20 y 11:30–12:50 hrs.
+- 📍 **Sala:** Laboratorio de computación (por confirmar)
+- 📌 **Asistencia mínima:** 70%
 :::
 
-# Ayudantía
+::: {.info-card}
+::: {.info-card-title}
+Ayudantía
+:::
+- 📆 **Día y horario:** Por definir
+- 📍 **Sala:** Por confirmar
+- ℹ️ Se realizará aproximadamente cada dos semanas
+:::
 
-- Día y horario por definir
-- Sala por confirmar
+---
 
+## Resumen de Evaluaciones
+
+| Componente | Ponderación |
+|:---|:---:|
+| Prueba Solemne | 30% |
+| Trabajo Final (3 hitos) | 35% |
+| Tareas de uso de R (×2) | 20% |
+| Seminario de Lectura | 15% |
+
+> **Nota de presentación (NP) = 70%** de la nota final. Eximición con NP ≥ 5,5 (sin nota < 4,0 en la prueba).
+> Consulta el [Programa del curso](/2026/syllabus.qmd#vi.-evaluación) para el detalle completo.
+
+---
+
+## Herramientas del curso
+
+::: {.callout-note icon=false}
+## Software requerido
+
+Para este curso necesitarás tener instalado:
+
+- **R** (≥ 4.3) — [Descargar aquí](https://cran.r-project.org/)
+- **RStudio** (versión más reciente) — [Descargar aquí](https://posit.co/download/rstudio-desktop/)
+- **Quarto** (incluido con RStudio) — [quarto.org](https://quarto.org/)
+- **Java x64** (requerido para algunos paquetes)
+
+Si tienes problemas con la instalación, contacta al equipo de ayudantes.
+:::

@@ -5,6 +5,18 @@ format: html
 toc: true
 ---
 
+::: {.quick-nav}
+[I. Identificación](#i.-identificación)
+[II. Presentación](#ii.-presentación)
+[III. Resultados de Aprendizaje](#iii.-resultados-de-aprendizaje)
+[IV. Contenidos](#iv.-contenidos)
+[V. Metodología](#v.-metodología)
+[VI. Evaluación](#vi.-evaluación)
+[VII. Bibliografía](#vii.-bibliografía)
+[VIII. Cláusula Ética](#viii.-cláusula-ética)
+[XI. Cronograma](#xi.-cronograma-de-trabajo)
+:::
+
 ## I. Identificación
 
 | | |
@@ -118,12 +130,12 @@ Además, se realizarán ayudantías aproximadamente cada dos semanas, diseñadas
 
 El curso se evalúa mediante un sistema de hitos que integra el uso de R con la capacidad de análisis crítico y comunicación de resultados sociológicos. Todas las entregas escritas deberán ser realizadas en Quarto (a excepción de la tarea formativa), fomentando prácticas de investigación reproducible.
 
-| Componente | Ponderación | Descripción resumida |
-|:---|:---:|:---|
-| **Prueba Solemne** | 30% | Individual, presencial. Foco en interpretación de resultados y teoría aplicada. |
-| **Trabajo Final (TF)** | 35% | Grupal (3 pers.). Escalonado en: Hito 1 (5%), Hito 2 (10%) e Hito 3 (20%). |
-| **Tareas de uso de R** | 20% | Individuales. Tarea 0 (0% formativa), Tarea 1 (10%) y Tarea 2 (10%). Aplicación técnica y corrección de modelos. |
-| **Seminario de Lectura** | 15% | Grupal. Presentación oral de un artículo científico con aplicación de las técnicas del curso. |
+| Componente | Ponderación | Modalidad | Descripción resumida |
+|:---|:---:|:---:|:---|
+| **Prueba Solemne** | [30%]{.badge-eval .badge-primary} | Individual | Presencial. Foco en interpretación de resultados y teoría aplicada. |
+| **Trabajo Final (TF)** | [35%]{.badge-eval .badge-accent} | Grupal (3 pers.) | Escalonado: Hito 1 (5%), Hito 2 (10%) e Hito 3 (20%). |
+| **Tareas de uso de R** | [20%]{.badge-eval .badge-success} | Individual | Tarea 0 (formativa), Tarea 1 (10%) y Tarea 2 (10%). Aplicación técnica en R. |
+| **Seminario de Lectura** | [15%]{.badge-eval .badge-light} | Grupal | Presentación oral de un artículo con técnicas del curso. |
 
 * **Prueba Solemne (30%):** Evaluación de carácter individual y presencial. Se centra en la capacidad del estudiante para interpretar salidas de software (outputs), diagnosticar modelos mediante índices de ajuste y tomar decisiones metodológicas fundamentadas. No requiere programación en vivo.
 * **Trabajo de Investigación Final (35%):** Los estudiantes aplicarán los contenidos del curso en una investigación original utilizando datos secundarios (ej. CASEN, ENUT, EBS).
@@ -133,18 +145,28 @@ El curso se evalúa mediante un sistema de hitos que integra el uso de R con la 
 * **Tareas de uso de R (20%):** Dos ejercicios prácticos donde se evalúa la correcta implementación de los modelos en R y su interpretación sociológica.
 * **Seminario de Lectura Crítica (15%):** Presentación oral grupal sobre un artículo académico. Se evaluará la capacidad de explicar de forma sencilla técnicas complejas y de identificar las limitaciones metodológicas de estudios publicados.
 
-### Nota de presentación (NP: 70%)
-**NP** = (Prueba Solemne x 0,30) + (Trabajo Final x 0,35) + (Tareas de R x 0,20) + (Seminario de Lectura x 0,15)
+::: {.callout-note icon=false}
+### Fórmulas de calificación
+
+**Nota de Presentación (NP)** — equivale al 70% de la nota final:
+
+$$NP = (Solemne \times 0{,}30) + (TF \times 0{,}35) + (TareasR \times 0{,}20) + (Seminario \times 0{,}15)$$
+
+**Nota Final (NF):**
+
+$$NF = (NP \times 0{,}7) + (Examen \times 0{,}3)$$
+
+- **Eximición:** NP ≥ 5,5 y sin nota < 4,0 en la prueba solemne → NP es la nota final.
+- **Nota mínima de examen para aprobar:** 3,5.
+- **Asistencia mínima obligatoria:** 70% (clases + talleres).
+:::
 
 ### Examen (30%)
-Habrá un examen donde se evaluará todos los contenidos del curso (clases, talleres, ayudantías). Este examen equivale al 30% de la nota final del curso. 
+Habrá un examen que evaluará todos los contenidos del curso (clases, talleres, ayudantías). Este examen equivale al 30% de la nota final del curso.
 
-Se podrán eximir del examen aquellos estudiantes que tengan una nota de presentación igual o superior a 5,5 siempre y cuando no tengan una nota bajo 4,0 en la prueba. La nota de presentación será la nota final del curso en ese caso. La nota mínima en el examen para aprobar el curso es un 3,5.  
+Se podrán eximir del examen aquellos estudiantes con NP ≥ 5,5 y sin nota inferior a 4,0 en la prueba solemne. La nota de presentación será la nota final del curso en ese caso. La nota mínima en el examen para aprobar el curso es un 3,5.
 
-Sobre los requisitos de aprobación, se exigirá un 70% de asistencia como mínimo considerando clases y talleres. El alumno/a que no cumpliere el requisito mínimo de asistencia, no tendrá derecho a rendir examen y reprobará el curso automáticamente. Se tomará en cada bloque. Si el estudiante se retira 15 minutos o más antes de finalizar la clase se considerará como ausente.
-
-### Nota Final (NF)
-**NF** = (NP x 0,7) + (Examen x 0,3)
+Sobre los requisitos de aprobación, se exigirá un 70% de asistencia como mínimo considerando clases y talleres. El alumno/a que no cumpla el requisito mínimo de asistencia no tendrá derecho a rendir examen y reprobará el curso automáticamente. Se tomará en cada bloque. Si el estudiante se retira 15 minutos o más antes de finalizar la clase se considerará como ausente.
 
 ### Sobre inasistencia a evaluaciones
 Si un estudiante falta a una evaluación, puede presentar ante la Secretaría de Estudios un certificado médico dentro de los cinco días hábiles posteriores a dicha evaluación, para tener derecho a rendir una prueba recuperativa. Las evaluaciones no rendidas tendrán nota 1.0. Los estudiantes tendrán derecho a un máximo de una prueba recuperativa, dicha prueba se realizará la última semana de clases e incluirá toda la materia del semestre.

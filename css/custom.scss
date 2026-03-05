@@ -1,13 +1,18 @@
 /*-- scss:defaults --*/
 
-// 1. PALETA DE COLORES (Basada en el Banner)
-$brand-main:    #1a365d; 
-$brand-accent:  #e67e22; 
-$brand-link:    #2980b9;
+// ==========================================
+// 1. PALETA DE COLORES
+// ==========================================
+$brand-main:    #1a365d;   // Azul profundo UDP
+$brand-accent:  #e67e22;   // Naranja acento
+$brand-light:   #2980b9;   // Azul brillante (links)
+$brand-muted:   #f0f4f8;   // Gris claro (fondos suaves)
+$brand-success: #27ae60;   // Verde (éxito)
+$brand-warning: #f39c12;   // Amarillo (advertencia)
 
 $primary:       $brand-main;
 $navbar-bg:     $brand-main;
-$link-color:    $brand-link;
+$link-color:    $brand-light;
 
 /*-- scss:rules --*/
 
@@ -16,58 +21,343 @@ $link-color:    $brand-link;
 // ==========================================
 .navbar {
   background-color: $navbar-bg;
-  // Ruta ajustada según tu estructura de proyecto
-  background-image: linear-gradient(rgba(26, 54, 93, 0.0), rgba(26, 54, 93, 0.0)), url("figures/banner.png");
+  background-image: linear-gradient(rgba(26, 54, 93, 0.15), rgba(26, 54, 93, 0.15)),
+                    url("figures/banner.png");
   background-size: cover;
   background-position: center center;
-  min-height: 140px; 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  min-height: 140px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   align-items: center;
 
-  .navbar-brand, .navbar-title, .nav-link, .navbar-text {
+  .navbar-brand,
+  .navbar-title,
+  .nav-link,
+  .navbar-text {
     color: #ffffff !important;
     font-weight: 600;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
   }
-}
 
-// ==========================================
-// 3. TABLAS Y COMPONENTES
-// ==========================================
-table.syllabus {
-  td { vertical-align: text-top; border: 0; }
-  tr.odd { 
-    background-color: $brand-main; 
-    color: white; 
+  .nav-link:hover {
+    color: rgba(255, 255, 255, 0.85) !important;
+    text-decoration: underline;
   }
 }
 
-.callout.callout-style-default {
-  border-left-width: 5px;
-  border-radius: 5px;
-  &.callout-important { border-left-color: $brand-accent; background-color: rgba($brand-accent, 0.05); }
-  &.callout-note { border-left-color: $brand-main; background-color: rgba($brand-main, 0.05); }
-}
-
 // ==========================================
-// 4. BOTONES (Contraste Corregido)
+// 3. BOTONES DE AÑO ACADÉMICO
 // ==========================================
-.button-61 {
+.btn-year {
+  display: inline-block;
   background-color: $brand-main;
-  color: #ffffff !important; // Texto blanco para legibilidad
+  color: #ffffff !important;
+  border: none;
   border-radius: 8px;
-  text-transform: none; 
+  padding: 0.55em 1.4em;
+  font-size: 1rem;
+  font-weight: 600;
   letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: background-color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin: 0.3em 0.2em;
+
   &:hover {
     background-color: $brand-accent;
     color: #ffffff !important;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   }
 }
 
+// Alias retrocompatible (mantenemos button-61 también)
+.button-61 {
+  @extend .btn-year;
+}
+
+// Botón variante acento (para "año actual")
+.btn-year-current {
+  @extend .btn-year;
+  background-color: $brand-accent;
+  font-size: 1.1rem;
+  padding: 0.65em 1.6em;
+
+  &:hover {
+    background-color: darken($brand-accent, 10%);
+  }
+}
+
+// Contenedor de grilla para los botones de año
+.year-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+// ==========================================
+// 4. TABLAS
+// ==========================================
+
+// Tabla del silabo (identificación del curso)
+table.syllabus {
+  td { vertical-align: top; border: 0; }
+  tr.odd {
+    background-color: $brand-main;
+    color: white;
+  }
+}
+
+// Tabla general mejorada
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92em;
+  margin: 1.2rem 0;
+
+  thead tr {
+    background-color: $brand-main;
+    color: #ffffff;
+    th {
+      padding: 0.65em 0.9em;
+      font-weight: 600;
+      border: none;
+    }
+  }
+
+  tbody {
+    tr:nth-child(odd) {
+      background-color: rgba($brand-main, 0.04);
+    }
+    tr:hover {
+      background-color: rgba($brand-accent, 0.07);
+    }
+    td {
+      padding: 0.55em 0.9em;
+      border-bottom: 1px solid rgba($brand-main, 0.1);
+      vertical-align: top;
+    }
+  }
+}
+
+// ==========================================
+// 5. CALLOUT BOXES
+// ==========================================
+.callout.callout-style-default {
+  border-left-width: 5px;
+  border-radius: 6px;
+  margin: 1.2rem 0;
+
+  &.callout-important {
+    border-left-color: $brand-accent;
+    background-color: rgba($brand-accent, 0.06);
+    .callout-title { color: darken($brand-accent, 10%); }
+  }
+
+  &.callout-note {
+    border-left-color: $brand-light;
+    background-color: rgba($brand-light, 0.06);
+    .callout-title { color: darken($brand-light, 10%); }
+  }
+
+  &.callout-tip {
+    border-left-color: $brand-success;
+    background-color: rgba($brand-success, 0.06);
+    .callout-title { color: darken($brand-success, 8%); }
+  }
+
+  &.callout-warning {
+    border-left-color: $brand-warning;
+    background-color: rgba($brand-warning, 0.07);
+    .callout-title { color: darken($brand-warning, 12%); }
+  }
+}
+
+// ==========================================
+// 6. CÓDIGO (páginas de contenido)
+// ==========================================
+pre.sourceCode,
+div.sourceCode {
+  font-size: 0.88em;
+  border-radius: 8px;
+  border: 1px solid rgba($brand-main, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin: 0.8rem 0;
+}
+
+.cell-output pre {
+  font-size: 0.84em;
+  background-color: #f7f9fc;
+  border-left: 4px solid rgba($brand-main, 0.4);
+  border-radius: 0 6px 6px 0;
+  color: #2c3e50;
+  margin-top: 0;
+  padding: 0.6em 0.9em;
+}
+
+// ==========================================
+// 7. INSIGNIAS / BADGES DE EVALUACIÓN
+// ==========================================
+.badge-eval {
+  display: inline-block;
+  padding: 0.25em 0.7em;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  vertical-align: middle;
+  margin-left: 0.4em;
+
+  &.badge-primary {
+    background-color: $brand-main;
+    color: #ffffff;
+  }
+  &.badge-accent {
+    background-color: $brand-accent;
+    color: #ffffff;
+  }
+  &.badge-success {
+    background-color: $brand-success;
+    color: #ffffff;
+  }
+  &.badge-light {
+    background-color: $brand-muted;
+    color: $brand-main;
+    border: 1px solid rgba($brand-main, 0.2);
+  }
+}
+
+// ==========================================
+// 8. TARJETAS DE INFORMACIÓN (schedule box)
+// ==========================================
+.info-card {
+  display: inline-block;
+  width: 45%;
+  border: 1px solid rgba($brand-main, 0.2);
+  border-radius: 8px;
+  margin: 0.8% 1%;
+  padding: 1.2em 1.4em;
+  background-color: #fafbfd;
+  vertical-align: top;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .info-card-title {
+    font-weight: 700;
+    color: $brand-main;
+    margin-bottom: 0.5em;
+    font-size: 0.95em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+// Responsivo: tarjetas apiladas en pantallas pequeñas
+@media (max-width: 600px) {
+  .info-card {
+    width: 95%;
+    display: block;
+    margin: 0.5em auto;
+  }
+}
+
+// ==========================================
+// 9. SECCIÓN DE EQUIPO DOCENTE
+// ==========================================
+.team-photo {
+  object-fit: cover;
+  width: 5em;
+  height: 5em;
+  border-radius: 50%;
+  border: 3px solid rgba($brand-main, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  display: block;
+  margin-bottom: 0.4em;
+}
+
+// ==========================================
+// 10. NAVEGACIÓN RÁPIDA (índice visual)
+// ==========================================
+.quick-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 1.5rem 0;
+
+  a {
+    display: inline-block;
+    padding: 0.35em 0.9em;
+    background-color: $brand-muted;
+    color: $brand-main !important;
+    border: 1px solid rgba($brand-main, 0.2);
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 500;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      background-color: $brand-main;
+      color: #ffffff !important;
+      border-color: $brand-main;
+    }
+  }
+}
+
+// ==========================================
+// 11. BIBLIOGRAFÍA
+// ==========================================
 div.csl-entry {
   margin-top: 1rem;
-  a { color: $brand-link; font-weight: 500; }
+  padding-left: 1.5em;
+  text-indent: -1.5em;
+  line-height: 1.6;
+
+  a {
+    color: $brand-light;
+    font-weight: 500;
+  }
+}
+
+// ==========================================
+// 12. FOOTER
+// ==========================================
+.page-footer {
+  border-top: 2px solid rgba($brand-main, 0.12);
+  font-size: 0.85em;
+  color: #555;
+
+  a { color: $brand-light; }
+}
+
+// ==========================================
+// 13. RESPONSIVO GENERAL
+// ==========================================
+@media (max-width: 768px) {
+  .navbar {
+    min-height: 100px;
+    background-size: cover;
+    background-position: center top;
+  }
+
+  .year-grid {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  table {
+    font-size: 0.82em;
+    td, th { padding: 0.4em 0.6em; }
+  }
 }

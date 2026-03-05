@@ -12,9 +12,9 @@ website:
   page-navigation: true
   reader-mode: true
   open-graph: true
-  twitter-card: 
-    creator: "@<GSotomayorL>"
-    site: "\\@<GSotomayorL>"
+  twitter-card:
+    creator: "@GSotomayorL"
+    site: "@GSotomayorL"
   favicon: "figures/icons/course_favicon.png"
   search:
     location: navbar
@@ -55,14 +55,20 @@ website:
                   text: "👨‍🏫 Material de clase"
                 - href: 2026/weeks/week01/lab.qmd
                   text: "💻 Práctico"
-                # - href: 2026/weeks/week01/appendix.qmd
-                #   text: "🔖 Appendix"
+            - section: "Semana 02"
+              collapse: true
+              contents:
+                - href: 2026/weeks/week02/page.qmd
+                  text: "👨‍🏫 Material de clase"
+                - href: 2026/weeks/week02/lab.qmd
+                  text: "💻 Práctico"
 
   navbar:
     background: primary
   page-footer:
     background: light
-    left: "Copyright 2026, Universidad Diego Portales" 
+    left: "© 2026 [Universidad Diego Portales](https://sociologia.udp.cl/) — SOC9035 Análisis Avanzado de Datos II"
+    right: "Desarrollado con [Quarto](https://quarto.org/)"
 
 
 
@@ -79,7 +85,7 @@ format:
     email-obfuscation: javascript
     link-external-newwindow: true
     link-external-icon: true
-    link-external-filter: ^(?:http:|https:)\/\/(?:lse-dsi\.github\.io\/|localhost)
+    link-external-filter: ^(?:http:|https:)\/\/(?:gabrielsotomayorl\.github\.io\/|localhost)
 
     theme:
       light: 

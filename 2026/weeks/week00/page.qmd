@@ -1,32 +1,54 @@
 ---
-title: "🗓️ Clase 0: Introducción a R"
+title: "Clase 0: Introducción a R"
 ---
 
 En esta sesión introductoria, previa al inicio formal del curso, realizaremos una **nivelación de los fundamentos de R**, repasando la creación de objetos, el manejo de vectores y la estructura de los *data frames*. El objetivo es que todos los estudiantes lleguen con una base común a las clases del semestre.
 
-## 👨‍🏫 Clase Expositiva
+::: {.callout-note icon=false}
+## Recursos de esta sesión
+
+| Recurso | Enlace |
+|:---|:---|
+| Diapositivas | [Ver en pantalla completa](slides.qmd) |
+| Práctico 0 | [Ir al Práctico 0](lab.qmd) |
+:::
+
+---
+
+## Clase Expositiva
 
 Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
 
 <div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
-<iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+<iframe src="slides.html" style="position:absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;" title="Diapositivas Clase 0: Introducción a R"></iframe>
 </div>
 
-## 💻 Taller Aplicado (Práctico 0)
+---
+
+## Taller Aplicado (Práctico 0)
 
 En este bloque de laboratorio soltaremos las manos con la consola de RStudio repasando la programación por objetos.
 
 👉 **[Ir al Práctico 0: Nivelación de fundamentos en R](lab.qmd)**
 
+---
 
-## 📚 Lecturas Obligatorias
+## Lecturas Obligatorias
 
 Para acompañar los contenidos de esta sesión, por favor revisa el siguiente material:
 
 - **Boccardo, G. & Ruiz, F. (2019).** *RStudio para estadística descriptiva en ciencias sociales: Manual de apoyo docente para la asignatura Estadística Descriptiva*. Departamento de Sociología, Facultad de Ciencias Sociales, Universidad de Chile.
 - **Wickham, H. (2019).** *R para ciencia de datos*. [Versión en español disponible aquí](https://es.r4ds.hadley.nz/index.html).
 
+---
 
-## 📟 Dudas y Comunicación
+## Dudas y Comunicación
+
+::: {.callout-tip icon=false}
+## Problemas de instalación
 
 Si tuviste problemas para instalar las versiones correctas de **R**, **RStudio** o **Java x64**, recuerda que puedes escribirle directamente al equipo de ayudantes o acercarte a consultar en los horarios de atención.
+
+- **Felipe Adasme** — [felipe.adasme@mail.udp.cl](mailto:felipe.adasme@mail.udp.cl)
+- **Francisca Hernández** — [francisca.hernandez_c@mail.udp.cl](mailto:francisca.hernandez_c@mail.udp.cl)
+:::
