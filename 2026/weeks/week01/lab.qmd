@@ -1,6 +1,6 @@
 ---
-title: "Práctico 1: Nivelación de fundamentos en R"
-subtitle: "Primeros pasos, estructuras de datos y R Base"
+title: "Práctico 1: Uso de bases de datos en R, estadística descriptiva y visualización"
+subtitle: "Trabajando con CASEN 2022"
 date: "2026-03-09"
 lang: es
 format:
@@ -12,351 +12,421 @@ format:
 ---
 
 
-::: {.callout-note icon=false title="🎯 Antes de empezar"}
-Antes de sumergirnos en el análisis de encuestas masivas y paquetes modernos (como veremos en las próximas semanas), necesitamos entender cómo "piensa" y cómo se estructura R por debajo. Este práctico es una nivelación esencial para soltar las manos con la consola, perderle el miedo al código y entender la lógica del programa.
-:::
+# 0. Objetivo del práctico
 
-## 0. Objetivo del práctico
+El objetivo de este práctico es aprender el uso de funciones y paquetes en R, con el fin de cargar bases de datos, realizar análisis descriptivos y representaciones gráficas básicas.   
+Para esto haremos uso de la encuesta [CASEN (2024)](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2024), la mayor encuesta de hogares realizada en Chile, a cargo del Ministerio de Desarrollo Social, de carácter transversal y multipropósito, es el principal instrumento de medición socioeconómica para el diseño y evaluación de la política social. Permite conocer periódicamente la situación socioeconómica de los hogares y de la población que reside en viviendas particulares, a través de preguntas referidas a composición familiar, educación, salud, vivienda, trabajo e ingresos, entre otros aspectos. 
 
-El propósito de este práctico es familiarizarnos con R y RStudio. **R es un lenguaje de programación orientado a objetos**, especialmente diseñado para el análisis estadístico y la visualización de datos. 
 
-RStudio, por otro lado, proporciona un **entorno integrado de desarrollo (IDE)** que facilita el uso de R, ofreciendo numerosas herramientas útiles en un solo lugar (editor, consola, visor de gráficos y entorno de variables).
+# 1. Paquetes y funciones en R   
+Cuando descargamos e instalamos R este contiene una cantidad limitada de funciones disponibles, las cuales podemos ampliar mediante la descarga de distintos paquetes creados por la comunidad de usuarios, los cuales nos permitirán, mediante nuevas funciones, ampliar las capacidades del programa, en términos de gestión de bases de datos, análisis estadísticos, visualización de datos, y muchas otras funciones.   
 
----
-
-## 1. R como calculadora
-
-R no solo es útil para análisis estadísticos complejos, sino también para operaciones matemáticas básicas. Estas operaciones son la base matemática que luego nos permitirá recodificar o transformar nuestras variables. 
-
-A continuación, demostramos cómo usar R como calculadora en la consola. Sitúa tu cursor en el bloque de código y ejecútalo:
+En la siguiente práctica queremos usar la base de datos de CASEN, la cuál está disponible en formato .sav (SPPS) y .dta (STATA), formatos que no son soportados por la versión base de R. Para poder cargar la base de datos como un objeto en R usaremos el paquete **haven**, el cual incluye funciones para cargar datos a R en diversos formatos.  
 
 ```{r}
-#| label: calculadora
-
-5 + 2  # Suma
-5 - 2  # Resta
-5 / 2  # División
-5 * 2  # Multiplicación
+# install.packages("haven") 
+#este comando nos permite instalar paquetes alojados en CRAN 
+library(haven) #Este comando nos permite ejecutar el paquete
 ```
 
----
+Una vez cargado el paquete debemos descargar la base de datos y ubicarla en nuestro computador para poder cargarla con la función **read_spss()**. Para esto debemos establecer un **directorio de trabajo**, es decir, la carpeta raíz a partir de la cual R buscará los archivos que queremos cargar en nuestro espacio de trabajo, y donde guardará los output de nuestros análisis.
 
-## 2. Creación y manipulación de objetos
+```{r, eval = FALSE }
+#La sigueitne función nos permite dentificar el irectorio de trabajo actual
+getwd()
 
-En R, no solemos trabajar con números sueltos. Lo normal es crear **"objetos"** para almacenar datos en la memoria temporal de nuestro computador (RAM). A continuación, se muestra cómo asignar un valor a un objeto usando la flecha de asignación `<-`.
+#debemos fijar un directorio de trabajo a la carpeta en que tendremos nuestros archivos, por ejemplo:
+setwd("C:/Users/Gabriel/Desktop/Directorio R")
+# Nota: Debe usarse el simbolo "/" y NO "\"
+```
 
-::: {.callout-tip title="Atajo de teclado"}
-Para escribir el símbolo de asignación `<-` rápidamente, puedes usar el atajo **`Alt` + `-`** (en Windows) u **`Option` + `-`** (en Mac).
-:::
+
+Una vez que hemos fijado nuestro directorio de trabajo podemos cargar nuestra base de datos y asignarla como objeto, para que se guarde en el ambiente y poder usarla posteriormente en nuestros análisis.
+
+```{r, eval = FALSE}
+load("casen_2024.RData")
+casen <- casen_2024
+```
+
+
+```{r load, eval=TRUE, echo=FALSE}
+casen <- readRDS("../../data/casen24.rds")
+```
+
+# 2. Gestión de datos
+
+A continuación, revisaremos como realizar algunas cuestiones básicas de gestión de datos en R. Un aspecto relevante a tener un cuenta es que R, dado su carácter abierto, suele existir más de una solución para realizar cada tipo de análisis. En el caso de la gestión de datos, esto puede hacer a partir de las funciones base de R o a partir de funciones del paquete **dplyr**, el cual forma parte de [tidyverse](https://www.tidyverse.org/), el cuál consiste en un conjunto de paquetes para ciencia de datos desarrollados con una filosofía, gramática y estructura de datos en común. 
+
+En las funciones de dplyr el primer argumento siempre es un DataFrame, los argumentos subsiguientes describen las columnas a operar, usando los nombres de las variables (sin comillas) y el resultado es siempre un nuevo DataFrame.
+
+Para seleccionar solo las variables que necesitamos de una base de datos podemos utilizar R base a partir de los nombres o índices de las variables (su posición dentro de la base de datos). En dplyr podemos usar la función select.
+
+## 2.1 Seleccionar Variables
+```{r,message=FALSE,warning=F}
+#Seleccionar variables
+
+#R base
+
+
+casen1<-casen[,c("folio","id_persona","area","sexo","edad","pobreza")] #según nombre de la variable
+casen1<-casen[,1:2] #según posición de la variable
+
+#Tidyverse
+#install.packages("tidyverse")
+library(tidyverse)
+
+casen1<-select(casen, folio, orden = id_persona #podemos cambiar el nobmre a una variable al seleccionarla con al forma nombre_nuevo = nombre_original
+              , area, edad, sexo, pobreza) #dplyr
+
+```
+
+## 2.2 Filtrar casos
+
+Para filtrar casos de acuerdo a ciertas características podemos usar condiciones lógicas a partir de r base utilizando la estructura base[filas,columnas] para hacer un subset de la base de datos, o utilizar la función filter de dplyr.
 
 ```{r}
-#| label: objetos-1
+#Filtrar casos
 
-x <- 5
+#R base
+casen1a<-casen1[casen1$area == 1 & casen1$sexo == 1,] #seleccionar casos urbanos
+
+#dplyr
+casen1b<- filter(casen1, area == 1 & sexo == 1 ) #dplyr
+
 ```
 
-Al ejecutar la línea anterior, notarás que en el panel superior derecho (tu *Environment* o Ambiente de trabajo) apareció el objeto `x`. Como ya está guardado, podemos imprimirlo o "llamarlo" simplemente escribiendo su nombre:
+## Uso del pipeline
+
+El "pipeline" o tubería en R, especialmente al trabajar con el paquete dplyr del tidyverse, es una herramienta poderosa que permite encadenar múltiples operaciones de forma clara y legible. En R, el pipeline se representa con el operador %>% (aunque con la versión 4.1.0 de R, el operador nativo |> también puede utilizarse para algunas operaciones). Este operador toma el resultado de la expresión de su izquierda y lo pasa como primer argumento a la función a su derecha. 
+
+A continuación podemos comparar un código en que no se usa un pipeline y uno que si. Aquí, cada paso del análisis se separa claramente con el operador %>%, lo que hace que el flujo de trabajo sea fácil de leer de arriba a abajo, casi como una serie de instrucciones.
 
 ```{r}
-#| label: llamar-objeto
 
-x
+casen3 <- filter(
+  select(casen, folio, id_persona,pobreza,sexo),
+  pobreza %in% 1:2 & sexo == 1)
+
+casen3 <-  casen %>% 
+  select(folio, id_persona,pobreza,sexo)  %>% 
+  filter(pobreza %in% 1:2 & sexo == 1)
 ```
 
-Podemos crear todos los objetos que consideremos necesarios. Esta vez, crearemos un segundo objeto llamado `y`:
+
+## 2.3 Recodificar variables
+
+Para crear nuevas variables podemos utilizar R base a través de condiciones lógicas, o integrar esto dentro de las funciones if_else y case_when. Podemos ver que ambos procedimientos producen el mismo resultado, pero en general la sintaxis de estos últimos resulta más simple y legible. De igual manera se puede integrar de mejor manera dentro de la función "mutate" de dplyr.  
+
+### ifelse
+La función ifelse(test, yes, no) es una función vectorizada que evalúa una condición (test) para cada elemento de un vector y retorna un valor correspondiente (yes) si la condición es verdadera, o un valor diferente (no) si es falsa. Es muy útil para recodificaciones simples o para asignar valores basados en una única condición binaria. Sin embargo, cuando las condiciones se vuelven más complejas o se necesitan múltiples niveles de evaluación, la sintaxis puede complicarse rápidamente.
+
+### case_when
+La función case_when permite definir múltiples condiciones y resultados en una sola llamada. Cada condición se verifica en orden, y el primer resultado verdadero es el que se asigna. Esto la hace particularmente útil para recodificaciones más complejas con múltiples categorías o condiciones. Además, case_when mejora la legibilidad del código y es más fácil de mantener que múltiples llamadas anidadas a ifelse.
+
+```{r,message=FALSE,warning=F}
+
+#Recodificar/crear varibles
+
+#Rbase
+casen$edadt[casen$edad < 16] = 1
+casen$edadt[casen$edad >= 16 & casen$edad < 60] = 2
+casen$edadt[casen$edad >= 60] = 3
+
+#ifelse y case_when
+casen <- casen %>%
+  mutate(pobrezad = ifelse(pobreza %in% 1:2, 1, 0),
+    edadt2 = case_when(
+    edad >= 0 & edad <= 15 ~ 1,
+    edad >= 16 & edad <= 59 ~ 2,
+    edad >= 60 & edad <= 120 ~ 3,
+    TRUE ~ NA_real_  # Esta línea es opcional, maneja valores fuera de las condiciones anteriores
+  ))
+
+table(casen$edadt == casen$edadt2)
+
+```
+
+## 2.4 Agrupar y Resumir Datos
+
+En el análisis de datos, frecuentemente necesitamos agrupar observaciones según una o más variables y luego calcular estadísticas resumidas para cada grupo. dplyr ofrece dos funciones poderosas para esta tarea: group_by y summarize. A continuación, explicamos cómo utilizar estas funciones para manipular y analizar conjuntos de datos de manera eficiente.
+
+### group_by
+La función group_by de dplyr se utiliza para dividir un conjunto de datos en grupos, basados en una o más variables. Una vez agrupados los datos, puedes aplicar funciones de resumen a cada grupo de manera independiente, lo cual es extremadamente útil para comparaciones y análisis estadísticos.
+
+Por ejemplo si queremos obtener la tasa de pobreza por región en CASEN, primero debemos agrupar nuestra base por dicha variable.  
+
+### summarize
+Tras agrupar los datos con group_by, summarize se utiliza para calcular estadísticas resumidas para cada grupo. Puedes usar cualquier función de resumen en summarize, como mean, sum, min, max, y muchas otras.
 
 ```{r}
-#| label: objetos-2
-
-y <- 10
+casen %>% 
+  group_by(region) %>% 
+  summarize(pobreza = mean(pobrezad))
 ```
 
-Ahora podemos realizar operaciones directamente con nuestros objetos en lugar de usar los números directamente. ¡Esta es la magia de la programación!
+También podemos usar group_by para crear nuevas variables a partir de ciertos grupos utilizando mutate. Por ejemplo, podemos crear el promedio de edad de cada hogar y guardarlo como una variable nueva.
 
 ```{r}
-#| label: operaciones-objetos
-
-x + y
-x - y
-x * y
-x / y
+casen %>% 
+  group_by(folio) %>% #folio identifica cada hogar en CASEN 
+  mutate(edad_media = mean(edad)) %>% 
+  ungroup() %>% 
+  select(folio, id_persona, edad, edad_media) %>% 
+  head(20) #vemos los primeros 20 casos
 ```
 
-También podemos guardar los resultados de estas nuevas operaciones en objetos completamente nuevos:
+
+# 3. Estadística Descriptiva  
+
+Para obtener estadísticos descriptivos en R, tales como la media, la mediana o la desviación estándar debemos usar las funciones incluidas para esto en R. Para esto utilizaremos la variable "ytotcorh” que corresponde al ingresos total corregidos de los hogares.  
 
 ```{r}
-#| label: guardar-resultados
-
-z <- x^2  # Elevamos 'x' al cuadrado y lo guardamos en 'z'
-z         # Llamamos a 'z' para ver el resultado
+#media
+mean(casen$ytotcorh) #nos devuelve NA dado que hay casos perdidos
+mean(casen$ytotcorh,na.rm=T) #debemos agregar un argumento indicando que no considere los casos perdidos
+#mediana
+median(casen$ytotcorh,na.rm=T) 
+#Varianza y desviación estandar
+var(casen$ytotcorh,na.rm=T) 
+sd(casen$ytotcorh,na.rm=T) 
+#Cuantiles
+quantile(casen$ytotcorh, probs = c(0.25,0.50,0.75,0.9),na.rm = TRUE) #percetniles
+#minimo
+min(casen$ytotcorh,na.rm = TRUE) 
+#máximo
+max(casen$ytotcorh,na.rm = TRUE)
+#summary nos entrega un resumen de la variable
+summary(casen$ytotcorh) 
 ```
 
----
-
-## 3. Operaciones lógicas
-
-Además de la matemática tradicional, R nos permite realizar operaciones lógicas; es decir, evaluar si una afirmación es verdadera (`TRUE`) o falsa (`FALSE`). 
-
-Para establecer una pregunta de igualdad matemática usamos el **doble signo igual `==`** (ya que un solo `=` se usa a veces para asignar objetos, igual que la flecha `<-`).
+Del mismo modo podemos obtener tablas de frecuencia absoluta y relativa.
 
 ```{r}
-#| label: logica
+table(casen$sexo)
+#Para usar las etiquetas de las variables cargadas en e formato spss podemos usar el comando as_factor()
+table(as_factor(casen$sexo))
+#prop.table nos da una tabla de proporciones a partir de una tabla
+prop.table(table(as_factor(casen$sexo)))
 
-x > y          # ¿Es x mayor que y? (R responderá FALSE)
-15 == x + y    # ¿Es 15 exactamente igual a x + y? (R responderá TRUE)
-16 > x + y     # ¿Es 16 mayor que x + y? 
+#El comando table también nos permite obtener tablas cruzadas
+table(as_factor(casen$sexo),as_factor(casen$pobreza))
+#si añadimos el argumento 1 nos dará porcentajes fila y 2 nos dará porcentajes columna
+prop.table(table(as_factor(casen$sexo),as_factor(casen$pobreza)),1)
 ```
 
----
 
-## 4. Vectores: Nuestras variables
+# 4. Visualización básica de datos
 
-Un vector en R es una secuencia de elementos del mismo tipo. Para el lenguaje del software esto es un vector numérico o de texto; **para nosotros, los investigadores, esto es una variable**.
+R entrega una serie de herramientas para la visualización de datos. En este caso revisaremos brevemente las herramientas básicas de visualización de datos que trae R base.  
 
-::: {.callout-note title="📝 El ejercicio práctico"}
-**Imaginemos que salimos a la calle y aplicamos un pequeño cuestionario a 9 personas.** Anotamos sus respuestas en papel y ahora queremos pasarlas a R.
-:::
+```{r,message=FALSE,warning=F}
+#Gráfico de barras
+plot(as_factor(casen$pobreza), main="Situación de pobreza", xlab="Pobreza",ylab="Frequencias",
+     col=2)
 
-Empecemos creando una variable llamada `edad`. Mediante la **función concatenar `c()`**, podemos crear un objeto que agrupe todas las respuestas de nuestros 9 encuestados. En este caso, será una variable numérica (`numeric`): intervalar, continua y cuantitativa.
+#Histogramas
+hist(casen$edad,main="Edad de los encuestados", xlab="Años",ylab="Frequencia")
 
-```{r}
-#| label: vector-numerico
-
-# Ingresamos las 9 edades separadas por comas
-edad <- c(18, 25, 33, 38, 67, 25, 35, 57, 99)
-
-summary(edad) # Nos da estadísticas descriptivas rápidas (Mínimo, Media, Máximo, etc.)
-table(edad)   # Nos da una tabla de frecuencias absolutas
-class(edad)   # Nos confirma qué tipo de dato es (numeric)
+#boxplot
+boxplot(casen$edad, main = "Gráfico de cajas edad",
+        outline = TRUE)
 ```
 
-Podemos realizar operaciones matemáticas sobre los vectores. R aplicará la operación **a cada uno de los elementos** del vector por separado y nos devolverá un vector completo con los resultados individuales.
+# 5. Visualización de datos con ggplot2
 
-```{r}
-#| label: operaciones-vectores
+Una mejor herramienta para la visualización de datos en R es el paquete **ggplot2**.  A continuación revisaremos paso a paso la estructura de la gramática de gráficos.
 
-edad / 2      # Divide la edad de cada encuestado a la mitad
-edad - 1      # Le resta 1 año a cada encuestado
+En primer lugar, debemos asegurarnos de tener instalado y cargado el paquete ggplot2. En este caso no es necesario ya que previamente cargamos el tidyverse, lo cual incluye ggplot2.
 
-# Podemos guardar esta alteración en una nueva variable:
-edad2 <- edad - 1 
+En primer lugar tenemos que seleccionar un conjunto de datos sobre el que trabajaremos. Podemos hacer esto de manera integrada con el flujo de trabajo del pipeline que vimos para dplyr. 
 
-# También podemos realizar operaciones intercaladas.
-# Aquí dividirá a la 1ra persona por 1, a la 2da por 2, a la 3ra por 1, etc.
-edad / c(1, 2)
+```{r,message=FALSE,warning=F}
+#install.packages("ggplot2")
+library(ggplot2)
+
+casen %>% 
+  ggplot() 
 ```
 
-### Variables Cualitativas (Texto y Factores)
+El resultado de entregar solo una base de datos a ggplot será un gráfico vació, sin información en sus ejes, ni representaciones gráficas de los datos. El siguiente paso es definir la estética o aesthetics, mediante la función aes(), en la cual indicaremos cuales son las variables que constituirán los ejes de nuestro gráfico. En este caso construiremos un gráfico con una sola variable, por lo que pondremos la edad en el eje x. 
 
-Ahora pasemos la segunda pregunta de nuestra encuesta: **"Sexo"**. Se sigue la misma lógica. Es una variable cualitativa y nominal. El tipo de dato en R será `character` (texto). 
+Cada capa adicional que vayamos agregando a nuestro gráfico en ggplot 2 debe agregarse mediante un "+". No confundir con el trabajo con el pipeline. 
 
-::: {.callout-warning title="¡Cuidado con la escritura!"}
-R es sensible a mayúsculas y minúsculas (*case-sensitive*). Para R, `"Hombre"` y `"hombre"` son dos categorías completamente distintas. ¡Ojo con la limpieza de datos!
-:::
-
-```{r}
-#| label: vector-texto
-
-# Ingresamos las respuestas en texto (siempre entre comillas)
-# Ojo: aquí solo ingresamos 8 datos a modo de ejemplo.
-sexo <- c("Hombre","Hombre","Hombre","Mujer","Hombre","Mujer","Mujer","Mujer")
-
-summary(sexo) # Como es texto, el summary no calcula promedios, solo cuenta la longitud
-table(sexo)   # La tabla sí nos muestra cuántos hay de cada uno
-class(sexo)   # Nos dice que es tipo "character"
+```{r,message=FALSE,warning=F}
+casen %>% 
+  ggplot() + 
+  aes(x = edad)
 ```
 
-En la práctica estadística, suele ser más eficiente ingresar la variable numéricamente como una *dummy* (usando 1 y 0) y luego convertirla a **`factor`**. Los factores son la forma especial en que R entiende y procesa las variables categóricas.
+Por último, necesitamos decirle a ggplot como representar nuestros datos en el eje señalado mediante un geom, es decir, el objeto geométrico que se utilizará para representar los datos. Para esto hay múltiple funciones que empiezan con "geom_", como geom_bar, geom_point o geom_line. En este caso queremos contruir un histograma así que usaremos geom_histogram. 
 
-```{r}
-#| label: vector-factor
-
-# Ingresamos los 9 datos codificados en números (0, 1 y un 9 para No Responde)
-s <- c(1, 1, 1, 0, 1, 0, 0, 0, 9)
-
-# Transformamos a factor.
-# Si intentamos correr esto: factor(s, levels = c(0,1,9), labels = c("Mujer","Hombre"))
-# Nos dará ERROR, porque hay 3 niveles pero solo dimos 2 etiquetas. La importancia de los errores:
-
-# Forma correcta:
-sexof <- factor(s, levels = c(0, 1, 9), labels = c("Mujer", "Hombre", "NC"))
-
-summary(sexof) # ¡Ahora el summary sí nos cuenta las categorías correctamente!
-table(sexof)
+```{r,message=FALSE,warning=F}
+casen %>% 
+  ggplot() + 
+  aes(x = edad) +
+  geom_histogram()
 ```
 
-Finalmente, ingresemos el **Nivel Socioeconómico (NSE)** de nuestros encuestados. Esta es una variable ordinal. 
-Categorías originales (NSE): `1=E`, `2=D`, `3=C3`, `4=C2`, `5=C1`, `6=AB`, `99=Valor perdido`.
+Ya tenemos una visualización básica. Ahora introduciremos algunos elementos adicionales para mejorar la apariencia de nuestro gráfico.
 
-::: {.callout-tip title="El truco de los valores perdidos (NA)"}
-Observa qué pasa con el encuestado número 9 (cuyo valor es `99`). Como `99` no está declarado en los `levels`, R lo convertirá automáticamente en un **`NA`** (Not Available / Dato perdido). ¡Esta es una excelente forma de limpiar datos perdidos!
-:::
+- labs(): Se añaden un título, un subtítulo y una nota al pie (caption) para proporcionar contexto y citar la fuente de los datos. Esto mejora la comprensión del gráfico por parte del espectador.
 
-```{r}
-#| label: vector-nse
+theme_minimal(): Se aplica un tema minimalista al gráfico para un aspecto limpio y moderno.
 
-p1 <- c(1, 2, 2, 3, 4, 5, 5, 6, 99)
+theme(): Se personalizan varios elementos del gráfico, incluyendo el estilo del título, subtítulo, nota al pie, y el tamaño del texto de los ejes y las etiquetas de los ejes. Esto mejora la legibilidad y la presentación visual del gráfico.
 
-nse <- factor(p1, levels = c(1,2,3,4,5,6), labels = c("E","D","C3","C2","C1","AB"))
+- labs(): Se añaden un título, un subtítulo y una nota al pie (caption) para proporcionar contexto y citar la fuente de los datos. Esto mejora la comprensión del gráfico por parte del espectador.
 
-table(nse)
-summary(nse) # Nos indicará cuántos NAs (datos perdidos) hay en la variable.
+- theme_minimal(): Se aplica un tema minimalista al gráfico para un aspecto limpio y moderno.
+
+- theme(): Se personalizan varios elementos del gráfico, incluyendo el estilo del título, subtítulo, nota al pie, y el tamaño del texto de los ejes y las etiquetas de los ejes. Esto mejora la legibilidad y la presentación visual del gráfico.
+
+```{r,message=FALSE,warning=F}
+casen %>%
+  ggplot() + 
+  aes(x = edad) +
+  geom_histogram(fill = "#40E0D0", color = "white", bins = 30) +  # Ajusta la cantidad de barras con bins
+  labs(title = "Distribución de Edades en la Encuesta Casen 2024",
+       subtitle = "Histograma de edades de los encuestados",
+       x = "Edad",
+       y = "Frecuencia",
+       caption = "Fuente: Encuesta Casen 2024") +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold", size = 20),  # Ajusta el estilo del título
+        plot.subtitle = element_text(face = "italic", size = 16),  # Estilo del subtítulo
+        plot.caption = element_text(face = "italic", size = 10),  # Estilo de la fuente
+        axis.title = element_text(size = 14),  # Tamaño del texto de los ejes
+        axis.text = element_text(size = 12))   #Tamaño del texto de las etiquetas de los ejes
 ```
 
----
+Ahora veamos el ejemplo de un gráfico bivariado. para esto debemos fijar una varaible en cada eje para las aesthetics. En este caso veremos la relación entre años de escolaridad y ingresos del trabajo. Para esto usaremos un scatterplot, construido a partir de geom_point().
+Filtraremos la base de datos a la Región de Valparaíso para reducir la cantidad de datos a graficar, y limitaremos los datos hasta 5 millones de peso para evitar valores muy extremos que dificulten la visualización.  
 
-## 5. Selección de elementos (Subsetting)
-
-A veces no queremos ver toda la variable, sino aislar casos específicos. Podemos seleccionar (filtrar) elementos dentro de los vectores usando **corchetes `[ ]`**. El número dentro del corchete representa la *posición* del dato.
-
-```{r}
-#| label: subsetting
-
-nse[4]           # Pedimos el 4to elemento (la respuesta de nuestro 4to encuestado)
-nse[1:3]         # Pedimos un rango: los primeros 3 elementos
-nse[c(1, 3, 5)]  # Elementos específicos saltados usando la función c()
-nse[37]          # Esta posición no existe (nos devuelve NA)
-
-# También podemos filtrar a los que cumplan una característica específica:
-nse[nse == "AB"] 
-
-length(nse)      # Nos dice cuántos elementos totales tiene el vector (9)
-class(nse)       # Nos confirma que es un factor
+```{r,message=FALSE,warning=F}
+casen %>%
+  filter(region == 5, ytrabajocor <= 5000000) %>%
+  ggplot() + 
+  aes(x = esc, y = ytrabajocor) +
+  geom_point()
 ```
 
----
+Como vemos el gráfico tiene la escolaridad en el eje x, y los ingresos en el eje y. sin embargo, dada la gran cantidad de puntos, la relación entre ambas variables no resulta tan clara. Para mejorar lo anterior haremos dos cambios, aplicaremos una transparencia a cada punto apra poder observar la densidad de los puntos en cada parte del gráfico, y añadiremos una linea de tendencia lineal con la función geom_smooth().
 
-## 6. Listas
-
-Para agrupar elementos de **distintos tipos y distintos tamaños** en un solo gran objeto, debemos utilizar **listas**. Imagina una lista como una gran caja o archivero que contiene distintos documentos dentro.
-
-```{r}
-#| label: listas-1
-
-# Creamos una lista que contiene un vector numérico (u) y un texto simple (v)
-x <- list(u = c(2, 3, 4), v = "abc")
-x 
+```{r,message=FALSE,warning=F}
+casen %>%
+  filter(region == 5, ytrabajocor <= 5000000) %>%
+  ggplot() + 
+  aes(x = esc, y = ytrabajocor) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = "lm", color = "red") + 
+  theme_bw()
 ```
 
-Existen distintas formas de extraer un elemento guardado dentro de una lista: 
-1. A partir de su nombre usando el **operador dólar `$`.**
-2. A partir de su posición usando **corchetes dobles `[[ ]]`.**
+Ahora podemos observar de mejor manera que hay una relación positiva entre ambas variables, es decir que, a más escolaridad, en promedio los ingresos del trabajo son más altos. 
 
-```{r}
-#| label: listas-2
-
-x$u          # Extrae el elemento llamado 'u'
-x[[2]]       # Extrae el segundo elemento de la lista (que es 'v')
-x[[1]][2]    # Extrae el primer elemento, y DENTRO de él, extrae el 2do valor (el número 3)
-
-str(x)       # Muestra la estructura interna (Structure) del objeto de manera resumida
+```{r,message=FALSE,warning=F}
+casen %>%
+  filter(region == 5, ytrabajocor <= 5000000) %>%
+  ggplot(aes(x = esc, y = ytrabajocor)) + 
+  geom_point(alpha = 0.1) +  # Aumentar la transparencia para mejorar la visualización de la densidad
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Añadir una línea de tendencia sin la banda de confianza para claridad
+  scale_x_continuous(name = "Años de Escolaridad") +  # Renombrar eje X
+  scale_y_continuous(name = "Ingresos por Trabajo (CLP)", labels = scales::comma) +  # Renombrar eje Y y formatear como números
+  labs(title = "Relación entre Escolaridad e Ingresos por Trabajo",
+       subtitle = "Región de Valparaíso, Encuesta Casen",
+       caption = "Fuente: Encuesta Casen 2024") +
+  theme_bw() +  # Usar un tema de fondo blanco y negro para claridad
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotar las etiquetas del eje X para mejorar la legibilidad
 ```
 
----
+Por último agregamos las etiquetas del gráfico y otros elementos estéticos para mejorar su presentación.
 
-## 7. Data Frames (Bases de datos)
+Ahora veremos como hacer gráficos de barras para variables categóricas a partir de la variable sexo. Para esto usaremos geom_bar().
 
-Un *data frame* (marco de datos) es simplemente una tabla donde **cada columna es un vector** y **cada fila es un caso** (un encuestado). La única regla es que todas las columnas deben tener el mismo largo. Los *data frames* son el formato estándar para analizar bases de datos reales.
+```{r,message=FALSE,warning=F}
 
-Vamos a juntar las variables de nuestra encuesta (`edad`, `sexof`, `nse`) en una sola gran base de datos:
-
-```{r}
-#| label: dataframe-1
-
-# Unimos los vectores de 9 elementos
-base <- data.frame(edad, sexof, nse)
-
-base # Imprimimos la base para verla como tabla
+casen %>% 
+ggplot(aes(x = as_factor(sexo))) +
+  geom_bar(width = 0.4,  fill=rgb(0.1,1,0.5,0.7)) + 
+  scale_x_discrete("Sexo") +  
+  scale_y_continuous("Frecuencia") +
+  labs(title = "Frecuencia relativa de sexo en Casen 2024",
+       caption = "Fuente: Encuesta Casen 2024") + 
+  theme_bw()
 ```
 
-Podemos consultar y modificar los nombres de nuestras columnas (variables):
+Para cambiar a frecuencias relativas, se modifica la definición de la estética y dentro de geom_bar() para calcular el porcentaje que cada barra representa del total. Esto se hace dividiendo el conteo de cada grupo (..count..) por la suma de todos los conteos (sum(..count..)), lo convierte las frecuencias absolutas en relativas:
 
-```{r}
-#| label: dataframe-colnames
+```{r,message=FALSE,warning=F}
 
-colnames(base) # Ver los nombres actuales
-
-# Cambiar el nombre de las columnas si queremos estandarizarlas
-colnames(base) <- c("edad", "sexo", "nse") 
+casen %>% 
+ggplot(aes(x = as_factor(sexo))) +
+  geom_bar(width = 0.4,  fill= rgb(0.1,0.3,0.5,0.7), aes(y = (..count..)/sum(..count..))) + 
+  scale_x_discrete("Sexo") +  
+  scale_y_continuous("Porcentaje",labels=scales::percent)+
+  labs(title = "Frecuencia absoluta de sexo en Casen 2024",
+       caption = "Fuente: Encuesta Casen 2024") + 
+  theme_bw()
 ```
 
-**Navegando dentro de la base de datos:**
-Podemos aislar y seleccionar variables específicas desde nuestra base usando el operador `$`. La estructura es `nombredelabase$nombrevariable`.
+A continuación haremos un gráfico de linea, que exprese la proporción de pobres según edad. Para esto tendremos que modificar los datos y agruparlos por edad previamente a construir el gráfico. Preparamos los datos con las siguientes operaciones: 
+- mutate(pobreza1 = ifelse(pobreza %in% 1:2, 1, 0)): Crea una nueva columna "pobreza1" donde los individuos considerados pobres (con valores de "pobreza" de 1 o 2) se marcan con un 1, y los no pobres (valor de "pobreza" 3) con un 0.
+- filter(edad < 90): Filtra para incluir solo a individuos con edad menor a 90 años.
+- group_by(edad): Agrupa los datos por edad.
+- summarize(pob = mean(pobreza1, na.rm = TRUE) * 100): Calcula el porcentaje promedio de individuos pobres por edad, multiplicando por 100 para obtener un porcentaje.
 
-```{r}
-#| label: dataframe-dolar
+Luego a partir de esta base de datos contruimos el gráfico, ocupando dos geom, geom_point() y geom_line(), para dibujar una línea y puntos en cada edad, para visualizar la tendencia de la pobreza con la edad.
 
-base$edad 
+```{r,message=FALSE,warning=F}
+
+casen_pob <- casen %>%
+  mutate(pobreza1 = ifelse(pobreza %in% 1:2, 1, 0)) %>%
+  filter(edad < 90) %>%
+  group_by(edad) %>%
+  summarize(pob = mean(pobreza1, na.rm = TRUE) * 100)
+
+head(casen_pob)
+
+casen_pob %>%
+  ggplot(aes(x = edad, y = pob)) +
+  geom_line(color = "#40E0D0") +
+  ylim(0, 35) +
+  geom_point(shape = 21, fill = "#40E0D0", size = 1) +
+  ylab("% Pobreza") +
+  xlab("Edad") +
+  labs(title = "Porcentaje de pobreza según edad",
+       caption = "Fuente: Encuesta Casen 2024") + 
+  theme_bw()
+
 ```
 
-También podemos explorar la base usando corchetes con una lógica de coordenadas espaciales `base[filas, columnas]`:
+Por útlimo veremos una posibilidad muy útil que ofrece ggplot que es segemtnar le gráfico a partir de una variable adicional. facet_wrap es una función de ggplot2 que permite dividir un gráfico en múltiples paneles basados en los niveles de una variable, organizando los paneles en una matriz que, por defecto, está orientada por filas. Esto facilita la comparación directa de subconjuntos de datos dentro de la misma área de visualización, manteniendo las mismas escalas y ejes en todos los paneles.
 
-```{r}
-#| label: dataframe-coordenadas
+Para esto al calcular el porcentaje de pobreza para cada grupo de edad segmentaremos adicionalmente por área urbana y rural. Luego usaremos esta variable para segmentar el gráfico en facet_wrap.
 
-base[5, 2]         # Fila 5, Columna 2 (El sexo de nuestro 5to encuestado)
-base[1:5, 2]       # Filas 1 a 5, Columna 2
-base[1:5, c(1,3)]  # Filas 1 a 5, pero solo las columnas 1 (edad) y 3 (nse)
+```{r,message=FALSE,warning=F}
+
+casen_pob_a <- casen %>%
+  mutate(pobreza1 = ifelse(pobreza %in% 1:2, 1, 0)) %>%
+  filter(edad < 90) %>%
+  group_by(edad, area) %>%
+  summarize(pob = mean(pobreza1, na.rm = TRUE) * 100)
+
+head(casen_pob_a)
+
+casen_pob_a %>% 
+  ggplot(aes(x = edad, y = pob)) +
+  geom_line(color = "#40E0D0") +
+  ylim(0, 45) +
+  geom_point(shape = 21, fill = "#40E0D0", size = 1) +
+  ylab("% Pobreza") +
+  xlab("Edad") +
+  labs(title = "Porcentaje de pobreza según edad por zona",
+       caption = "Fuente: Encuesta Casen 2024") + 
+  theme_bw() +
+  facet_wrap(as_factor(casen_pob_a$area))
+
 ```
 
-Si unimos ambas lógicas, podemos filtrar casos que cumplan ciertas condiciones:
 
-```{r}
-#| label: dataframe-filtros
-
-base$edad[1]                         # La edad exclusiva del sujeto 1
-base$edad[base$sexo == "Hombre"]     # Extrae las edades, pero SOLO de los Hombres
-```
-
-::: {.callout-important title="¿Te pareció un poco enredada esta última parte?"}
-Filtrar datos usando la sintaxis de corchetes `base$variable[base$otravariable == "condicion"]` puede volverse muy largo y confuso en bases de datos reales como CASEN. 
-
-**¡No te preocupes!** En la próxima sesión introduciremos **Tidyverse**, un conjunto de paquetes modernos con una gramática mucho más humana y sencilla para hacer exactamente esto.
-:::
-
-### Funciones útiles de exploración rápida
-
-R ofrece numerosas funciones para el análisis estadístico rápido. Aquí introducimos algunas elementales que usarás siempre al abrir una base nueva:
-
-```{r}
-#| label: exploracion-rapida
-
-head(base)        # Muestra solo las primeras 6 filas (útil en bases gigantes)
-# View(base)      # (Comentado) Abre la base en una pestaña nueva tipo Excel
-str(base)         # Muestra la estructura de la base y el tipo de cada variable
-
-table(base$sexo)  # Tabla de frecuencias absolutas para el sexo
-mean(base$edad)   # Calcula el promedio de la variable edad
-
-# help(table)     # Abre la documentación oficial de cómo usar una función
-# ?table          # Atajo equivalente al comando anterior
-```
-
-Si quisieras guardar tu base de datos procesada para enviarla a un colega o no perderla, usarías:
-
-```{r}
-#| label: guardar-base
-
-# Se indica primero el objeto a guardar y luego el nombre del archivo, entre comillas.
-# save(base, file = "base_encuesta.RData") 
-```
-
----
-
-## 8. Limpieza del entorno de trabajo
-
-A medida que avanzamos en un análisis complejo, el *Environment* se va llenando de objetos temporales y variables sueltas. Es importante mantener un entorno de trabajo organizado. Podemos eliminar objetos usando la función `rm()` (remove).
-
-```{r}
-#| label: remover-objetos
-
-# Borramos el vector suelto 'edad'
-rm(edad) 
-
-# ¡Ojo! Borramos el vector suelto, pero la variable 'edad' SIGUE viviendo a salvo 
-# dentro del data frame llamado 'base'. Puedes comprobarlo corriendo: base$edad
-```
-
-::: {.callout-warning title="Botón de pánico"}
-Si deseas reiniciar tu entorno por completo y borrar absolutamente **TODO**, puedes usar el comando `rm(list = ls())` o hacer clic en el ícono de la escoba 🧹 en la pestaña *Environment* de RStudio. Úsalo con precaución.
-:::
+Para ver material adicional pueden revisar la siguiente [Introducción al uso del paquete ggplot2](https://bookdown.org/gboccardo/manual-ED-UCH/construccion-de-graficos-usando-rstudio-funcionalidades-basicas-y-uso-del-paquete-ggplot2.html#introduccion-al-uso-del-paquete-ggplot2). Para una revisión más profunda pueden revisar los capítulos 3 y 28 del libro [R para ciencia de datos](https://es.r4ds.hadley.nz/03-visualize.html)

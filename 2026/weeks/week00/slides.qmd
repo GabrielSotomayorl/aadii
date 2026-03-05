@@ -1,0 +1,253 @@
+---
+subtitle: "SOC9035 -- Análisis Avanzado de Datos II"
+title: "<font style='font-size:1em;'>🗓️ Clase 0<br/> Introducción a R</font>"
+author: Prof. [Gabriel Sotomayor](https://gabrielsotomayorl.github.io/)
+institute: '[Universidad Diego Portales](https://sociologia.udp.cl/)'
+date: 09 March 2026
+date-meta: 06 March 2026
+date-format: "DD MMM YYYY"
+toc: true
+toc-depth: 1
+toc-title: "Contenidos de hoy:"
+center-title-slide: false
+from: markdown+emoji
+format:
+  revealjs:
+    fig-responsive: true
+    theme: [simple, ../../../css/slides.scss]
+    slide-number: true
+    mouse-wheel: false
+    preview-links: auto
+    logo: /figures/icons/course_favicon.png
+    footer: 'Análisis Avanzado de Datos II'
+---
+
+# Introducción a R y Rstudio
+
+## Objetivos de la Sesión
+
+::: {.callout-note icon=false title="En esta clase buscaremos:"}
+1. **Reflexionar** sobre el uso de software estadístico en la investigación en Ciencias Sociales.
+2. **Introducir** el ecosistema de R y RStudio: qué son, por qué usarlos y cómo instalarlos.
+3. **Comprender** la lógica básica de la programación orientada a objetos y funciones.
+:::
+
+
+## ¿Donde se sitúa la estadística en el proceso de investigación? {background-color="white"}
+
+![](img/inv.jpg)
+
+## Uso de software en ciencias sociales {.smaller background-color="white"}
+
+Progresivamente se ha generalizado el uso de software estadístico en ciencias sociales, abriendo grandes posibilidades de realizar análisis más complejos y facilitando su uso.
+
+::: {.callout-warning title="El riesgo tecnológico"}
+Existe el riesgo de una **falta de formación estadística y reflexividad**. Apretar botones sin entender qué hace el software afecta directamente la calidad y validez del análisis.
+:::
+
+**Dos niveles de manejo del software:**
+
+1. **Nivel Usuario (Básico):** Ejecución básica y correcta interpretación de las salidas estadísticas. Es el piso mínimo necesario para utilizar la herramienta y comprender investigaciones de terceros.
+2. **Nivel Analista (Avanzado):** Manejo avanzado del software y sus procedimientos estadísticos. Es el nivel deseable para un uso reflexivo de las herramientas, personalización de análisis y lectura crítica profunda.
+
+## ¿Qué software existen y cual utilizar? {.smaller background-color="white"}
+
+En el mercado laboral y académico existe una gran variedad de herramientas. La elección dependerá de nuestros objetivos, presupuesto y área de especialización.
+
+![](img/imagensoft.png)
+
+## ¿Qué software existen y cual utilizar? {.smaller background-color="white"}
+
+::: {style="font-size: 1.2rem;"}
+| Dimensión / Lenguaje | R | Python | SPSS | Excel | Stata |
+|:-----------|:-----------|:-----------|:-----------|:-----------|:-----------|
+| Alcance | General, orientación multidisciplinar | General, orientación multidisciplinar | Limitado, orientado a Ciencias Sociales | Limitado, orientado a administración | Limitado, orientado a Economía |
+| Licencia | Libre (freeware) | Libre (freeware) | Pagada (versión de prueba limitada) | Pagada (versión de prueba limitada) | Pagada (versión de prueba limitada) |
+| Aprendizaje | Sintaxis, poco intuitivo | Sintaxis, poco intuitivo | Botones y sintaxis, intuitivo | Botones y sintaxis, intuitivo | Botones y sintaxis, intuitivo |
+| Visualización | Avanzada | Intermedia | Básica | Intermedia | Intermedia |
+| Análisis de texto | Intermedio, poca eficiencia | Avanzado, amplia eficiencia | No | No | No |
+| Minería Datos | Intermedio, poca eficiencia | Avanzado, amplia eficiencia | No | No | No |
+| Sistema operativo | Windows, Mac OS, Linux | Windows, Mac OS, Linux | Windows, Mac OS | Windows, Mac OS | Windows, Mac OS |
+
+*Fuente: Boccardo y Ruiz, 2018.*
+:::
+
+## ¿Qué es R? {.smaller background-color="white"}
+
+**R** es un software y un lenguaje de programación de código abierto (libre), enfocado principalmente en el análisis estadístico y la visualización de datos.
+
+*   **Lógica de trabajo:** Funciona mediante **objetos**, sobre los cuales aplicamos operadores y **funciones**.
+*   **Lenguaje de programación:** Al no ser solo un programa cerrado, podemos crear nuestras propias funciones. *Pasamos de ser simples usuarios a programadores.*
+*   **Modularidad:** Instalamos una versión base y luego la expandimos agregando **paquetes** (librerías) creados por la comunidad.
+
+::: {.callout-important title="El problema"}
+Su interfaz nativa es muy poco amigable, parece una simple calculadora de texto. **La solución a esto es RStudio.**
+:::
+
+## ¿Qué es R? {.smaller background-color="white"}
+
+![](img/Imagen4.png){fig-align="center"}
+
+
+## ¿Por qué aprender y usar R? {.smaller background-color="white"}
+
+::::: columns
+::: {.column width="50%"}
+![](img/Imagen5.png){fig-align="center"}
+:::
+::: {.column width="50%"}
+![](img/Imagen6.png){fig-align="center"}
+:::
+:::::
+
+## Razones prácticas para usar R {.smaller background-color="white"}
+
+1. **Es libre y gratis:** No dependes de las licencias de la universidad o de tu futuro empleador.
+2. **Personalización y vanguardia:** Ofrece posibilidades ilimitadas para personalizar análisis. Las nuevas técnicas estadísticas llegan primero a R antes que al software comercial.
+3. **Comunidad:** Existe una gigantesca y creciente comunidad de usuarios desarrollando funciones y resolviendo dudas en foros de internet (la gran mayoría del soporte está en inglés).
+4. **Sintaxis moderna:** Con paquetes recientes (como `tidyverse`), su sintaxis se ha vuelto mucho más simple e intuitiva de leer.
+
+
+## ¿Por qué trabajar con código y no con botones? {.smaller background-color="white"}
+
+Aprender código puede parecer contraintuitivo y frustrante al principio, pero tiene tres ventajas innegables:
+
+* 🔍 **Replicabilidad:** Permite a otros (y a ti mismo en el futuro) entender paso a paso cómo construiste tus resultados y replicarlos. Hoy esto es una exigencia básica en la ciencia de calidad.
+* 🚀 **Eficiencia:** En condiciones "reales" de trabajo (bases de datos grandes, tareas repetitivas), un *script* de código es infinitamente más rápido que hacer cientos de clics.
+* 🧠 **Control total:** Tienes claridad absoluta de todas las etapas del análisis. En programas de botones, muchas decisiones metodológicas se toman "por defecto" sin que el investigador se dé cuenta.
+
+*(Elousa, 2009 en Boccardo y Ruiz, 2018: 8-9)*
+
+## ¿Qué es RStudio? {.smaller background-color="white"}
+
+Es un **Entorno de Desarrollo Integrado (IDE)**. En palabras simples: es una interfaz gráfica que "envuelve" a R para hacernos la vida mucho más fácil.
+
+**Se divide en 4 paneles principales:**
+
+1. **Editor de código (Script):** El bloc de notas donde escribimos, guardamos y ejecutamos nuestro código.
+2. **Ambiente de trabajo (Environment):** Muestra todas las bases de datos y objetos que tenemos cargados en la memoria RAM temporal.
+3. **Consola (Console):** El "motor" de R. Aquí vemos los resultados numéricos, la ejecución paso a paso y las advertencias o errores.
+4. **Panel multipropósito:** Contiene los gráficos (*Plots*), los paquetes instalados (*Packages*), la ayuda (*Help*) y el explorador de archivos (*Files*).
+
+## ¿Qué es RStudio? {.smaller background-color="white"}
+
+![](img/Imagen7.png){fig-align="center"}
+
+
+## Instalación: Paso 1, Instalar R {.smaller background-color="white"}
+
+::::: columns
+::: {.column width="60%"}
+::: {.callout-tip title="Regla de oro"}
+**Siempre** se debe instalar R primero, y RStudio después.
+:::
+
+Podemos encontrar el instalador de R para Windows, Linux y Mac en el sitio oficial del CRAN:
+🔗 [https://cloud.r-project.org/](https://cloud.r-project.org/){preview-link="true"}
+
+**Instrucciones:**
+Debemos descargar el "paquete base" (base R), luego ejecutar el archivo descargado e instalarlo dándole "Siguiente" a todas las opciones predeterminadas.
+:::
+
+::: {.column width="40%"}
+![](img/Imagen8.png){fig-align="center"}
+:::
+:::::
+
+## Instalación: Paso 2, Instalar RStudio {.smaller background-color="white"}
+
+::::: columns
+::: {.column width="60%"}
+Una vez que R ya está en nuestro computador, procedemos a instalar la interfaz.
+
+Podemos encontrar RStudio en su sitio web. Debemos descargar la **versión gratis (RStudio Desktop)**, que es totalmente funcional para nuestros propósitos:
+🔗[https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/){preview-link="true"} *(Nota: RStudio ahora es parte de la empresa Posit).*
+
+Debemos fijarnos en elegir el instalador correcto para nuestro sistema operativo (Windows o Mac). Igualmente, lo instalamos usando las opciones predeterminadas.
+:::
+
+::: {.column width="40%"}
+![](img/imagen9.png){fig-align="center"}
+:::
+:::::
+
+## Advertencia: El problema de Java x64 {.smaller background-color="white"}
+
+::: {.callout-warning title="Atención usuarios de Windows"}
+Para algunos análisis específicos (o al leer ciertos archivos de Excel viejos), R utiliza el software Java. El problema es que los computadores suelen tener instalada la versión antigua de 32 bits, mientras que RStudio opera en **64 bits**. Esto genera un error de incompatibilidad.
+:::
+
+**¿Cómo resolverlo?**
+Si te encuentras con este error en el futuro, debes descargar e instalar la versión **offline de 64 bits** de Java desde su página oficial:
+🔗[https://www.java.com/es/download/manual.jsp](https://www.java.com/es/download/manual.jsp){preview-link="true"}
+
+![](img/imagen10.png){fig-align="center" width="60%"}
+
+## Programación por objetos y funciones {.smaller background-color="white"}
+
+**Tipos de estructuras de datos en R**
+
+*Vector (vector)*: columna o fila de datos de un mismo tipo (una variable individual)
+
+*Listas (list)*: Nos permiten agrupar objetos de distinto tipo.
+
+*Matrices (matrix)*: arreglo de dos dimensiones de datos de un mismo tipo (conjunto de variables)
+
+*Data.frame (base de datos)*: Matriz de datos en el que las columnas tienen asignado nombres, y que permite usar todo tipo de datos.
+
+## Conceptos clave: Estructuras de datos {.smaller background-color="white"}
+
+R organiza la información en diferentes "envases". Los principales son:
+
+*   `Vector` **(Vector):** Una columna o fila de datos de un mismo tipo. Es la estructura más básica (equivale a *una variable individual*).
+*   `List` **(Listas):** Cajas complejas que nos permiten agrupar múltiples objetos que pueden ser de distinto tamaño o tipo.
+*   `Matrix` **(Matrices):** Arreglo de dos dimensiones (filas y columnas) donde **todos** los datos deben ser exactamente del mismo tipo (por ejemplo, solo números).
+*   `Data.frame` **(Base de datos):** Es la estructura reina en Ciencias Sociales. Es una matriz de datos bidimensional donde cada columna tiene un nombre (variable) y cada fila es un caso. A diferencia de la matriz, **permite combinar distintos tipos de datos** (una columna de texto, otra de números, etc.).
+
+## Conceptos clave: Tipos de variables {.smaller background-color="white"}
+
+Dentro de las estructuras (como un vector o una columna de un data.frame), los datos pueden tener distintas naturalezas:
+
+::: {style="font-size: 1.4rem;"}
+| Tipo en R | Descripción | Ejemplo |
+|:---|:---|:---|
+| `numeric` | Números (pueden contener decimales) | 1.5, 3.14, 100 |
+| `integer` | Números enteros estrictos | 1, 2, 3 |
+| `logical` | Valores booleanos | `TRUE` (Verdadero) o `FALSE` (Falso) |
+| `character` / `string` | Cadenas de texto. Siempre van entre comillas | `"Santiago"`, `"Femenino"` |
+| `factor` | Variables categóricas/nominales. Tienen "niveles" subyacentes | Nivel 1: `"Bajo"`, Nivel 2: `"Alto"` |
+:::
+
+![](img/imagen11.png){fig-align="center" width="50%"}
+
+## ¿Cómo sobrevivir y continuar aprendiendo? {.smaller background-color="white"}
+
+Dominar R es un camino de mediano plazo. Es normal que el código arroje error (¡le pasa a los expertos todos los días!). Lo importante es desarrollar **habilidad de "hacking"**:
+
+1. No frustrarse ante el error en rojo.
+2. Estar dispuesto a buscar respuestas de manera autónoma.
+3. Saber dónde buscar la información.
+
+::: {.callout-tip title="Tus mejores aliados para buscar ayuda"}
+- **¡GOOGLE!** (Preferentemente busca en inglés, ej: *"how to filter rows in R dplyr"*).
+- La pestaña **Help** dentro de RStudio (escribiendo `?nombrefuncion`).
+- Foros como [StackOverflow](https://stackoverflow.com/){preview-link="true"}.
+- **Inteligencia Artificial (ChatGPT, Claude, Gemini):** Son excelentes tutores de R. *Tip: Cópiales tu código, diles qué intentas hacer y pégales el mensaje de error exacto que te dio R.*
+:::
+
+## Bibliografía y recursos recomendados {.smaller background-color="white"}
+
+**Textos base:**
+
+* Boccardo, G. y Ruiz, F. (2018). *Uso de RStudio para Estadística Univariada en Ciencias Sociales*. Universidad de Chile. [Enlace al documento]
+* Wickham, H. y Grolemund, G. (2019). *R para Ciencia de Datos*.[https://es.r4ds.hadley.nz/](https://es.r4ds.hadley.nz/){preview-link="true"}
+* Paradis, E. (2003). *R para Principiantes*. [Enlace PDF CRAN](https://cran.r-project.org/doc/contrib/rdebuts_es.pdf){preview-link="true"}
+
+**Sitios web útiles:**
+
+* [http://www.sthda.com](http://www.sthda.com) (Excelente para visualización y estadística).
+
+**Cursos online (Inglés):**
+
+* Especialización en Data Science, Johns Hopkins (Coursera): [Enlace](https://www.coursera.org/specializations/jhu-data-science)
+* DataCamp (Módulos de R): [Enlace](https://www.datacamp.com/courses/tech:r)

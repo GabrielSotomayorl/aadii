@@ -1,0 +1,362 @@
+---
+title: "Práctico 0: Nivelación de fundamentos en R"
+subtitle: "Primeros pasos, estructuras de datos y R Base"
+date: "2026-03-09"
+lang: es
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-tools: true
+    df-print: paged
+---
+
+
+::: {.callout-note icon=false title="🎯 Antes de empezar"}
+Antes de sumergirnos en el análisis de encuestas masivas y paquetes modernos (como veremos en las próximas semanas), necesitamos entender cómo "piensa" y cómo se estructura R por debajo. Este práctico es una nivelación esencial para soltar las manos con la consola, perderle el miedo al código y entender la lógica del programa.
+:::
+
+## 0. Objetivo del práctico
+
+El propósito de este práctico es familiarizarnos con R y RStudio. **R es un lenguaje de programación orientado a objetos**, especialmente diseñado para el análisis estadístico y la visualización de datos. 
+
+RStudio, por otro lado, proporciona un **entorno integrado de desarrollo (IDE)** que facilita el uso de R, ofreciendo numerosas herramientas útiles en un solo lugar (editor, consola, visor de gráficos y entorno de variables).
+
+---
+
+## 1. R como calculadora
+
+R no solo es útil para análisis estadísticos complejos, sino también para operaciones matemáticas básicas. Estas operaciones son la base matemática que luego nos permitirá recodificar o transformar nuestras variables. 
+
+A continuación, demostramos cómo usar R como calculadora en la consola. Sitúa tu cursor en el bloque de código y ejecútalo:
+
+```{r}
+#| label: calculadora
+
+5 + 2  # Suma
+5 - 2  # Resta
+5 / 2  # División
+5 * 2  # Multiplicación
+```
+
+---
+
+## 2. Creación y manipulación de objetos
+
+En R, no solemos trabajar con números sueltos. Lo normal es crear **"objetos"** para almacenar datos en la memoria temporal de nuestro computador (RAM). A continuación, se muestra cómo asignar un valor a un objeto usando la flecha de asignación `<-`.
+
+::: {.callout-tip title="Atajo de teclado"}
+Para escribir el símbolo de asignación `<-` rápidamente, puedes usar el atajo **`Alt` + `-`** (en Windows) u **`Option` + `-`** (en Mac).
+:::
+
+```{r}
+#| label: objetos-1
+
+x <- 5
+```
+
+Al ejecutar la línea anterior, notarás que en el panel superior derecho (tu *Environment* o Ambiente de trabajo) apareció el objeto `x`. Como ya está guardado, podemos imprimirlo o "llamarlo" simplemente escribiendo su nombre:
+
+```{r}
+#| label: llamar-objeto
+
+x
+```
+
+Podemos crear todos los objetos que consideremos necesarios. Esta vez, crearemos un segundo objeto llamado `y`:
+
+```{r}
+#| label: objetos-2
+
+y <- 10
+```
+
+Ahora podemos realizar operaciones directamente con nuestros objetos en lugar de usar los números directamente. ¡Esta es la magia de la programación!
+
+```{r}
+#| label: operaciones-objetos
+
+x + y
+x - y
+x * y
+x / y
+```
+
+También podemos guardar los resultados de estas nuevas operaciones en objetos completamente nuevos:
+
+```{r}
+#| label: guardar-resultados
+
+z <- x^2  # Elevamos 'x' al cuadrado y lo guardamos en 'z'
+z         # Llamamos a 'z' para ver el resultado
+```
+
+---
+
+## 3. Operaciones lógicas
+
+Además de la matemática tradicional, R nos permite realizar operaciones lógicas; es decir, evaluar si una afirmación es verdadera (`TRUE`) o falsa (`FALSE`). 
+
+Para establecer una pregunta de igualdad matemática usamos el **doble signo igual `==`** (ya que un solo `=` se usa a veces para asignar objetos, igual que la flecha `<-`).
+
+```{r}
+#| label: logica
+
+x > y          # ¿Es x mayor que y? (R responderá FALSE)
+15 == x + y    # ¿Es 15 exactamente igual a x + y? (R responderá TRUE)
+16 > x + y     # ¿Es 16 mayor que x + y? 
+```
+
+---
+
+## 4. Vectores: Nuestras variables
+
+Un vector en R es una secuencia de elementos del mismo tipo. Para el lenguaje del software esto es un vector numérico o de texto; **para nosotros, los investigadores, esto es una variable**.
+
+::: {.callout-note title="📝 El ejercicio práctico"}
+**Imaginemos que salimos a la calle y aplicamos un pequeño cuestionario a 9 personas.** Anotamos sus respuestas en papel y ahora queremos pasarlas a R.
+:::
+
+Empecemos creando una variable llamada `edad`. Mediante la **función concatenar `c()`**, podemos crear un objeto que agrupe todas las respuestas de nuestros 9 encuestados. En este caso, será una variable numérica (`numeric`): intervalar, continua y cuantitativa.
+
+```{r}
+#| label: vector-numerico
+
+# Ingresamos las 9 edades separadas por comas
+edad <- c(18, 25, 33, 38, 67, 25, 35, 57, 99)
+
+summary(edad) # Nos da estadísticas descriptivas rápidas (Mínimo, Media, Máximo, etc.)
+table(edad)   # Nos da una tabla de frecuencias absolutas
+class(edad)   # Nos confirma qué tipo de dato es (numeric)
+```
+
+Podemos realizar operaciones matemáticas sobre los vectores. R aplicará la operación **a cada uno de los elementos** del vector por separado y nos devolverá un vector completo con los resultados individuales.
+
+```{r}
+#| label: operaciones-vectores
+
+edad / 2      # Divide la edad de cada encuestado a la mitad
+edad - 1      # Le resta 1 año a cada encuestado
+
+# Podemos guardar esta alteración en una nueva variable:
+edad2 <- edad - 1 
+
+# También podemos realizar operaciones intercaladas.
+# Aquí dividirá a la 1ra persona por 1, a la 2da por 2, a la 3ra por 1, etc.
+edad / c(1, 2)
+```
+
+### Variables Cualitativas (Texto y Factores)
+
+Ahora pasemos la segunda pregunta de nuestra encuesta: **"Sexo"**. Se sigue la misma lógica. Es una variable cualitativa y nominal. El tipo de dato en R será `character` (texto). 
+
+::: {.callout-warning title="¡Cuidado con la escritura!"}
+R es sensible a mayúsculas y minúsculas (*case-sensitive*). Para R, `"Hombre"` y `"hombre"` son dos categorías completamente distintas. ¡Ojo con la limpieza de datos!
+:::
+
+```{r}
+#| label: vector-texto
+
+# Ingresamos las respuestas en texto (siempre entre comillas)
+# Ojo: aquí solo ingresamos 8 datos a modo de ejemplo.
+sexo <- c("Hombre","Hombre","Hombre","Mujer","Hombre","Mujer","Mujer","Mujer")
+
+summary(sexo) # Como es texto, el summary no calcula promedios, solo cuenta la longitud
+table(sexo)   # La tabla sí nos muestra cuántos hay de cada uno
+class(sexo)   # Nos dice que es tipo "character"
+```
+
+En la práctica estadística, suele ser más eficiente ingresar la variable numéricamente como una *dummy* (usando 1 y 0) y luego convertirla a **`factor`**. Los factores son la forma especial en que R entiende y procesa las variables categóricas.
+
+```{r}
+#| label: vector-factor
+
+# Ingresamos los 9 datos codificados en números (0, 1 y un 9 para No Responde)
+s <- c(1, 1, 1, 0, 1, 0, 0, 0, 9)
+
+# Transformamos a factor.
+# Si intentamos correr esto: factor(s, levels = c(0,1,9), labels = c("Mujer","Hombre"))
+# Nos dará ERROR, porque hay 3 niveles pero solo dimos 2 etiquetas. La importancia de los errores:
+
+# Forma correcta:
+sexof <- factor(s, levels = c(0, 1, 9), labels = c("Mujer", "Hombre", "NC"))
+
+summary(sexof) # ¡Ahora el summary sí nos cuenta las categorías correctamente!
+table(sexof)
+```
+
+Finalmente, ingresemos el **Nivel Socioeconómico (NSE)** de nuestros encuestados. Esta es una variable ordinal. 
+Categorías originales (NSE): `1=E`, `2=D`, `3=C3`, `4=C2`, `5=C1`, `6=AB`, `99=Valor perdido`.
+
+::: {.callout-tip title="El truco de los valores perdidos (NA)"}
+Observa qué pasa con el encuestado número 9 (cuyo valor es `99`). Como `99` no está declarado en los `levels`, R lo convertirá automáticamente en un **`NA`** (Not Available / Dato perdido). ¡Esta es una excelente forma de limpiar datos perdidos!
+:::
+
+```{r}
+#| label: vector-nse
+
+p1 <- c(1, 2, 2, 3, 4, 5, 5, 6, 99)
+
+nse <- factor(p1, levels = c(1,2,3,4,5,6), labels = c("E","D","C3","C2","C1","AB"))
+
+table(nse)
+summary(nse) # Nos indicará cuántos NAs (datos perdidos) hay en la variable.
+```
+
+---
+
+## 5. Selección de elementos (Subsetting)
+
+A veces no queremos ver toda la variable, sino aislar casos específicos. Podemos seleccionar (filtrar) elementos dentro de los vectores usando **corchetes `[ ]`**. El número dentro del corchete representa la *posición* del dato.
+
+```{r}
+#| label: subsetting
+
+nse[4]           # Pedimos el 4to elemento (la respuesta de nuestro 4to encuestado)
+nse[1:3]         # Pedimos un rango: los primeros 3 elementos
+nse[c(1, 3, 5)]  # Elementos específicos saltados usando la función c()
+nse[37]          # Esta posición no existe (nos devuelve NA)
+
+# También podemos filtrar a los que cumplan una característica específica:
+nse[nse == "AB"] 
+
+length(nse)      # Nos dice cuántos elementos totales tiene el vector (9)
+class(nse)       # Nos confirma que es un factor
+```
+
+---
+
+## 6. Listas
+
+Para agrupar elementos de **distintos tipos y distintos tamaños** en un solo gran objeto, debemos utilizar **listas**. Imagina una lista como una gran caja o archivero que contiene distintos documentos dentro.
+
+```{r}
+#| label: listas-1
+
+# Creamos una lista que contiene un vector numérico (u) y un texto simple (v)
+x <- list(u = c(2, 3, 4), v = "abc")
+x 
+```
+
+Existen distintas formas de extraer un elemento guardado dentro de una lista: 
+1. A partir de su nombre usando el **operador dólar `$`.**
+2. A partir de su posición usando **corchetes dobles `[[ ]]`.**
+
+```{r}
+#| label: listas-2
+
+x$u          # Extrae el elemento llamado 'u'
+x[[2]]       # Extrae el segundo elemento de la lista (que es 'v')
+x[[1]][2]    # Extrae el primer elemento, y DENTRO de él, extrae el 2do valor (el número 3)
+
+str(x)       # Muestra la estructura interna (Structure) del objeto de manera resumida
+```
+
+---
+
+## 7. Data Frames (Bases de datos)
+
+Un *data frame* (marco de datos) es simplemente una tabla donde **cada columna es un vector** y **cada fila es un caso** (un encuestado). La única regla es que todas las columnas deben tener el mismo largo. Los *data frames* son el formato estándar para analizar bases de datos reales.
+
+Vamos a juntar las variables de nuestra encuesta (`edad`, `sexof`, `nse`) en una sola gran base de datos:
+
+```{r}
+#| label: dataframe-1
+
+# Unimos los vectores de 9 elementos
+base <- data.frame(edad, sexof, nse)
+
+base # Imprimimos la base para verla como tabla
+```
+
+Podemos consultar y modificar los nombres de nuestras columnas (variables):
+
+```{r}
+#| label: dataframe-colnames
+
+colnames(base) # Ver los nombres actuales
+
+# Cambiar el nombre de las columnas si queremos estandarizarlas
+colnames(base) <- c("edad", "sexo", "nse") 
+```
+
+**Navegando dentro de la base de datos:**
+Podemos aislar y seleccionar variables específicas desde nuestra base usando el operador `$`. La estructura es `nombredelabase$nombrevariable`.
+
+```{r}
+#| label: dataframe-dolar
+
+base$edad 
+```
+
+También podemos explorar la base usando corchetes con una lógica de coordenadas espaciales `base[filas, columnas]`:
+
+```{r}
+#| label: dataframe-coordenadas
+
+base[5, 2]         # Fila 5, Columna 2 (El sexo de nuestro 5to encuestado)
+base[1:5, 2]       # Filas 1 a 5, Columna 2
+base[1:5, c(1,3)]  # Filas 1 a 5, pero solo las columnas 1 (edad) y 3 (nse)
+```
+
+Si unimos ambas lógicas, podemos filtrar casos que cumplan ciertas condiciones:
+
+```{r}
+#| label: dataframe-filtros
+
+base$edad[1]                         # La edad exclusiva del sujeto 1
+base$edad[base$sexo == "Hombre"]     # Extrae las edades, pero SOLO de los Hombres
+```
+
+::: {.callout-important title="¿Te pareció un poco enredada esta última parte?"}
+Filtrar datos usando la sintaxis de corchetes `base$variable[base$otravariable == "condicion"]` puede volverse muy largo y confuso en bases de datos reales como CASEN. 
+
+**¡No te preocupes!** En la próxima sesión introduciremos **Tidyverse**, un conjunto de paquetes modernos con una gramática mucho más humana y sencilla para hacer exactamente esto.
+:::
+
+### Funciones útiles de exploración rápida
+
+R ofrece numerosas funciones para el análisis estadístico rápido. Aquí introducimos algunas elementales que usarás siempre al abrir una base nueva:
+
+```{r}
+#| label: exploracion-rapida
+
+head(base)        # Muestra solo las primeras 6 filas (útil en bases gigantes)
+# View(base)      # (Comentado) Abre la base en una pestaña nueva tipo Excel
+str(base)         # Muestra la estructura de la base y el tipo de cada variable
+
+table(base$sexo)  # Tabla de frecuencias absolutas para el sexo
+mean(base$edad)   # Calcula el promedio de la variable edad
+
+# help(table)     # Abre la documentación oficial de cómo usar una función
+# ?table          # Atajo equivalente al comando anterior
+```
+
+Si quisieras guardar tu base de datos procesada para enviarla a un colega o no perderla, usarías:
+
+```{r}
+#| label: guardar-base
+
+# Se indica primero el objeto a guardar y luego el nombre del archivo, entre comillas.
+# save(base, file = "base_encuesta.RData") 
+```
+
+---
+
+## 8. Limpieza del entorno de trabajo
+
+A medida que avanzamos en un análisis complejo, el *Environment* se va llenando de objetos temporales y variables sueltas. Es importante mantener un entorno de trabajo organizado. Podemos eliminar objetos usando la función `rm()` (remove).
+
+```{r}
+#| label: remover-objetos
+
+# Borramos el vector suelto 'edad'
+rm(edad) 
+
+# ¡Ojo! Borramos el vector suelto, pero la variable 'edad' SIGUE viviendo a salvo 
+# dentro del data frame llamado 'base'. Puedes comprobarlo corriendo: base$edad
+```
+
+::: {.callout-warning title="Botón de pánico"}
+Si deseas reiniciar tu entorno por completo y borrar absolutamente **TODO**, puedes usar el comando `rm(list = ls())` o hacer clic en el ícono de la escoba 🧹 en la pestaña *Environment* de RStudio. Úsalo con precaución.
+:::

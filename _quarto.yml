@@ -41,8 +41,15 @@ website:
         - section: "🗓️ Semanas"
           collapse: false # 2️⃣ Obliga a la sección "Semanas" a estar siempre abierta
           contents:
-            - section: "Semana 01" # 3️⃣ Cambiamos 'href' por 'section' para que actúe solo como carpeta
-              collapse: false # 4️⃣ Obliga a la Semana 01 a estar siempre abierta
+            - section: "Clase 0 (Nivelación)"
+              collapse: false
+              contents:
+                - href: 2026/weeks/week00/page.qmd
+                  text: "👨‍🏫 Material de clase"
+                - href: 2026/weeks/week00/lab.qmd
+                  text: "💻 Práctico 0"
+            - section: "Semana 01"
+              collapse: false
               contents:
                 - href: 2026/weeks/week01/page.qmd
                   text: "👨‍🏫 Material de clase"
@@ -50,13 +57,6 @@ website:
                   text: "💻 Práctico"
                 # - href: 2026/weeks/week01/appendix.qmd
                 #   text: "🔖 Appendix"
-            - section: "Semana 02" 
-              collapse: false 
-              contents:
-                - href: 2026/weeks/week02/page.qmd
-                  text: "👨‍🏫 Material de clase"
-                - href: 2026/weeks/week02/lab.qmd
-                  text: "💻 Práctico"
 
   navbar:
     background: primary
