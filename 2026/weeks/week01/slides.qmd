@@ -49,22 +49,22 @@ format:
 
 ## ¿De qué trata este curso? {.smaller background-color="white"}
 
-Este curso profundiza en las técnicas de **análisis multivariante**, permitiendo examinar de manera integrada la interacción de múltiples factores en el estudio de problemas sociales. 
+Este curso profundiza en las técnicas de **análisis multivariante**, permitiendo examinar de manera integrada la interacción de múltiples factores en el estudio de problemas sociales, operando bajo los estándares de la **Ciencia Abierta y la Investigación Reproducible**. 
 
 ::: {.callout-note icon=false title="Enfoque Pedagógico"}
-Se enfatiza la **comprensión de los procedimientos** y la **interpretación rigurosa** de los resultados, con un enfoque cien por ciento aplicado mediante el uso de herramientas computacionales, principalmente **R y RStudio**.
+Se enfatiza la **toma de decisiones metodológicas**, el diagnóstico de modelos y la **interpretación rigurosa** de los resultados, con un enfoque 100% aplicado mediante el uso de **R, RStudio y Quarto**.
 :::
 
-El curso prioriza la aplicación práctica de los métodos estadísticos sin requerir una profundización en sus fundamentos matemáticos. Al finalizar, el estudiante será capaz de:
+El curso prioriza la aplicación práctica de los métodos y la evaluación crítica de literatura empírica. Al finalizar, el estudiante será capaz de:
 
-1. Analizar datos primarios y secundarios.  
-2. Identificar la técnica estadística adecuada según el contexto.  
-3. Generar informes que comuniquen de manera efectiva los hallazgos obtenidos.  
+1. Analizar encuestas complejas (ej. CASEN).  
+2. Identificar y diagnosticar la técnica estadística adecuada.  
+3. Generar informes dinámicos que comuniquen de manera transparente los hallazgos obtenidos.  
 
 ## Resultados de Aprendizaje {background-color="white"}
 
 ::: {.callout-tip title="Resultado General"}
-Desarrollar la capacidad de aplicar técnicas de estadística multivariante descriptiva e inferencial para **analizar datos, formular hipótesis y construir modelos explicativos** en investigaciones sociales, asegurando la correcta interpretación y comunicación de los resultados.
+Desarrollar la capacidad de aplicar técnicas de estadística multivariante descriptiva e inferencial para **analizar datos, formular hipótesis y construir modelos explicativos** en investigaciones sociales, asegurando la correcta interpretación teórica y la comunicación bajo estándares de investigación reproducible.
 :::
 
 ## Resultados Específicos {.smaller background-color="white"}
@@ -72,33 +72,33 @@ Desarrollar la capacidad de aplicar técnicas de estadística multivariante desc
 Al finalizar el semestre, ustedes serán capaces de:
 
 ::: incremental
-1. **Gestionar** bases de datos complejas, asegurando su preparación y estructuración para el análisis.
-2. **Definir** y estructurar problemas de análisis multivariante, formulando preguntas de investigación con sustento metodológico.
-3. **Seleccionar** técnicas estadísticas adecuadas, justificando su aplicación en función del tipo de datos y los objetivos del análisis.
-4. **Utilizar** herramientas computacionales especializadas, aplicando modelos en R y RStudio de manera efectiva.
-5. **Interpretar** de forma rigurosa los resultados del análisis, identificando sus alcances y limitaciones.
-6. **Redactar** informes técnicos y académicos, comunicando los hallazgos de manera clara, estructurada y fundamentada.
+1. **Gestionar** bases de datos sociales complejas, asegurando su limpieza y correcta aplicación de diseños muestrales (factores de expansión).
+2. **Definir** y estructurar problemas de investigación e hipótesis a partir de la lectura crítica de literatura científica.
+3. **Seleccionar** y especificar técnicas estadísticas adecuadas, justificando su aplicación empírica y teórica.
+4. **Implementar** flujos de trabajo reproducibles en R/Quarto, desarrollando la capacidad de diagnosticar y corregir modelos.
+5. **Interpretar** de forma rigurosa coeficientes, índices de ajuste y diagramas conceptuales.
+6. **Redactar** informes técnicos dinámicos, de manera clara, estructurada y transparente.
 :::
 
 # Estructura de Contenidos
 
-## 1 y 2: Gestión y Muestras Complejas {.smaller .dark-background}
+## 1 y 2: Reproducibilidad y Muestras {.smaller .dark-background}
 
 ::: columns
 ::: {.column width="50%"}
-### 💻 1. Gestión de Datos con R
-- Introducción a la manipulación de datos con `tidyverse`.
-- Cálculo e interpretación de estadísticos descriptivos.
-- Visualización de información con `ggplot2`.
-- Elementos introductorios de investigación reproducible.
+### 💻 1. Investigación Reproducible y Datos
+- Paradigma de la Ciencia Abierta en Cs. Sociales.
+- Flujos de trabajo estructurados: R Projects.
+- Elaboración de documentos dinámicos con `Quarto`.
+- Repaso de `tidyverse` y `ggplot2`.
 :::
 
 ::: {.column width="50%"}
 ### 📊 2. Uso de muestras complejas en R
-- Conceptos fundamentales de muestreo complejo.
-- Diseño de encuestas y aplicación de ponderaciones.
+- Conceptos fundamentales (estratos, conglomerados).
+- Diseño de encuestas (CASEN, ENUT) y ponderaciones.
 - Inferencia estadística en muestras complejas.
-- Manejo de encuestas con los paquetes `survey` y `srvyr`.
+- Manejo con los paquetes `survey` y `srvyr`.
 :::
 :::
 
@@ -109,15 +109,15 @@ Al finalizar el semestre, ustedes serán capaces de:
 ### 🧠 3. Introducción a Modelos Multivariados
 - Rol de los modelos en las ciencias sociales.
 - Diferencias entre enfoques exploratorios y confirmatorios.
-- Repaso de conceptos estadísticos clave: covarianza, correlación e inferencia.
-- Supuestos del análisis multivariante y su importancia.
+- Repaso: covarianza, correlación e inferencia.
+- Supuestos del análisis multivariante.
 :::
 
 ::: {.column width="50%"}
-### 📈 4. Repaso de modelos de regresión
+### 📈 4. Regresión y diseño complejo
 - Relevancia del control estadístico.
 - Regresión lineal múltiple.
-- Regresión logística binaria.
+- **Integración:** Estimación de modelos incorporando diseños de muestras complejas (`svyglm`).
 :::
 :::
 
@@ -127,18 +127,16 @@ Al finalizar el semestre, ustedes serán capaces de:
 ::: {.column width="50%"}
 ### 🔍 5. Análisis Factorial Exploratorio (AFE)
 - Aplicación en la investigación sociológica.
-- Comparación entre componentes principales y factor común; supuestos.
+- Comparación entre componentes principales y factor común.
 - Extracción de factores, selección y rotación.
-- Interpretación de matriz, evaluación del ajuste y puntuaciones.
-- Introducción al paquete `psych`.
+- Matriz factorial y puntuaciones (`psych`).
 :::
 
 ::: {.column width="50%"}
 ### 🎯 6. Análisis Factorial Confirmatorio (AFC)
 - Diferencias principales con el AFE.
-- Especificación e identificación del modelo, estimación de parámetros.
-- Evaluación del ajuste, reespecificación y validez.
-- Ejemplo práctico de análisis confirmatorio.
+- Especificación, identificación y estimación.
+- Evaluación del ajuste (CFI, RMSEA, TLI) e índices de modificación.
 - Introducción al paquete `lavaan`.
 :::
 :::
@@ -148,18 +146,18 @@ Al finalizar el semestre, ustedes serán capaces de:
 ::: columns
 ::: {.column width="50%"}
 ### 🛤️ 7. Análisis de Sendero (Path Analysis)
-- Fundamentos y aplicación en ciencias sociales.
-- Especificación del modelo de sendero y verificación de supuestos.
-- Evaluación de la medición y capacidad confirmatoria.
-- Ejemplo aplicado en investigación sociológica.
+- Fundamentos y diagramas causales.
+- Variables endógenas y exógenas.
+- Descomposición de efectos: directos, indirectos (mediación) y totales.
+- Ejemplo aplicado en literatura reciente.
 :::
 
 ::: {.column width="50%"}
 ### 🏗️ 8. Modelos de Ecuaciones Estructurales (SEM)
-- Definición y aplicación de los SEM en ciencias sociales.
-- Estructura del modelo y supuestos de la técnica.
-- Estimación, evaluación del modelo y modificaciones.
-- Ejemplos de modelamiento en investigación.
+- Integración del modelo de medida (AFC) y estructural (Path).
+- Estructura, identificación y supuestos.
+- Estimación, problemas de convergencia y ajuste.
+- Reporte bajo estándares de publicación académica.
 :::
 :::
 
@@ -168,43 +166,65 @@ Al finalizar el semestre, ustedes serán capaces de:
 ::: {style="font-size: 1.2rem;"}
 | Ítem | Título | Autor | Año |
 |:---|:---|:---|:---|
-| 1 | Análisis Estadístico Multivariante - Un Enfoque Teórico y Práctico | De La Garza García, J. | 2013 |
-| 2 | Análisis de datos multivariantes | Peña, Daniel | 2002 |
-| 3 | Análisis Multivariado Aplicado | Uriel y Aldás | 2005 |
-| 4 | Análisis Multivariante para las Ciencias Sociales | Levi, J.P. y Varela, J. | 2001 |
-| 5 | Modelos de Ecuaciones Estructurales (Cuadernos de estadística) | Batista, J.M. y Coenders, G. | 2012 |
-| 6 | Introducción al Análisis de Regresión Lineal | Montgomery, Peck y Vining | 2006 |
-| 7 | El análisis factorial como técnica de investigación en Psicología | Ferrando, P. J., & Anguiano-Carrasco, C. | 2010 |
+| 1 | Análisis multivariable: teoría y práctica de la investigación social | Cea D’Ancona, M. A. | 2002 |
+| 2 | Regression analysis and linear models: concepts and application | Darlington, R. & Hayes, A. | 2017 |
+| 3 | Análisis estadístico multivariante: un enfoque teórico y práctico | De la Garza García, J. | 2013 |
+| 4 | Structural equation modeling with lavaan | Gana, K. & Broc, G. | 2019 |
+| 5 | El análisis factorial como técnica de investigación en psicología | Ferrando, P. & Anguiano, C. | 2010 |
+| 6 | Modelos de ecuaciones estructurales | Ruiz, M.A., Pardo & San Martín | 2010 |
+| 7 | El path analysis: conceptos básicos y ejemplos de aplicación | Pérez, E. et al. | 2013 |
 :::
 
-## Bibliografía Complementaria {.smaller background-color="white"}
-
+## Bibliografía Práctica y Complementaria {.smaller background-color="white"}
 
 ::: {style="font-size: 1.2rem;"}
 | Ítem | Título | Autor | Año |
 |:---|:---|:---|:---|
-| 8 | Análisis factorial confirmatorio. Su utilidad en la validación de cuestionarios relacionados con la salud. | Batista-Foguet, J.M. et al. | 2004 |
-| 9 | El Path Analysis: conceptos básicos y ejemplos de aplicación. | Pérez, E. et al. | 2013 |
-| 10 | Modelos de ecuaciones estructurales | Ruiz, M.A | 2010 |
-| 11 | RStudio para Estadística Descriptiva en Ciencias Sociales. | Boccardo, G. y Ruiz, F. | 2019 |
-| 12 |[R para Ciencia de Datos](https://es.r4ds.hadley.nz/index.html) | Wickham, H | 2019 |
-| 13 | Exploring complex survey data analysis using R: A tidy intro with {srvyr} and {survey} | Zimmer, S. A | 2024 |
+| 8 | [R para Ciencia de Datos](https://es.r4ds.hadley.nz/index.html) | Wickham, H. | 2019 |
+| 9 | Exploring complex survey data analysis using R ({srvyr} & {survey}) | Zimmer, S. A. et al. | 2024 |
+| 10 | RStudio para estadística descriptiva en ciencias sociales | Boccardo, G. & Ruiz, F. | 2019 |
+| 11 | Ciencia reproducible: qué, por qué, cómo | Rodríguez-Sánchez et al. | 2016 |
+| 12 | [Guía para los análisis reproducibles](https://lisa-coes.netlify.app/03componentes/) | LISA-COES | 2021 |
+| 13 | Metodología de diseño muestral: Encuesta Casen 2022 | Min. Desarrollo Social | 2023 |
+| 14 | [The lavaan tutorial](https://lavaan.ugent.be/tutorial/) | Rosseel, Y. | 2017 |
 :::
 
+## Evaluaciones y Fechas Clave {.smaller .dark-background}
 
-## Evaluaciones {.smaller .dark-background}
+El curso se evalúa mediante un sistema de **hitos escalonados**, uso de Quarto y evaluación crítica. La Asistencia mínima requerida es del **70%** (requisito de aprobación).
+
+::: {style="font-size: 1.5rem;"}
+| Evaluación | Ponderación | Fechas de Entrega / Rendición |
+|:---|:---:|:---|
+| **Tarea 0 (Diagnóstico nivel R)** | Formativa | 16 de marzo |
+| **Trabajo Final (TF):** Hito 1 | 5% | 06 de abril |
+| **Tarea Práctica N°1 (R)** | 10% | 27 de abril |
+| **Seminario de Lectura (Oral)** | 15% | 27 de abr o 11 de may (Según grupo) |
+| **Trabajo Final (TF):** Hito 2 | 10% | 11 de mayo |
+| **Prueba Solemne** (Presencial) | 30% | 18 de mayo |
+| **Tarea Práctica N°2 (R)** | 10% | 15 de junio |
+| **Trabajo Final (TF):** Informe Final | 20% | 06 de julio (Quarto) |
+::: 
 
 
+*Nota de eximición: 5,5 (Sin notas bajo 4,0 en la prueba solemne).*
 
-| Evaluación | Fechas (Semana de entrega) | Ponderación |
-|:---|:---|:---|
-| **Tareas uso de R (4 en total)** | 24 de marzo <br> 28 de abril <br> 2 de junio <br> 16 de junio | **30%** |
-| **Prueba Solemne** | 19 de mayo | **35%** |
-| **Trabajo Final** | 1 de julio | **35%** |
+## 🤖 Política de Inteligencia Artificial (IA) {.smaller background-color="white"}
 
-::: {.callout-important title="¡Fechas Clave!"}
-Por favor, agenden desde ya estas fechas en sus calendarios para evitar topes a fin de semestre.
+En sintonía con la ciencia de datos moderna y el reglamento UDP, adoptamos un **uso autorizado, transparente y delimitado** de IA Generativa (ChatGPT, Claude, Copilot).
+
+::: {.callout-tip title="✅ Lo que SÍ está permitido (y fomentado)"}
+
 :::
+
+::: {.callout-important title="🚫 Lo que NO está permitido (Falta Ética)"}
+
+:::
+
+::: {.callout-warning title="📄 Anexo de Transparencia"}
+
+:::
+
 
 # Apoyo y Logística del Curso
 
@@ -235,9 +255,8 @@ Por favor, agenden desde ya estas fechas en sus calendarios para evitar topes a 
 :::
 
 ::: {.callout-tip title="Dinámica de las Ayudantías"}
-- Están disponibles para responder **dudas teóricas** y **de código en R**.
-- Habrá sesiones de ayudantía **cada 2 semanas** aproximadamente, centradas en la aplicación de las técnicas de cátedra.
-- Les acompañarán directamente en la realización de tareas y trabajos de investigación.
+- Las primeras semanas funcionarán como un **Bootcamp de nivelación en R** para quienes lo requieran tras la evaluación diagnóstica (Tarea 0).
+- Posteriormente, acompañarán el progreso del curso resolviendo dudas de código, estimación de modelos y la preparación de los hitos del Trabajo Final.
 :::
 
 ## Plataformas y Comunicación {.smaller .dark-background}
@@ -257,6 +276,7 @@ Todo el material, presentaciones y guías prácticas estarán alojados de manera
 Las comunicaciones con el equipo docente para **temas colectivos** deberán gestionarse de manera centralizada mediante un delegado o delegada, especialmente considerando que en la sala hay alumnos de distintas generaciones. 
 
 *Esto es estrictamente necesario y particularmente relevante para solicitudes respecto a fechas de evaluaciones.*
+
 
 # Introducción a R y Rstudio
 

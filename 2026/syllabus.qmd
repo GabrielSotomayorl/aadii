@@ -16,175 +16,227 @@ toc: true
 | **Duración** | Semestral |
 | **Horario** | Lunes módulos 2 y 3 (10:00 a 11:20 y 11:30 a 12:50) |
 | **Sala** | Laboratorio de computación |
-| **Asistencia** | No es obligatoria |
+| **Asistencia** | Obligatoria 70% |
+| **Docente** | Gabriel Sotomayor<br>gabriel.sotomayor@mail.udp.cl |
+| **Ayudantes** | Felipe Adasme<br>felipe.adasme@mail.udp.cl<br><br>Francisca Hernández<br>francisca.hernandez_c@mail.udp.cl |
 
 ---
 
 ## II. Presentación
 
-Este curso profundiza en las técnicas de análisis multivariante, permitiendo examinar de manera integrada la interacción de múltiples factores en el estudio de problemas sociales. Se enfatiza la comprensión de los procedimientos y la interpretación rigurosa de los resultados, con un enfoque aplicado mediante el uso de herramientas computacionales, principalmente R y RStudio.  
+Este curso profundiza en las técnicas de análisis multivariante, permitiendo examinar de manera integrada la interacción de múltiples factores en el estudio de problemas sociales. Se enfatiza la comprensión de los procedimientos y la interpretación rigurosa de los resultados, con un enfoque aplicado mediante el uso de herramientas computacionales (R y RStudio), operando bajo los estándares de análisis reproducible.
 
-El curso prioriza la aplicación práctica de los métodos estadísticos sin requerir una profundización en sus fundamentos matemáticos. Al finalizar, el estudiante será capaz de analizar datos primarios y secundarios, identificar la técnica estadística adecuada según el contexto y generar informes que comuniquen de manera efectiva los hallazgos obtenidos.  
+El curso prioriza la aplicación práctica de los métodos estadísticos y la evaluación crítica de literatura empírica, sin requerir una profundización en sus fundamentos matemáticos. El curso pone especial énfasis en el pensamiento crítico: el estudiante no solo aprenderá a estimar modelos, sino a diagnosticar errores de especificación. Al finalizar, será capaz de analizar datos primarios y secundarios de encuestas complejas, identificar la técnica estadística adecuada y generar informes dinámicos (Quarto) que comuniquen de manera transparente y efectiva los hallazgos obtenidos.
 
 ---
 
 ## III. Resultados de Aprendizaje
 
 ### Resultado general
-Desarrollar la capacidad de aplicar técnicas de estadística multivariante descriptiva e inferencial para analizar datos, formular hipótesis y construir modelos explicativos en investigaciones sociales, asegurando la correcta interpretación y comunicación de los resultados.  
+Desarrollar la capacidad de aplicar técnicas de estadística multivariante descriptiva e inferencial para analizar datos, formular hipótesis y construir modelos explicativos en investigaciones sociales, asegurando la correcta interpretación teórica y la comunicación de los resultados bajo estándares de investigación reproducible.
 
 ### Resultados específicos
-1. Gestionar bases de datos complejas, asegurando su preparación y estructuración para el análisis. 
-2. Definir y estructurar problemas de análisis multivariante, formulando preguntas de investigación con sustento metodológico. 
-3. Seleccionar técnicas estadísticas adecuadas, justificando su aplicación en función del tipo de datos y los objetivos del análisis. 
-4. Utilizar herramientas computacionales especializadas, aplicando modelos en R y RStudio de manera efectiva. 
-5. Interpretar de forma rigurosa los resultados del análisis, identificando sus alcances y limitaciones. 
-6. Redactar informes técnicos y académicos, comunicando los hallazgos de manera clara, estructurada y fundamentada.  
+1. Gestionar bases de datos sociales complejas, asegurando su preparación, limpieza y la correcta aplicación de diseños muestrales (factores de expansión y estratos) para el análisis poblacional.
+2. Definir y estructurar problemas de análisis multivariante, formulando preguntas de investigación e hipótesis a partir de la lectura crítica de literatura científica contemporánea.
+3. Seleccionar y especificar técnicas estadísticas adecuadas (Análisis Factorial, Modelos de Sendero, Ecuaciones Estructurales), justificando su aplicación empírica y coherencia teórica.
+4. Implementar flujos de trabajo reproducibles utilizando herramientas computacionales (R, RStudio y Quarto), desarrollando la capacidad de diagnosticar, corregir y optimizar modelos estadísticos.
+5. Interpretar de forma rigurosa los coeficientes, índices de ajuste y diagramas conceptuales resultantes del análisis, identificando los alcances teóricos y limitaciones de los modelos.
+6. Redactar informes técnicos y académicos dinámicos, comunicando los hallazgos de manera clara, estructurada y transparente.
 
 ---
 
 ## IV. Contenidos
 
-**1. Gestión de datos con R** * Introducción a la manipulación de datos con tidyverse. 
-* Cálculo e interpretación de estadísticos descriptivos. 
-* Visualización de información con ggplot2. 
-* Elementos introductorios de investigación reproducible.  
+**1. Investigación Reproducible y Gestión de datos**  
 
-**2. Introducción al uso de muestras complejas en R** * Conceptos fundamentales de muestreo complejo. 
-* Diseño de encuestas y aplicación de ponderaciones. 
-* Inferencia estadística en muestras complejas. 
-* Manejo de encuestas con los paquetes survey y svyr. 
+* Paradigma de la Ciencia Abierta y la reproducibilidad en ciencias sociales.
+* Flujos de trabajo estructurados: uso de R Projects y rutas relativas.
+* Elaboración de documentos dinámicos con Quarto / RMarkdown.
+* Repaso de manipulación de datos (`{tidyverse}`) y visualización (`{ggplot2}`).
 
-**3. Introducción a los modelos multivariados** * Rol de los modelos en las ciencias sociales. 
-* Diferencias entre enfoques exploratorios y confirmatorios. 
-* Repaso de conceptos estadísticos clave: covarianza, correlación e inferencia. 
-* Supuestos del análisis multivariante y su importancia. 
+**2. Introducción al uso de muestras complejas en R**  
 
-**4. Repaso de modelos de regresión** * Relevancia del control estadístico. 
-* Regresión lineal múltiple. 
-* Regresión logística binaria. 
+* Conceptos fundamentales de muestreo complejo (estratos, conglomerados).
+* Diseño de encuestas poblacionales (ej. CASEN, ENUT) y aplicación de ponderaciones.
+* Inferencia estadística y cálculo de errores estándar en muestras complejas.
+* Manejo de encuestas con los paquetes `{survey}` y `{srvyr}`.
 
-**5. Análisis Factorial Exploratorio** * Aplicación en la investigación sociológica. 
-* Comparación entre análisis de componentes principales y factor común; supuestos del método. 
-* Métodos de extracción de factores, criterios de selección y técnicas de rotación. 
-* Interpretación de la matriz factorial y evaluación del ajuste. Cálculo de puntuaciones factoriales. 
-* Introducción al paquete psych. 
+**3. Introducción a los modelos multivariados**
 
-**6. Análisis Factorial Confirmatorio** * Diferencias principales con el análisis factorial exploratorio. 
-* Especificación e identificación del modelo, estimación de parámetros. 
-* Evaluación del ajuste, reespecificación y validez (convergente y discriminante). 
-* Ejemplo práctico de análisis confirmatorio. 
-* Introducción al paquete lavaan. 
+* Rol de los modelos en las ciencias sociales.
+* Diferencias entre enfoques exploratorios y confirmatorios.
+* Repaso de conceptos estadísticos clave: covarianza, correlación e inferencia.
+* Supuestos del análisis multivariante y su diagnóstico.
 
-**7. Análisis de Sendero** * Fundamentos y aplicación en ciencias sociales. 
-* Especificación del modelo de sendero y verificación de supuestos. 
-* Evaluación de la medición y capacidad confirmatoria. 
-* Ejemplo aplicado en investigación sociológica. 
+**4. Repaso de modelos de regresión y diseño complejo**
 
-**8. Modelos de Ecuaciones Estructurales** * Definición y aplicación de los SEM en ciencias sociales. 
-* Estructura del modelo y supuestos de la técnica. 
-* Estimación y evaluación del modelo, introducción de modificaciones. 
-* Ejemplos de modelamiento de ecuaciones estructurales. 
+* Relevancia del control estadístico en problemas sociológicos.
+* Regresión lineal múltiple.
+* Integración: Estimación de modelos de regresión incorporando diseños de muestras complejas (función `svyglm`).
+
+**5. Análisis Factorial Exploratorio (AFE)**
+
+* Aplicación en la investigación sociológica y reducción de dimensionalidad.
+* Comparación entre análisis de componentes principales y factor común; supuestos.
+* Métodos de extracción de factores, criterios de retención y técnicas de rotación.
+* Interpretación de la matriz factorial y cálculo de puntuaciones factoriales. Introducción al paquete `{psych}`.
+
+**6. Análisis Factorial Confirmatorio (AFC)**
+
+* Diferencias principales con el análisis factorial exploratorio.
+* Especificación, identificación del modelo y estimación de parámetros.
+* Evaluación del ajuste (CFI, RMSEA, TLI), índices de modificación y reespecificación.
+* Introducción al paquete `{lavaan}` y visualización de modelos.
+
+**7. Análisis de Sendero**
+
+* Fundamentos, diagramas causales y aplicación en ciencias sociales.
+* Especificación del modelo de sendero: variables endógenas y exógenas.
+* Descomposición de efectos: directos, indirectos (mediación) y totales.
+* Ejemplo aplicado en investigación sociológica a partir de literatura reciente.
+
+**8. Modelos de Ecuaciones Estructurales**
+
+* Definición e integración del modelo de medida (AFC) y el modelo estructural (Path).
+* Estructura del modelo, identificación y supuestos de la técnica.
+* Estimación, diagnóstico de problemas de convergencia y evaluación del ajuste global.
+* Reporte de resultados SEM bajo estándares de publicación académica.
 
 ---
 
 ## V. Metodología
 
-El curso se desarrolla a través de clases expositivas y talleres prácticos, con uso intensivo de herramientas computacionales, principalmente R, apoyado en los recursos disponibles en el sitio web del curso. Esta metodología permite trabajar de manera estructurada cada uno de los temas abordados. 
+El curso se desarrolla a través de clases expositivas, talleres prácticos y análisis de literatura empírica, con uso intensivo de herramientas computacionales (principalmente R y RStudio). La metodología enfatiza no solo la ejecución técnica, sino especialmente la toma de decisiones metodológicas, la justificación de los modelos y la interpretación sociológica de los resultados bajo los estándares de la investigación reproducible (uso de documentos dinámicos como Quarto).
 
-Se llevarán a cabo dos sesiones semanales: una clase teórica y un taller aplicado, donde los estudiantes desarrollarán ejercicios y análisis basados en datos reales. 
+Se llevarán a cabo dos sesiones semanales continuas (una teórica y un taller aplicado), donde los estudiantes desarrollarán ejercicios utilizando bases de datos reales de encuestas sociales complejas (ej. CASEN, ENUT). Asimismo, se incorporan instancias de lectura y presentación oral de artículos científicos, lo que permite conectar directamente las técnicas estadísticas multivariantes con el diseño de investigación empírica contemporánea.
 
-Además, se realizarán ayudantías cada dos semanas, enfocadas en reforzar la aplicación en R de los conceptos abordados en la cátedra, proporcionando un espacio para resolver dudas y fortalecer habilidades prácticas. 
+Además, se realizarán ayudantías aproximadamente cada dos semanas, diseñadas para acompañar el progreso del estudiantado de forma continua. Durante las primeras semanas, estas tendrán un enfoque de nivelación técnica en R para abordar distintas bases de conocimiento. Posteriormente, se enfocarán en reforzar la aplicación práctica de la materia, proporcionar apoyo en la resolución de problemas de código y orientar el desarrollo progresivo del trabajo de investigación final.
 
 ---
 
 ## VI. Evaluación
 
-Se utilizarán distintas formas de evaluación: Tareas, pruebas y trabajos de investigación. 
+El curso se evalúa mediante un sistema de hitos que integra el uso de R con la capacidad de análisis crítico y comunicación de resultados sociológicos. Todas las entregas escritas deberán ser realizadas en Quarto (a excepción de la tarea formativa), fomentando prácticas de investigación reproducible.
 
-| Evaluación | Ponderación | Fecha (semana de entrega) |
+| Componente | Ponderación | Descripción resumida |
 |:---|:---:|:---|
-| **Tareas uso de R** | 30% | 30 de marzo (Tarea 1)<br>11 de mayo (Tarea 2)<br>08 de junio (Tarea 3)<br>22 de junio (Tarea 4) |
-| **Prueba Solemne** | 35% | 18 de mayo |
-| **Trabajo final (grupal)** | 35% | 06 de julio |
+| **Prueba Solemne** | 30% | Individual, presencial. Foco en interpretación de resultados y teoría aplicada. |
+| **Trabajo Final (TF)** | 35% | Grupal (3 pers.). Escalonado en: Hito 1 (5%), Hito 2 (10%) e Hito 3 (20%). |
+| **Tareas de uso de R** | 20% | Individuales. Tarea 0 (0% formativa), Tarea 1 (10%) y Tarea 2 (10%). Aplicación técnica y corrección de modelos. |
+| **Seminario de Lectura** | 15% | Grupal. Presentación oral de un artículo científico con aplicación de las técnicas del curso. |
 
-La nota de eximición es 5,5 siempre y cuando no se tengan notas bajo 4,0 en la prueba. La nota mínima en el examen para aprobar el curso es un 3,5.  
+* **Prueba Solemne (30%):** Evaluación de carácter individual y presencial. Se centra en la capacidad del estudiante para interpretar salidas de software (outputs), diagnosticar modelos mediante índices de ajuste y tomar decisiones metodológicas fundamentadas. No requiere programación en vivo.
+* **Trabajo de Investigación Final (35%):** Los estudiantes aplicarán los contenidos del curso en una investigación original utilizando datos secundarios (ej. CASEN, ENUT, EBS).
+  * *Hito 1 (5%):* Entrega de pregunta de investigación, hipótesis y selección justificada de variables.
+  * *Hito 2 (10%):* Entrega de script reproducible con limpieza de datos, gestión de muestras complejas y análisis descriptivo.
+  * *Hito 3 (20%):* Informe final que integra el modelamiento multivariado (AFC/Path/SEM) y la discusión sociológica de resultados.
+* **Tareas de uso de R (20%):** Dos ejercicios prácticos donde se evalúa la correcta implementación de los modelos en R y su interpretación sociológica.
+* **Seminario de Lectura Crítica (15%):** Presentación oral grupal sobre un artículo académico. Se evaluará la capacidad de explicar de forma sencilla técnicas complejas y de identificar las limitaciones metodológicas de estudios publicados.
+
+### Nota de presentación (NP: 70%)
+**NP** = (Prueba Solemne x 0,30) + (Trabajo Final x 0,35) + (Tareas de R x 0,20) + (Seminario de Lectura x 0,15)
+
+### Examen (30%)
+Habrá un examen donde se evaluará todos los contenidos del curso (clases, talleres, ayudantías). Este examen equivale al 30% de la nota final del curso. 
+
+Se podrán eximir del examen aquellos estudiantes que tengan una nota de presentación igual o superior a 5,5 siempre y cuando no tengan una nota bajo 4,0 en la prueba. La nota de presentación será la nota final del curso en ese caso. La nota mínima en el examen para aprobar el curso es un 3,5.  
+
+Sobre los requisitos de aprobación, se exigirá un 70% de asistencia como mínimo considerando clases y talleres. El alumno/a que no cumpliere el requisito mínimo de asistencia, no tendrá derecho a rendir examen y reprobará el curso automáticamente. Se tomará en cada bloque. Si el estudiante se retira 15 minutos o más antes de finalizar la clase se considerará como ausente.
+
+### Nota Final (NF)
+**NF** = (NP x 0,7) + (Examen x 0,3)
 
 ### Sobre inasistencia a evaluaciones
-Si un estudiante falta a una evaluación, puede presentar ante la Secretaría de Estudios un certificado médico dentro de los cinco días hábiles posteriores a dicha evaluación, para tener derecho a rendir una prueba recuperativa. Las evaluaciones no rendidas tendrán nota 1.0. Los estudiantes tendrán derecho a un máximo de una prueba recuperativa, dicha prueba se realizará la última semana de clases e incluirá toda la materia del semestre.  
+Si un estudiante falta a una evaluación, puede presentar ante la Secretaría de Estudios un certificado médico dentro de los cinco días hábiles posteriores a dicha evaluación, para tener derecho a rendir una prueba recuperativa. Las evaluaciones no rendidas tendrán nota 1.0. Los estudiantes tendrán derecho a un máximo de una prueba recuperativa, dicha prueba se realizará la última semana de clases e incluirá toda la materia del semestre.
 
 ### Recorrección
-Según reglamento, los estudiantes tienen derecho a conocer las notas y la pauta de corrección de todas las evaluaciones en un plazo que no podrá exceder de 10 días hábiles contados desde la fecha desde que éstas fueran rendidas, como también a conocer el resultado de sus evaluaciones solemnes o principales, antes de rendir las siguientes de igual categoría en una misma asignatura.   
-Los estudiantes pueden imputar la corrección de cualquier evaluación escrita, en un plazo no superior a 5 días hábiles desde la entrega de la nota. Ello, a través de una carta dirigida al secretario de estudios, que debe ir acompañada por la prueba, trabajo o informe evaluado y además, por las correcciones y comentarios que eventualmente haya entregado el/la docente. El académico deberá comunicar al estudiante el resultado de la recorrección, fundamentando por escrito sus argumentos, en un plazo no superior a los 5 días hábiles.  
+Según reglamento, los estudiantes tienen derecho a conocer las notas y la pauta de corrección de todas las evaluaciones en un plazo que no podrá exceder de 10 días hábiles contados desde la fecha desde que éstas fueran rendidas, como también a conocer el resultado de sus evaluaciones solemnes o principales, antes de rendir las siguientes de igual categoría en una misma asignatura.  
+
+Los estudiantes pueden impugnar la corrección de cualquier evaluación escrita, en un plazo no superior a 5 días hábiles desde la entrega de la nota. Ello, a través de una carta dirigida al secretario de estudios, que debe ir acompañada por la prueba, trabajo o informe evaluado y además, por las correcciones y comentarios que eventualmente haya entregado el/la docente. El académico deberá comunicar al estudiante el resultado de la recorrección, fundamentando por escrito sus argumentos, en un plazo no superior a los 5 días hábiles.
 
 ---
 
-## VII. Cronograma de Trabajo
-
-| Fecha | Tema | Lectura Obligatoria | Evaluaciones |
-|:---|:---|:---|:---|
-| 09 de marzo | Gestión de datos con R | Boccardo, G. & Ruiz, F. (2019). RStudio para estadística descriptiva en ciencias sociales. <br><br> Wickham, H. (2019). R para ciencia de datos. | |
-| 16 de marzo | Gestión de datos con R | | |
-| 23 de marzo | Introducción al uso de muestras complejas en R | Zimmer, S. A., Powell, R. J., & Velásquez, I. C. (2024). Exploring complex survey data analysis using R: A tidy introduction with {srvyr} and {survey}. <br><br> Ministerio de Desarrollo Social y Familia. (2023). Metodología de diseño muestral: Encuesta de Caracterización Socioeconómica Nacional (Casen 2022) | Pauta Tarea 1 |
-| 30 de marzo | Introducción al uso de muestras complejas en R | | **Entrega Tarea 1** |
-| 06 de abril | Introducción a los modelos multivariados | | |
-| 13 de abril | Repaso de modelos de regresión | Darlington, R. B. & Hayes, A. F. (2017). Regression analysis and linear models | |
-| 20 de abril | Repaso de modelos de regresión | | |
-| 27 de abril | Análisis Factorial Exploratorio | Cea D’Ancona, M. A. (2002). Análisis multivariable: teoría y práctica de la investigación social. Síntesis Sociológica. | Pauta Tarea 2 |
-| 04 de mayo | *Receso* | | |
-| 11 de mayo | Análisis Factorial Exploratorio | | **Entrega Tarea 2** |
-| 18 de mayo | **Prueba 1** | | **Prueba 1** |
-| 25 de mayo | Análisis Factorial Confirmatorio | Ferrando, P. J. & Anguiano-Carrasco, C. (2010). El análisis factorial como técnica de investigación en psicología.<br><br> Gana, K. & Broc, G. (2019). Structural equation modeling with lavaan. | |
-| 01 de junio | Análisis Factorial Confirmatorio | | Pauta Tarea 3 |
-| 08 de junio | Análisis de sendero | Pérez, E., Medrano, L. A., & Rosas, J. S. (2013). El path analysis: conceptos básicos y ejemplos de aplicación.<br><br> Gana, K. & Broc, G. (2019). Structural equation modeling with lavaan. | **Entrega Tarea 3** |
-| 15 de junio | Análisis de sendero | | Pauta Tarea 4 |
-| 22 de junio | Modelos de ecuaciones estructurales | Ruiz, M. A., Pardo, A., & San Martín, R. (2010). Modelos de ecuaciones estructurales<br><br> Gana, K. & Broc, G. (2019). Structural equation modeling with lavaan. | **Entrega Tarea 4** |
-| 29 de junio | *Feriado* | | |
-| 06 de julio | Modelos de ecuaciones estructurales | | **Entrega Trabajo Final** |
-
----
-
-## VIII. Bibliografía
+## VII. Bibliografía
 
 ### Bibliografía Obligatoria
-* Batista-Foguet, J. M., Coenders, G., & Alonso, J. (2004). Análisis factorial confirmatorio: su utilidad en la validación de cuestionarios relacionados con la salud. *Medicina Clínica*, 122(Supl. 1). 
-* Boccardo, G. & Ruiz, F. (2019). *RStudio para estadística descriptiva en ciencias sociales: Manual de apoyo docente para la asignatura Estadística Descriptiva*. Departamento de Sociología, Facultad de Ciencias Sociales, Universidad de Chile. 
-* Cea D’Ancona, M. A. (2002). *Análisis multivariable: teoría y práctica de la investigación social*. Síntesis Sociológica. ISBN: 84-7738-943-8 
-* Darlington, R. B. & Hayes, A. F. (2017). *Regression analysis and linear models: concepts, applications, and implementation*. Guilford Press. 
-* De la Garza García, J. (2013). *Análisis estadístico multivariante: un enfoque teórico y práctico*. McGraw-Hill. ISBN: 978-607-15-0817-1 
-* Ferrando, P. J. & Anguiano-Carrasco, C. (2010). El análisis factorial como técnica de investigación en psicología. *Papeles del Psicólogo*, 31, 18–33. 
-* Gana, K. & Broc, G. (2019). *Structural equation modeling with lavaan*. Wiley. ISBN: 978-1786303691 
-* Levi, J. P. & Varela, J. (2001). *Análisis multivariante para las ciencias sociales*. Prentice Hall. ISBN: 84-205-3727-6 
-* Ministerio de Desarrollo Social y Familia. (2023). *Metodología de diseño muestral: Encuesta de Caracterización Socioeconómica Nacional (Casen 2022)* (Versión revisada en octubre 2023). Santiago, Chile: Ministerio de Desarrollo Social y Familia. Recuperado de https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2022/Diseno_Muestral_Casen_2022_v20oct23.pdf. 
-* Pérez, E., Medrano, L. A., & Rosas, J. S. (2013). El path analysis: conceptos básicos y ejemplos de aplicación. *Revista Argentina de Ciencias del Comportamiento*, 5(1), 52–66. 
-* Ruiz, M. A., Pardo, A., & San Martín, R. (2010). Modelos de ecuaciones estructurales. *Papeles del Psicólogo*, 31(1), 34–45. 
-* Uriel, E. & Aldás, J. (2005). *Análisis multivariado aplicado*. Editorial Thomson. ISBN: 8448136101 
-* Wickham, H. (2019). *R para ciencia de datos*. [Versión en español]. Disponible en: https://es.r4ds.hadley.nz/index.html 
+* Batista-Foguet, J. M., Coenders, G., & Alonso, J. (2004). Análisis factorial confirmatorio: su utilidad en la validación de cuestionarios relacionados con la salud. *Medicina Clínica*, 122(Supl. 1).
+* Boccardo, G. & Ruiz, F. (2019). *RStudio para estadística descriptiva en ciencias sociales: Manual de apoyo docente para la asignatura Estadística Descriptiva*. Departamento de Sociología, Facultad de Ciencias Sociales, Universidad de Chile.
+* Cea D’Ancona, M. A. (2002). *Análisis multivariable: teoría y práctica de la investigación social*. Síntesis Sociológica. ISBN: 84-7738-943-8
+* Darlington, R. B. & Hayes, A. F. (2017). *Regression analysis and linear models: concepts, applications, and implementation*. Guilford Press.
+* De la Garza García, J. (2013). *Análisis estadístico multivariante: un enfoque teórico y práctico*. McGraw-Hill. ISBN: 978-607-15-0817-1
+* Ferrando, P. J. & Anguiano-Carrasco, C. (2010). El análisis factorial como técnica de investigación en psicología. *Papeles del Psicólogo*, 31, 18–33.
+* Gana, K. & Broc, G. (2019). *Structural equation modeling with lavaan*. Wiley. ISBN: 978-1786303691
+* Laboratorio de Ciencia Social Abierta (LISA-COES). (2021, 3 de noviembre). *Componentes: Guía para los análisis reproducibles*. https://lisa-coes.netlify.app/03componentes/
+* Levi, J. P. & Varela, J. (2001). *Análisis multivariante para las ciencias sociales*. Prentice Hall. ISBN: 84-205-3727-6
+* Ministerio de Desarrollo Social y Familia. (2023). *Metodología de diseño muestral: Encuesta de Caracterización Socioeconómica Nacional (Casen 2022)*. Santiago, Chile: Ministerio de Desarrollo Social y Familia. Recuperado de https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2022/Diseno_Muestral_Casen_2022_v20oct23.pdf
+* Pérez, E., Medrano, L. A., & Rosas, J. S. (2013). El path analysis: conceptos básicos y ejemplos de aplicación. *Revista Argentina de Ciencias del Comportamiento*, 5(1), 52–66.
+* Rodríguez-Sánchez, F., Pérez-Luque, A. J., Bartomeus, I., & Varela, S. (2016). Ciencia reproducible: qué, por qué, cómo. *Ecosistemas*, 25(2), 83-92. https://doi.org/10.7818/ECOS.2016.25-2.11
+* Ruiz, M. A., Pardo, A., & San Martín, R. (2010). Modelos de ecuaciones estructurales. *Papeles del Psicólogo*, 31(1), 34–45.
+* Uriel, E. & Aldás, J. (2005). *Análisis multivariado aplicado*. Editorial Thomson. ISBN: 8448136101
+* Wickham, H. (2019). *R para ciencia de datos*. [Versión en español]. Disponible en: https://es.r4ds.hadley.nz/index.html
 * Zimmer, S. A., Powell, R. J., & Velásquez, I. C. (2024). *Exploring complex survey data analysis using R: A tidy introduction with {srvyr} and {survey}*. CRC Press.
 
 ### Bibliografía Complementaria
-* Ato, M. & López, J. J. (1996). *Análisis estadístico para datos categóricos*. Sintesis. ISBN: 8477383928 
-* Díaz de Rada Iguzquiza, V. (2002). *Técnicas de análisis multivariante para la investigación social y comercial*. Ra-Ma. ISBN: 8478975152 
-* Escofier, B. & Pagès, J. (1994). *Análisis factoriales simples y múltiples: objetivos, métodos e interpretación*. Servicio Editorial, Universidad del País. ISBN: 8475853838 
-* Johnson, D. E. (2000). *Métodos multivariados aplicados al análisis de datos*. International Thomson Editores. ISBN: 9687529903 
-* Rosseel, Y. (2017). *The lavaan tutorial*. Department of Data Analysis, Ghent University. Retrieved from https://faculty.washington.edu/matsueda/courses/529/Readings/Lavaan%20tutorial.pdf 
+* Ato, M. & López, J. J. (1996). *Análisis estadístico para datos categóricos*. Sintesis. ISBN: 8477383928
+* Díaz de Rada Iguzquiza, V. (2002). *Técnicas de análisis multivariante para la investigación social y comercial*. Ra-Ma. ISBN: 8478975152
+* Escofier, B. & Pagès, J. (1994). *Análisis factoriales simples y múltiples: objetivos, métodos e interpretación*. Servicio Editorial, Universidad del País. ISBN: 8475853838
+* Johnson, D. E. (2000). *Métodos multivariados aplicados al análisis de datos*. International Thomson Editores. ISBN: 9687529903
+* Rosseel, Y. (2017). *The lavaan tutorial*. Department of Data Analysis, Ghent University. Retrieved from https://faculty.washington.edu/matsueda/courses/529/Readings/Lavaan%20tutorial.pdf
 
 ---
 
-## IX. Cláusula Ética y Normativas
+## VIII. Cláusula Ética
 
-**Cláusula Ética**
-La Escuela establece severas sanciones para las faltas graves que los estudiantes realicen, tales como plagio o falsificación de documentos, señalados en el Reglamento del Estudiante de Pre-grado en el Título XIII de las Conductas Contrarias a los Principios Universitarios.    
+La Escuela establece severas sanciones para las faltas graves que los estudiantes realicen, tales como plagio o falsificación de documentos, señalados en el Reglamento del Estudiante de Pre-grado en el Título XIII de las Conductas Contrarias a los Principios Universitarios. 
+ 
+El Comité de Ética es la instancia responsable de revisar y resolver las situaciones que sean contrarias a los principios universitarios, en relación con el desarrollo de conductas ilícitas que vicien los procesos de evaluación. Son definidas como conductas que vician una evaluación, todos aquellos actos que implican un rompimiento de los estándares éticos que un estudiante debe resguardar en una evaluación, distorsionando la apreciación de los conocimientos y habilidades reales que el estudiante posee (por ejemplo, copia y uso indebido de documento y/o medios electrónicos, modificación o falsificación de documentos, plagio en trabajos escritos).
 
-El Comité de Ética es la instancia responsable de revisar y resolver las situaciones que sean contrarias a los principios universitarios, en relación al desarrollo de conductas ilícitas que vicien los procesos de evaluación. Son definidas como conductas que vician una evaluación, todos aquellos actos que implican un rompimiento de los estándares éticos que un estudiante debe resguardar en una evaluación, distorsionando la apreciación de los conocimientos y habilidades reales que el estudiante posee (por ejemplo, copia y uso indebido de documento y/o medios electrónicos, modificación o falsificación de documentos, plagio en trabajos escritos).  
+Se consideran como fuentes de información que se deben citar, los textos e imágenes en formato electrónico o en papel, en todas sus modalidades: libros, diarios, documentos de trabajo, artículos académicos, etc.
 
-Se consideran como fuentes de información que se deben citar, los textos e imágenes en formato electrónico o en papel, en todas sus modalidades: libros, diarios, documentos de trabajo, artículos académicos, etc.  
+---
 
-**Normativa de Prevención y Sanción de Acciones de Discriminación, Violencia Sexual y de Género (UDP)**
-Tal como señala esta normativa:  
-“La Universidad Diego Portales (UDP) promueve el pluralismo y la independencia crítica de quienes la integran y tienen como uno de sus principales objetivos el desarrollo integral de las personas que forman parte de ella y de la sociedad. En ese marco, la UDP promueve una convivencia reflexiva basada en el reconocimiento a la dignidad de las personas, la libertad de expresión, la libertad sexual, la identidad y expresión de género, y la autonomía.” 
+## IX. Política sobre discriminación arbitraria, acoso sexual y acoso laboral
 
-Por lo tanto: 
-“Quienes integren la Universidad tienen la obligación de conocer esta normativa y los protocolos, sitios web y programas que de ella se deriven. Particularmente responsables de su implementación serán las autoridades de la Universidad, quienes tendrán la primera obligación de hacer frente a situaciones que deñen a sus integrantes. Para lograr estos objetivos, se debe realizar la correcta difusión y socialización de la normativa.” 
+La Universidad Diego Portales (UDP) promueve el pluralismo y la independencia crítica de quienes la integran y tiene como uno de sus principales objetivos el desarrollo integral de las personas que forman parte de ella y de la sociedad. En ese marco, la UDP promueve una convivencia reflexiva basada en el reconocimiento a la dignidad de las personas, la libertad de expresión, la libertad sexual, la identidad y expresión de género, y la autonomía de sus integrantes, en línea con la Convención sobre la eliminación de todas las formas de discriminación contra la mujer, la Convención interamericana para prevenir la violencia contra la mujer, y los demás tratados internacionales sobre Derechos Humanos suscritos y ratificados por Chile y que se encuentren vigentes.
 
-Los detalles de la normativa pueden ser consultados en el siguiente [enlace oficial de la UDP](https://staticcl1.fidelizador.com/udportales/2022/enero/actualizacion-normativa/RESOLUCION_%20RECTORIA_%20N%3F03_%28APRUEBA_MODIF_NORMATIVA_VIOLENCIA%202022%29OK.pdf).
+La UDP ha desarrollado reglamentos y políticas que garantizan el respeto a las personas y la no discriminación. Por ello, esta normativa surge de la necesidad de reducir las brechas de género arbitrarias e injustas existentes entre las personas que forman parte de la institución o se vinculan a ella, y de la necesidad de construir un espacio universitario libre de violencia. En este contexto, se entiende por discriminación a toda distinción, exclusión o restricción basada en el sexo, la identidad de género, la orientación sexual y/o la expresión de género, que tenga como resultado un menoscabo o anulación del goce o ejercicio de derechos fundamentales y/o a recibir un trato digno y respetuoso.
+
+La violencia de género se entiende como toda conducta que afecta la dignidad e integridad de las personas, tanto en el ámbito público como en el privado, reconociendo que las mujeres y, en general, las personas que no se acercan a los patrones socialmente dominantes en cuanto a identidad de género, orientación sexual y expresión de género, suelen ser más vulnerables a situaciones de discriminación, desigualdad y abuso de poder.
+
+Quienes integran la Universidad tienen la obligación de conocer esta normativa y los protocolos, sitios web y programas que de ella deriven. Particularmente responsables de su implementación serán las autoridades de la universidad, quienes tendrán la primera obligación de hacer frente a situaciones que dañen a sus integrantes. Para lograr estos objetivos, se debe realizar la correcta difusión y socialización de la normativa.
+Más información y detalles pueden ser consultados en: https://genero.udp.cl/politicas-normativas-y-orientaciones/normativa-de-prevencion-y-sancion-de-acciones-de-discriminacion-violencia-sexual-y-de-genero/ 
+
+---
+
+## X. Uso de Inteligencia Artificial (IA)
+
+El uso de cualquier tipo de herramientas de inteligencia artificial (IA) en este curso debe contar con la autorización explícita del profesor, ya que su utilización tiene que estar en sintonía con los objetivos de aprendizaje y el tipo de evaluaciones que se han definido en el presente programa de curso. Esto puede significar que ninguna o que algunas de las actividades permiten el uso de IA.
+
+Su uso sin autorización puede afectar el aprendizaje de habilidades claves de la asignatura y, además, constituir una falta ética, de acuerdo con lo establecido en el Reglamento de Facultad. 
+
+Es importante realizar la consulta al profesor responsable si existen dudas sobre el uso de una herramienta de IA en una tarea o una evaluación.
+
+---
+
+## XI. Cronograma de trabajo
+
+| Fecha | Tema | Lectura Obligatoria | Evaluaciones |
+|:---|:---|:---|:---|
+| 09 de marzo | Introducción al curso y gestión de datos con R | Boccardo, G. & Ruiz, F. (2019). RStudio para estadística descriptiva en ciencias sociales.<br><br>Wickham, H. (2019). R para ciencia de datos. | Se publica Tarea 0 (Diagnóstico nivel R). |
+| 16 de marzo | Análisis reproducible y ciencia abierta | Rodríguez-Sánchez, F., Pérez-Luque, A. J., Bartomeus, I., & Varela, S. (2016). Ciencia reproducible: qué, por qué, cómo.<br><br>Laboratorio de Ciencia Social Abierta (LISA-COES). (2021). Componentes: Guía para los análisis reproducibles.<br><br>*(Se recomienda también revisar Diseño Transparente, Datos Abiertos y Publicaciones Libres en la misma web).* | **Entrega Tarea 0 (Formativa)**. |
+| 23 de marzo | Introducción al uso de muestras complejas en R | Zimmer, S. A., Powell, R. J., & Velásquez, I. C. (2024). Exploring complex survey data analysis using R.<br><br>Ministerio de Desarrollo Social y Familia. (2023). Metodología de diseño muestral (Casen 2022). | Se publica Hito 1 Trabajo Final. |
+| 30 de marzo | Introducción al uso de muestras complejas en R | | |
+| 06 de abril | Introducción a los modelos multivariados y repaso de modelos de regresión | Darlington, R. B. & Hayes, A. F. (2017). Regression analysis and linear models. | **Entrega Hito 1 (5%)**: Pregunta, hipótesis y datos. |
+| 13 de abril | Análisis Factorial Exploratorio I | Cea D’Ancona, M. A. (2002). Análisis multivariable: teoría y práctica de la investigación social. | Se publica Tarea 1 (10%). |
+| 20 de abril | Análisis Factorial Exploratorio II | | Se publica Hito 2 Trabajo Final. |
+| 27 de abril | Seminario de Lectura I | | **Entrega Tarea 1 (10%)**.<br>**Seminario de Lectura – Grupo 1 (15%)**. |
+| 04 de mayo | *Receso* | | |
+| 11 de mayo | Seminario de Lectura II /<br>Análisis Factorial Confirmatorio | Ferrando, P. J. & Anguiano-Carrasco, C. (2010). El análisis factorial...<br><br>Gana, K. & Broc, G. (2019). Structural equation modeling with lavaan. | **Entrega Hito 2 (10%)**: Base limpia y descriptivos.<br>**Seminario de Lectura – Grupo 2 (15%)**. |
+| 18 de mayo | Prueba 1 | | **Rendición Prueba (30%)**. |
+| 25 de mayo | Análisis Factorial Confirmatorio | | Se publica Hito 3 Trabajo Final. |
+| 01 de junio | Análisis de sendero | Pérez, E., Medrano, L. A., & Rosas, J. S. (2013). El path analysis...<br><br>Gana, K. & Broc, G. (2019). Structural equation modeling with lavaan. | Se publica Tarea 2 (10%). |
+| 08 de junio | Análisis de sendero | | |
+| 15 de junio | Modelos de ecuaciones estructurales | Ruiz, M. A., Pardo, A., & San Martín, R. (2010). Modelos de ecuaciones estructurales.<br><br>Gana, K. & Broc, G. (2019). Structural equation modeling with lavaan. | **Entrega Tarea 2 (10%)**: Path/SEM. |
+| 22 de junio | Modelos de ecuaciones estructurales | | |
+| 29 de junio | *Feriado* | | |
+| 06 de julio | Prueba Recuperativa | | **Entrega Hito 3 (20%)**: Informe Final en Quarto. |
