@@ -255,9 +255,13 @@ En sintonía con la ciencia de datos moderna y el reglamento UDP, adoptamos un *
 :::
 
 ::: {.callout-tip title="Dinámica de las Ayudantías"}
-- Las primeras semanas funcionarán como un **Bootcamp de nivelación en R** para quienes lo requieran tras la evaluación diagnóstica (Tarea 0).
-- Posteriormente, acompañarán el progreso del curso resolviendo dudas de código, estimación de modelos y la preparación de los hitos del Trabajo Final.
+- Acompañarán el progreso del curso resolviendo dudas de código, estimación de modelos y la preparación de los hitos del Trabajo Final.
 :::
+
+## Horario de Consultas {.smaller background-color="white"}
+
+- Pueden agendar reuniones virtuales para cualquier consulta que tengan sobre el curso todos los Martes entre 16:00 y 17:00 hrs. (Virtual vía Google Meet). 
+- Para agendar, utiliza el siguiente enlace: [https://calendar.app.google/z4iY6NKWfBEC39kR8](https://calendar.app.google/z4iY6NKWfBEC39kR8).
 
 ## Plataformas y Comunicación {.smaller .dark-background}
 

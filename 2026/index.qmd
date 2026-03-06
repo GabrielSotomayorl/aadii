@@ -22,7 +22,7 @@ format: html
 
 ![](/figures/people/profesor.jpg){fig-align="left" fig-alt="Foto de Gabriel Sotomayor" style="object-fit: cover;width:5em;height:5em;border-radius: 50%;"}  
 **[Gabriel Sotomayor](https://gabrielsotomayorl.github.io/)** <br/>
-_Profesor_ <br/>
+_Magíster en Sociología - Analista de Investigación Social (MDSF)_ <br/>
 [Univerisdad Diego Portales](https://sociologia.udp.cl/)</a><br/>
 📧 [gabriel.sotomayor@mail.udp.cl](mailto:gabriel.sotomayor@mail.udp.cl)
 
@@ -55,7 +55,7 @@ Licenciada en Sociología <br>
 
 - 📆 Lunes (Módulos 2 y 3)
 - ⌚ 10:00 a 11:20 hrs. y 11:30 a 12:50 hrs.
-- 📍 Sala por confirmar
+- 📍 Laboratorio de Computación 2° Piso FCSH
 - 📌 Asistencia: 70%
 :::
 

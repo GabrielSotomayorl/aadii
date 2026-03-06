@@ -15,7 +15,7 @@ toc: true
 | **Requisito** | Análisis Avanzado de Datos |
 | **Duración** | Semestral |
 | **Horario** | Lunes módulos 2 y 3 (10:00 a 11:20 y 11:30 a 12:50) |
-| **Sala** | Laboratorio de computación |
+| **Sala** | Laboratorio de Computación 2° Piso FCSH |
 | **Asistencia** | Obligatoria 70% |
 | **Docente** | Gabriel Sotomayor<br>gabriel.sotomayor@mail.udp.cl |
 | **Ayudantes** | Felipe Adasme<br>felipe.adasme@mail.udp.cl<br><br>Francisca Hernández<br>francisca.hernandez_c@mail.udp.cl |
