@@ -4,6 +4,7 @@ project:
   output-dir: _output
 render:
     - "index.qmd"
+    - "404.qmd"
     - "2026/*.qmd"
     - "2026/weeks/**/*.qmd"
 
@@ -11,58 +12,49 @@ website:
   title: "Análisis Avanzado de Datos II 2026"
   page-navigation: true
   reader-mode: true
-  open-graph: true
-  twitter-card: 
+  open-graph:
+    description: "Sitio del curso SOC9035 Análisis Avanzado de Datos II, Universidad Diego Portales, 2026."
+    image: "figures/banner.png"
+  twitter-card:
     creator: "@<GSotomayorL>"
     site: "\\@<GSotomayorL>"
+    description: "Sitio del curso SOC9035 Análisis Avanzado de Datos II, UDP 2026."
+    image: "figures/banner.png"
   favicon: "figures/icons/course_favicon.png"
   search:
     location: navbar
     type: textbox
   sidebar:
       style: docked
-      collapse-level: 2 # 1️⃣ Abre automáticamente hasta el 2do nivel del menú
+      collapse-level: 2
       contents:
         - href: 2026/index.qmd
-          text: "🏠 Inicio"
+          text: "Inicio"
         - href: 2026/syllabus.qmd
-          text: "📓 Programa"
-        # - href: 2026/communication.qmd
-        #   text: "📟 Communication"
-        # - href: 2026/assignments.qmd
-        #   text: "✍️ Assignments"
-        #   contents:
-        #     - href: 2026/assignments/assignment01.qmd
-        #       text: "📝 Assignment 01"
-        #     - href: 2026/assignments/assignment02.qmd
-        #       text: "📝 Assignment 02"
-        #     - href: 2026/assignments/group_project.qmd
-        #       text: "👥 Group Project"
-        - section: "🗓️ Semanas"
-          collapse: false # 2️⃣ Obliga a la sección "Semanas" a estar siempre abierta
+          text: "Programa"
+        - section: "Semanas"
+          collapse: false
           contents:
             - section: "Clase 0 (Nivelación)"
               collapse: false
               contents:
                 - href: 2026/weeks/week00/page.qmd
-                  text: "👨‍🏫 Material de clase"
+                  text: "Material de clase"
                 - href: 2026/weeks/week00/lab.qmd
-                  text: "💻 Práctico 0"
+                  text: "Práctico 0"
             - section: "Semana 01"
               collapse: false
               contents:
                 - href: 2026/weeks/week01/page.qmd
-                  text: "👨‍🏫 Material de clase"
+                  text: "Material de clase"
                 - href: 2026/weeks/week01/lab.qmd
-                  text: "💻 Práctico"
-                # - href: 2026/weeks/week01/appendix.qmd
-                #   text: "🔖 Appendix"
+                  text: "Práctico"
 
   navbar:
     background: primary
   page-footer:
     background: light
-    left: "Copyright 2026, Universidad Diego Portales" 
+    left: "Copyright 2026, Universidad Diego Portales"
 
 
 
@@ -82,9 +74,12 @@ format:
     link-external-filter: ^(?:http:|https:)\/\/(?:lse-dsi\.github\.io\/|localhost)
 
     theme:
-      light: 
+      light:
         - journal
-        - css/custom.scss # I use this just to change the default colour
+        - css/custom.scss
+      dark:
+        - darkly
+        - css/custom.scss
     toc: true
     margin-header: |
       ![](/figures/logos/MY_INSTITUTION.png)

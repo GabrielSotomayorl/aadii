@@ -6,13 +6,13 @@ format:
     include-after-body: helpers/remove-title.html
 ---
 
-# 📑 Presentación
+# Presentación
 
 Este curso profundiza en las técnicas de análisis multivariante, permitiendo examinar de manera integrada la interacción de múltiples factores en el estudio de problemas sociales. Se enfatiza la comprensión de los procedimientos y la interpretación rigurosa de los resultados, con un enfoque aplicado mediante el uso de herramientas computacionales, principalmente R y RStudio.
 
 El curso prioriza la aplicación práctica de los métodos estadísticos sin requerir una profundización en sus fundamentos matemáticos. Al finalizar, el estudiante será capaz de analizar datos primarios y secundarios, identificar la técnica estadística adecuada según el contexto y generar informes que comuniquen de manera efectiva los hallazgos obtenidos.
 
-# 🎯 Objetivos de aprendizaje
+# Objetivos de aprendizaje
 
 Desarrollar la capacidad de aplicar técnicas de estadística multivariante descriptiva e inferencial para analizar datos, formular hipótesis y construir modelos explicativos en investigaciones sociales, asegurando la correcta interpretación y comunicación de los resultados.
 
@@ -29,21 +29,21 @@ Desarrollar la capacidad de aplicar técnicas de estadística multivariante desc
 **Selecciona el año académico:**
 
 <a href="2026/index.qmd">
-    <button class="button-61">2026</button>
+    <button class="btn-course">2026</button>
 </a>
 
 **Versiones anteriores:**
 
 <a href="https://aadii2025.netlify.app/">
-    <button class="button-61">2025</button>
+    <button class="btn-course">2025</button>
 </a>
 
 <a href="https://aadii2024.netlify.app/">
-    <button class="button-61">2024</button>
+    <button class="btn-course">2024</button>
 </a>
 
 <a href="https://aadii2023.netlify.app/">
-    <button class="button-61">2023</button>
+    <button class="btn-course">2023</button>
 </a>
 
 

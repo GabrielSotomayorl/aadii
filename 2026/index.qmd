@@ -14,7 +14,7 @@ format: html
 
 
 
-# 🧑🏻‍🏫 Equipo Docente
+# Equipo Docente
 
 ::: {.panel-tabset}
 ## Profesor
@@ -48,9 +48,9 @@ Licenciada en Sociología <br>
 
 :::
 
-# 📍 Horario y Sala
+# Horario y Sala
 
-::: {style="display:inline-block;width: 45%;border-style: dotted;border-width: 1px;border-color: &quot;#fefefe&quot;; margin:1%;padding:1.5%;background-color:#fafafa"}
+::: {.schedule-box}
 **Cátedra y Laboratorio**
 
 - 📆 Lunes (Módulos 2 y 3)

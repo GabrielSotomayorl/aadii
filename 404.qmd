@@ -1,0 +1,10 @@
+---
+title: "Página no encontrada"
+format:
+  html:
+    include-before-body: helpers/remove-nav.html
+---
+
+La página que buscas no existe o fue movida.
+
+Puedes volver al [inicio del curso](2026/index.qmd) o revisar el [programa](2026/syllabus.qmd).

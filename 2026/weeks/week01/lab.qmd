@@ -9,6 +9,7 @@ format:
     code-fold: false
     code-tools: true
     df-print: paged
+    body-classes: lab-content
 ---
 
 
