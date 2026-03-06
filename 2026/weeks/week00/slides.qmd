@@ -33,7 +33,7 @@ format:
 :::
 
 
-## ¿Donde se sitúa la estadística en el proceso de investigación? {background-color="white"}
+## ¿Dónde se sitúa la estadística en el proceso de investigación? {background-color="white"}
 
 ![](img/inv.jpg)
 
@@ -50,13 +50,13 @@ Existe el riesgo de una **falta de formación estadística y reflexividad**. Apr
 1. **Nivel Usuario (Básico):** Ejecución básica y correcta interpretación de las salidas estadísticas. Es el piso mínimo necesario para utilizar la herramienta y comprender investigaciones de terceros.
 2. **Nivel Analista (Avanzado):** Manejo avanzado del software y sus procedimientos estadísticos. Es el nivel deseable para un uso reflexivo de las herramientas, personalización de análisis y lectura crítica profunda.
 
-## ¿Qué software existen y cual utilizar? {.smaller background-color="white"}
+## ¿Qué software existen y cuál utilizar? {.smaller background-color="white"}
 
 En el mercado laboral y académico existe una gran variedad de herramientas. La elección dependerá de nuestros objetivos, presupuesto y área de especialización.
 
 ![](img/imagensoft.png)
 
-## ¿Qué software existen y cual utilizar? {.smaller background-color="white"}
+## ¿Qué software existen y cuál utilizar? {.smaller background-color="white"}
 
 ::: {style="font-size: 1.2rem;"}
 | Dimensión / Lenguaje | R | Python | SPSS | Excel | Stata |
@@ -161,7 +161,7 @@ Debemos descargar el "paquete base" (base R), luego ejecutar el archivo descarga
 Una vez que R ya está en nuestro computador, procedemos a instalar la interfaz.
 
 Podemos encontrar RStudio en su sitio web. Debemos descargar la **versión gratis (RStudio Desktop)**, que es totalmente funcional para nuestros propósitos:
-🔗[https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/){preview-link="true"} *(Nota: RStudio ahora es parte de la empresa Posit).*
+🔗 [https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/){preview-link="true"} *(Nota: RStudio ahora es parte de la empresa Posit).*
 
 Debemos fijarnos en elegir el instalador correcto para nuestro sistema operativo (Windows o Mac). Igualmente, lo instalamos usando las opciones predeterminadas.
 :::
@@ -179,21 +179,9 @@ Para algunos análisis específicos (o al leer ciertos archivos de Excel viejos)
 
 **¿Cómo resolverlo?**
 Si te encuentras con este error en el futuro, debes descargar e instalar la versión **offline de 64 bits** de Java desde su página oficial:
-🔗[https://www.java.com/es/download/manual.jsp](https://www.java.com/es/download/manual.jsp){preview-link="true"}
+🔗 [https://www.java.com/es/download/manual.jsp](https://www.java.com/es/download/manual.jsp){preview-link="true"}
 
 ![](img/imagen10.png){fig-align="center" width="60%"}
-
-## Programación por objetos y funciones {.smaller background-color="white"}
-
-**Tipos de estructuras de datos en R**
-
-*Vector (vector)*: columna o fila de datos de un mismo tipo (una variable individual)
-
-*Listas (list)*: Nos permiten agrupar objetos de distinto tipo.
-
-*Matrices (matrix)*: arreglo de dos dimensiones de datos de un mismo tipo (conjunto de variables)
-
-*Data.frame (base de datos)*: Matriz de datos en el que las columnas tienen asignado nombres, y que permite usar todo tipo de datos.
 
 ## Conceptos clave: Estructuras de datos {.smaller background-color="white"}
 

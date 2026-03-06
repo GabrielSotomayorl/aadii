@@ -282,9 +282,8 @@ Las comunicaciones con el equipo docente para **temas colectivos** deberán gest
 
 ## Objetivos de la Sesión {background-color="white"}
 
-Introducir el concepto de tidy data y el tidyverse como herramienta de trabajo.
-
-Introducir el uso de ggplot en R para ciencias sociales.
+- Introducir el concepto de **tidy data** y el tidyverse como herramienta de trabajo.
+- Introducir el uso de **ggplot2** en R para ciencias sociales.
 
 
 ## Proceso de Análisis de Datos {.smaller background-color="white"}
@@ -351,7 +350,7 @@ Al adoptar el formato tidy, optimizamos nuestro flujo de trabajo en R para el an
 
 ## Proceso de Análisis de Datos {background-color="white"}
 
-El sentido de cada una de estas etapas debe estar guiada por una **pregunta de investigación**. Sin una pregunta no podemos determinar que datos necesitamos, en que forma, dodne explorar y visualziar y que modelar y comunicar.
+El sentido de cada una de estas etapas debe estar guiado por una **pregunta de investigación**. Sin una pregunta no podemos determinar qué datos necesitamos, en qué forma, dónde explorar y visualizar, y qué modelar y comunicar.
 
 Tomemos un ejemplo simple: **¿Cómo se relaciona la pobreza y la ruralidad en Chile?**
 
@@ -360,7 +359,7 @@ Tomemos un ejemplo simple: **¿Cómo se relaciona la pobreza y la ruralidad en C
 Para comenzar a trabajar con datos en R, el primer paso es **importarlos**.
 
 ```{r echo=TRUE, eval=TRUE}
-library(haven) #Cargamos haven porque internamente el objeto que estaos cargando esta creado con dicho paquete
+library(haven) # Cargamos haven porque internamente el objeto que estamos cargando fue creado con dicho paquete
 casen <- readRDS("../../data/casen24.rds")
 ```
 
@@ -396,7 +395,7 @@ casen %>%
   geom_col(width = 0.5, show.legend = FALSE) +
   geom_text(aes(label = paste0(round(porcentaje_pobre, 1), "%")),
             vjust = -0.5, size = 5, fontface = "bold") +
-  scale_fill_manual(values = c("Rural" = "#FF6F61", "Urbana" = "#5B84B1")) +
+  scale_fill_manual(values = c("Rural" = "#e67e22", "Urbana" = "#1a365d")) +
   labs(title = "Porcentaje de pobreza según área de residencia",
        x = "Área de Residencia",
        y = "Porcentaje de Pobreza (%)") +
@@ -425,7 +424,7 @@ La regresión logística revela una **asociación significativa y positiva** ent
 
 Este resultado sugiere que el riesgo de pobreza es considerablemente mayor en zonas rurales de Chile, incluso en un modelo simple que solo considera el área de residencia. Este hallazgo destaca la necesidad de políticas públicas diferenciadas y focalizadas en áreas rurales para abordar eficazmente la problemática de la pobreza.
 
-## Vizualización de Datos {.smaller background-color="white"}
+## Visualización de Datos {.smaller background-color="white"}
 
 "La **visualización** es una actividad humana fundamental. Una buena visualización te mostrará cosas que no esperabas o hará surgir nuevas preguntas acerca de los datos. También puede darte pistas acerca de si estás haciendo las preguntas equivocadas o si necesitas recolectar datos diferentes. Las visualizaciones pueden sorprenderte, pero no escalan particularmente bien, ya que requieren ser interpretadas por una persona." (Wickham, 2017)
 
@@ -450,10 +449,10 @@ R base contiene algunas herramientas básicas de visualización de datos que nos
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=10, fig.height=4}
 
 par(mfrow = c(1, 2))
-plot(as_factor(casen$pobreza), main="Situación de pobreza", xlab="Pobreza",ylab="Frequencias",
+plot(as_factor(casen$pobreza), main="Situación de pobreza", xlab="Pobreza", ylab="Frecuencias",
      col=2)
 
-hist(casen$edad,main="Edad de los encuestados", xlab="Años",ylab="Frequencia")
+hist(casen$edad, main="Edad de los encuestados", xlab="Años", ylab="Frecuencia")
 ```
 
 ## Construcción de gráficos con ggplot2 {.smaller background-color="white"}
