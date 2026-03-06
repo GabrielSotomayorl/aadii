@@ -108,7 +108,7 @@ Los pasos a seguir, o elementos a considerar, (en los que profundizaremos luego)
 
 ## Publicaciones libres {.smaller}
 
-Se trata de eliminar las barreras (Especialmente económicas) al conocimiento.
+Se trata de eliminar las barreras (especialmente económicas) al conocimiento.
 
 Problema de las editoriales académicas.
 
@@ -116,7 +116,7 @@ Es posible encontrar revistas que cuentan con acceso abierto. Para saber el nive
 
 En general, es importante considerar que esto no depende solo de la iniciativa individual, sino también de las instituciones científicas existentes.
 
-## ¿Porqué es importante esto más allá de la academia? {.smaller}
+## ¿Por qué es importante esto más allá de la academia? {.smaller}
 
 En primer lugar resulta importante para asegurar la transparencia de la producción científica, haciendo más posible el control público de las decisiones que se toman basadas en el conocimiento producido.
 
@@ -184,7 +184,7 @@ engine -- Lenguaje de programación usado en el código (por defecto "R")
 
 cache -- guardar resultados en chaché para futuros knit (por defecto FALSE)
 
-cache.path -- directorio para guardar el cache (por defecto "cache/"
+cache.path -- directorio para guardar el cache (por defecto "cache/")
 
 ## Protocolos de reproducibilidad {.smaller}
 
@@ -282,7 +282,7 @@ Para hacer nuestro proyecto de investigación reproducible no solo importa el c�
     -   **`input/data/original/data.csv`**: Desde la raíz, entra en `input/`, luego `data/`, luego `original/`, y encuentra `data.csv`.
     -   **Ejemplo en `preparacion.Rmd` (dentro de `procesamiento/`) para cargar datos originales**: `read.csv(here::here("input", "data", "original", "data.csv"))` (usando el paquete `here`).
 
-## Control de versiones/Git-hub {.smaller}
+## Control de versiones/GitHub {.smaller}
 
 ::::: columns
 ::: {.column width="60%"}
@@ -309,6 +309,6 @@ GitHub es una plataforma de desarrollo colaborativo que nos permite usar reposit
 -   Enseña al computador  
 -   Usar control de versiones  
 -   Mantener registro del ambiente de software  
--   NO guardes los outuput (guarda los datos y el código)  
+-   NO guardes los output (guarda los datos y el código)  
 -   Establece una semilla  
 -   Piensa en el proceso completo (datos brutos -- datos procesados -- análisis -- reporte)
