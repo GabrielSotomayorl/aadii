@@ -29,26 +29,26 @@ website:
       collapse-level: 2
       contents:
         - href: 2026/index.qmd
-          text: "Inicio"
+          text: "🏠 Inicio"
         - href: 2026/syllabus.qmd
-          text: "Programa"
-        - section: "Semanas"
+          text: "📓 Programa"
+        - section: "🗓️ Semanas"
           collapse: false
           contents:
             - section: "Clase 0 (Nivelación)"
               collapse: false
               contents:
                 - href: 2026/weeks/week00/page.qmd
-                  text: "Material de clase"
+                  text: "👨‍🏫 Material de clase"
                 - href: 2026/weeks/week00/lab.qmd
-                  text: "Práctico 0"
+                  text: "💻 Práctico 0"
             - section: "Semana 01"
               collapse: false
               contents:
                 - href: 2026/weeks/week01/page.qmd
-                  text: "Material de clase"
+                  text: "👨‍🏫 Material de clase"
                 - href: 2026/weeks/week01/lab.qmd
-                  text: "Práctico"
+                  text: "💻 Práctico"
 
   navbar:
     background: primary
