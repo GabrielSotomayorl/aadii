@@ -2,4 +2,23 @@
 title: "🗓️ Semana 02: Investigación Reproducible y Ciencia Abierta"
 ---
 
-*Contenido próximamente disponible.*
+En esta semana nos preguntamos: ¿cómo organizamos nuestro trabajo para que otros —y nosotros mismos en el futuro— puedan entenderlo y reproducirlo? Revisaremos los conceptos de **reproducibilidad** y **ciencia abierta**, y aprenderemos a estructurar proyectos usando el protocolo **IPO-R** (Input, Procesamiento, Output) junto con R Projects y rutas relativas.
+
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## 💻 Taller Aplicado (Práctico 2)
+
+En este laboratorio descargarás y explorarás un proyecto reproducible de ejemplo construido con el protocolo IPO-R.
+
+👉 **[Ir al Práctico 2: Investigación Reproducible y Ciencia Abierta](lab.qmd)**
+
+## 📚 Lecturas Obligatorias
+
+- **Boccardo, G. & Ruiz, F. (2019).** *RStudio para estadística descriptiva en ciencias sociales*. Universidad de Chile.
+- **LISA-COES.** Protocolo IPO para investigación reproducible: [https://lisa-coes.netlify.app/ipo-repro/](https://lisa-coes.netlify.app/ipo-repro/)

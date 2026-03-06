@@ -35,7 +35,7 @@ website:
         - section: "🗓️ Semanas"
           collapse: false
           contents:
-            - section: "Clase 0 (Nivelación)"
+            - section: "Semana 00 (Nivelación)"
               collapse: false
               contents:
                 - href: 2026/weeks/week00/page.qmd
@@ -48,6 +48,13 @@ website:
                 - href: 2026/weeks/week01/page.qmd
                   text: "👨‍🏫 Material de clase"
                 - href: 2026/weeks/week01/lab.qmd
+                  text: "💻 Práctico"
+            - section: "Semana 02"
+              collapse: false
+              contents:
+                - href: 2026/weeks/week02/page.qmd
+                  text: "👨‍🏫 Material de clase"
+                - href: 2026/weeks/week02/lab.qmd
                   text: "💻 Práctico"
 
   navbar:
