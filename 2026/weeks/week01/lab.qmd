@@ -1,6 +1,6 @@
 ---
 title: "Práctico 1: Uso de bases de datos en R, estadística descriptiva y visualización"
-subtitle: "Trabajando con CASEN 2022"
+subtitle: "Trabajando con CASEN 2024"
 date: "2026-03-09"
 lang: es
 format:
@@ -33,7 +33,7 @@ library(haven) #Este comando nos permite ejecutar el paquete
 Una vez cargado el paquete debemos descargar la base de datos y ubicarla en nuestro computador para poder cargarla con la función **read_spss()**. Para esto debemos establecer un **directorio de trabajo**, es decir, la carpeta raíz a partir de la cual R buscará los archivos que queremos cargar en nuestro espacio de trabajo, y donde guardará los output de nuestros análisis.
 
 ```{r, eval = FALSE }
-#La sigueitne función nos permite dentificar el irectorio de trabajo actual
+# La siguiente función nos permite identificar el directorio de trabajo actual
 getwd()
 
 #debemos fijar un directorio de trabajo a la carpeta en que tendremos nuestros archivos, por ejemplo:
@@ -96,7 +96,7 @@ casen1b<- filter(casen1, area == 1 & sexo == 1 ) #dplyr
 
 ```
 
-## Uso del pipeline
+## 2.3 Uso del pipeline
 
 El "pipeline" o tubería en R, especialmente al trabajar con el paquete dplyr del tidyverse, es una herramienta poderosa que permite encadenar múltiples operaciones de forma clara y legible. En R, el pipeline se representa con el operador %>% (aunque con la versión 4.1.0 de R, el operador nativo |> también puede utilizarse para algunas operaciones). Este operador toma el resultado de la expresión de su izquierda y lo pasa como primer argumento a la función a su derecha. 
 
@@ -126,9 +126,9 @@ La función case_when permite definir múltiples condiciones y resultados en una
 
 ```{r,message=FALSE,warning=F}
 
-#Recodificar/crear varibles
+# Recodificar/crear variables
 
-#Rbase
+# R base
 casen$edadt[casen$edad < 16] = 1
 casen$edadt[casen$edad >= 16 & casen$edad < 60] = 2
 casen$edadt[casen$edad >= 60] = 3
@@ -184,14 +184,14 @@ Para obtener estadísticos descriptivos en R, tales como la media, la mediana o 
 ```{r}
 #media
 mean(casen$ytotcorh) #nos devuelve NA dado que hay casos perdidos
-mean(casen$ytotcorh,na.rm=T) #debemos agregar un argumento indicando que no considere los casos perdidos
-#mediana
-median(casen$ytotcorh,na.rm=T) 
-#Varianza y desviación estandar
-var(casen$ytotcorh,na.rm=T) 
-sd(casen$ytotcorh,na.rm=T) 
-#Cuantiles
-quantile(casen$ytotcorh, probs = c(0.25,0.50,0.75,0.9),na.rm = TRUE) #percetniles
+mean(casen$ytotcorh, na.rm = TRUE) # debemos indicar que ignore los casos perdidos
+# mediana
+median(casen$ytotcorh, na.rm = TRUE)
+# Varianza y desviación estándar
+var(casen$ytotcorh, na.rm = TRUE)
+sd(casen$ytotcorh, na.rm = TRUE)
+# Cuantiles
+quantile(casen$ytotcorh, probs = c(0.25, 0.50, 0.75, 0.9), na.rm = TRUE) # percentiles
 #minimo
 min(casen$ytotcorh,na.rm = TRUE) 
 #máximo
@@ -268,25 +268,17 @@ casen %>%
   geom_histogram()
 ```
 
-Ya tenemos una visualización básica. Ahora introduciremos algunos elementos adicionales para mejorar la apariencia de nuestro gráfico.
+Ya tenemos una visualización básica. Ahora introduciremos algunos elementos adicionales para mejorar la apariencia del gráfico:
 
-- labs(): Se añaden un título, un subtítulo y una nota al pie (caption) para proporcionar contexto y citar la fuente de los datos. Esto mejora la comprensión del gráfico por parte del espectador.
-
-theme_minimal(): Se aplica un tema minimalista al gráfico para un aspecto limpio y moderno.
-
-theme(): Se personalizan varios elementos del gráfico, incluyendo el estilo del título, subtítulo, nota al pie, y el tamaño del texto de los ejes y las etiquetas de los ejes. Esto mejora la legibilidad y la presentación visual del gráfico.
-
-- labs(): Se añaden un título, un subtítulo y una nota al pie (caption) para proporcionar contexto y citar la fuente de los datos. Esto mejora la comprensión del gráfico por parte del espectador.
-
-- theme_minimal(): Se aplica un tema minimalista al gráfico para un aspecto limpio y moderno.
-
-- theme(): Se personalizan varios elementos del gráfico, incluyendo el estilo del título, subtítulo, nota al pie, y el tamaño del texto de los ejes y las etiquetas de los ejes. Esto mejora la legibilidad y la presentación visual del gráfico.
+- **`labs()`**: añade título, subtítulo y nota al pie (`caption`) para contextualizar y citar la fuente de los datos.
+- **`theme_minimal()`**: aplica un tema visual limpio y moderno.
+- **`theme()`**: permite personalizar en detalle el estilo del título, subtítulo, tamaño de texto de ejes, etc.
 
 ```{r,message=FALSE,warning=F}
 casen %>%
   ggplot() + 
   aes(x = edad) +
-  geom_histogram(fill = "#40E0D0", color = "white", bins = 30) +  # Ajusta la cantidad de barras con bins
+  geom_histogram(fill = "#1a365d", color = "white", bins = 30) +  # Ajusta la cantidad de barras con bins
   labs(title = "Distribución de Edades en la Encuesta Casen 2024",
        subtitle = "Histograma de edades de los encuestados",
        x = "Edad",
@@ -319,7 +311,7 @@ casen %>%
   ggplot() + 
   aes(x = esc, y = ytrabajocor) +
   geom_point(alpha = 0.1) +
-  geom_smooth(method = "lm", color = "red") + 
+  geom_smooth(method = "lm", color = "#e67e22") +
   theme_bw()
 ```
 
@@ -330,7 +322,7 @@ casen %>%
   filter(region == 5, ytrabajocor <= 5000000) %>%
   ggplot(aes(x = esc, y = ytrabajocor)) + 
   geom_point(alpha = 0.1) +  # Aumentar la transparencia para mejorar la visualización de la densidad
-  geom_smooth(method = "lm", color = "red", se = FALSE) +  # Añadir una línea de tendencia sin la banda de confianza para claridad
+  geom_smooth(method = "lm", color = "#e67e22", se = FALSE) +  # Añadir una línea de tendencia sin la banda de confianza para claridad
   scale_x_continuous(name = "Años de Escolaridad") +  # Renombrar eje X
   scale_y_continuous(name = "Ingresos por Trabajo (CLP)", labels = scales::comma) +  # Renombrar eje Y y formatear como números
   labs(title = "Relación entre Escolaridad e Ingresos por Trabajo",
@@ -340,18 +332,16 @@ casen %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotar las etiquetas del eje X para mejorar la legibilidad
 ```
 
-Por último agregamos las etiquetas del gráfico y otros elementos estéticos para mejorar su presentación.
-
 Ahora veremos como hacer gráficos de barras para variables categóricas a partir de la variable sexo. Para esto usaremos geom_bar().
 
 ```{r,message=FALSE,warning=F}
 
 casen %>% 
 ggplot(aes(x = as_factor(sexo))) +
-  geom_bar(width = 0.4,  fill=rgb(0.1,1,0.5,0.7)) + 
-  scale_x_discrete("Sexo") +  
+  geom_bar(width = 0.4, fill = "#1a365d") +
+  scale_x_discrete("Sexo") +
   scale_y_continuous("Frecuencia") +
-  labs(title = "Frecuencia relativa de sexo en Casen 2024",
+  labs(title = "Frecuencia absoluta de sexo en Casen 2024",
        caption = "Fuente: Encuesta Casen 2024") + 
   theme_bw()
 ```
@@ -362,10 +352,10 @@ Para cambiar a frecuencias relativas, se modifica la definición de la estética
 
 casen %>% 
 ggplot(aes(x = as_factor(sexo))) +
-  geom_bar(width = 0.4,  fill= rgb(0.1,0.3,0.5,0.7), aes(y = (..count..)/sum(..count..))) + 
-  scale_x_discrete("Sexo") +  
-  scale_y_continuous("Porcentaje",labels=scales::percent)+
-  labs(title = "Frecuencia absoluta de sexo en Casen 2024",
+  geom_bar(width = 0.4, fill = "#1a365d", aes(y = (..count..)/sum(..count..))) +
+  scale_x_discrete("Sexo") +
+  scale_y_continuous("Porcentaje", labels = scales::percent) +
+  labs(title = "Frecuencia relativa de sexo en Casen 2024",
        caption = "Fuente: Encuesta Casen 2024") + 
   theme_bw()
 ```
@@ -390,9 +380,9 @@ head(casen_pob)
 
 casen_pob %>%
   ggplot(aes(x = edad, y = pob)) +
-  geom_line(color = "#40E0D0") +
+  geom_line(color = "#1a365d") +
   ylim(0, 35) +
-  geom_point(shape = 21, fill = "#40E0D0", size = 1) +
+  geom_point(shape = 21, fill = "#e67e22", color = "white", size = 1.5) +
   ylab("% Pobreza") +
   xlab("Edad") +
   labs(title = "Porcentaje de pobreza según edad",
@@ -417,9 +407,9 @@ head(casen_pob_a)
 
 casen_pob_a %>% 
   ggplot(aes(x = edad, y = pob)) +
-  geom_line(color = "#40E0D0") +
+  geom_line(color = "#1a365d") +
   ylim(0, 45) +
-  geom_point(shape = 21, fill = "#40E0D0", size = 1) +
+  geom_point(shape = 21, fill = "#e67e22", color = "white", size = 1.5) +
   ylab("% Pobreza") +
   xlab("Edad") +
   labs(title = "Porcentaje de pobreza según edad por zona",

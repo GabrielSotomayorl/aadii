@@ -160,7 +160,7 @@ R es sensible a mayúsculas y minúsculas (*case-sensitive*). Para R, `"Hombre"`
 
 # Ingresamos las respuestas en texto (siempre entre comillas)
 # Ojo: aquí solo ingresamos 8 datos a modo de ejemplo.
-sexo <- c("Hombre","Hombre","Hombre","Mujer","Hombre","Mujer","Mujer","Mujer")
+sexo <- c("Hombre", "Hombre", "Hombre", "Mujer", "Hombre", "Mujer", "Mujer", "Mujer")
 
 summary(sexo) # Como es texto, el summary no calcula promedios, solo cuenta la longitud
 table(sexo)   # La tabla sí nos muestra cuántos hay de cada uno
@@ -176,10 +176,10 @@ En la práctica estadística, suele ser más eficiente ingresar la variable num�
 s <- c(1, 1, 1, 0, 1, 0, 0, 0, 9)
 
 # Transformamos a factor.
-# Si intentamos correr esto: factor(s, levels = c(0,1,9), labels = c("Mujer","Hombre"))
-# Nos dará ERROR, porque hay 3 niveles pero solo dimos 2 etiquetas. La importancia de los errores:
+# Ojo: si intentáramos factor(s, levels = c(0,1,9), labels = c("Mujer","Hombre"))
+# R daría ERROR, porque hay 3 niveles pero solo 2 etiquetas. ¡Deben coincidir!
 
-# Forma correcta:
+# Forma correcta (un label por cada level):
 sexof <- factor(s, levels = c(0, 1, 9), labels = c("Mujer", "Hombre", "NC"))
 
 summary(sexof) # ¡Ahora el summary sí nos cuenta las categorías correctamente!
@@ -198,7 +198,7 @@ Observa qué pasa con el encuestado número 9 (cuyo valor es `99`). Como `99` no
 
 p1 <- c(1, 2, 2, 3, 4, 5, 5, 6, 99)
 
-nse <- factor(p1, levels = c(1,2,3,4,5,6), labels = c("E","D","C3","C2","C1","AB"))
+nse <- factor(p1, levels = c(1, 2, 3, 4, 5, 6), labels = c("E", "D", "C3", "C2", "C1", "AB"))
 
 table(nse)
 summary(nse) # Nos indicará cuántos NAs (datos perdidos) hay en la variable.
@@ -297,7 +297,7 @@ También podemos explorar la base usando corchetes con una lógica de coordenada
 
 base[5, 2]         # Fila 5, Columna 2 (El sexo de nuestro 5to encuestado)
 base[1:5, 2]       # Filas 1 a 5, Columna 2
-base[1:5, c(1,3)]  # Filas 1 a 5, pero solo las columnas 1 (edad) y 3 (nse)
+base[1:5, c(1, 3)]  # Filas 1 a 5, pero solo las columnas 1 (edad) y 3 (nse)
 ```
 
 Si unimos ambas lógicas, podemos filtrar casos que cumplan ciertas condiciones:
