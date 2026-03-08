@@ -15,7 +15,7 @@ Esta política está inspirada en el proyecto **[GENIAL](https://lse-dsi.github.
 
 ## ¿Qué está permitido?
 
-El uso de herramientas de IA generativa está **permitido en todas las evaluaciones del curso**, con la excepción de la prueba solemne (ver más abajo). Esto incluye, pero no se limita a:
+El uso de herramientas de IA generativa está **permitido en todas las evaluaciones del curso**, con la excepción de la prueba solemne y el examen (ver más abajo). Esto incluye, pero no se limita a:
 
 - Usar IA para ayudar a depurar código en R.
 - Consultar conceptos o pedir explicaciones alternativas de contenidos del curso.
@@ -43,9 +43,9 @@ El objetivo **no es fiscalizar** el uso de IA. El objetivo es doble:
 
 ---
 
-## Excepción: Prueba Solemne
+## Excepción: Prueba Solemne y Examen
 
-Esta política **no aplica a la prueba solemne**, que es una evaluación de carácter individual y presencial. En esa instancia, **no está permitido el uso de herramientas de IA** ni de ningún recurso externo no autorizado explícitamente.
+Esta política **no aplica a la prueba solemne ni al examen**, que son evaluaciones de carácter individual y presencial. En esas instancias, **no está permitido el uso de herramientas de IA** ni de ningún recurso externo no autorizado explícitamente.
 
 ---
 
@@ -96,7 +96,7 @@ El proyecto GENIAL analizó interacciones de estudiantes en cursos de análisis 
 
 | | |
 |:---|:---|
-| **¿Está permitido usar IA?** | Sí, en todas las evaluaciones **excepto** la prueba solemne. |
+| **¿Está permitido usar IA?** | Sí, en todas las evaluaciones **excepto** la prueba solemne y el examen. |
 | **¿Qué debo entregar?** | Un comentario breve + el log de las interacciones relevantes. |
 | **¿Por qué?** | Para promover uso consciente/crítico y generar evidencia pedagógica. |
 | **¿Cuál es el riesgo?** | Obtener buenos outputs sin comprender, saltando el proceso de aprendizaje. |

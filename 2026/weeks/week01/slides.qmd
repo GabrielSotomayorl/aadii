@@ -224,8 +224,8 @@ El uso de herramientas de IA generativa (ChatGPT, Claude, Copilot, etc.) está *
 El objetivo no es fiscalizar, sino **promover un uso más consciente y crítico**. Al mismo tiempo, nos permite generar **evidencia y conocimiento** sobre cómo los/as estudiantes utilizan estas herramientas en el contexto del análisis de datos sociales.
 :::
 
-::: {.callout-warning title="⚠️ Excepción: Prueba Solemne"}
-Esta política **no aplica a la prueba solemne**, evaluación presencial e individual donde no está permitido el uso de IA.
+::: {.callout-warning title="⚠️ Excepción: Prueba Solemne y Examen"}
+Esta política **no aplica a la prueba solemne ni al examen**, instancias presenciales e individuales donde no está permitido el uso de IA.
 :::
 
 ## 🌟 Beneficios del Uso de IA {.smaller background-color="white"}
