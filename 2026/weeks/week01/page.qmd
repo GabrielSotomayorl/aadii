@@ -2,7 +2,7 @@
 title: "🗓️ Semana 01: Introducción al curso y gestión de datos con R"
 ---
 
-En esta primera semana oficial del curso revisaremos los objetivos, evaluaciones y la estructura de trabajo del semestre. Luego, daremos un salto cualitativo en nuestra forma de programar introduciendo el ecosistema **Tidyverse**: discutiremos el concepto de *Tidy Data* (datos ordenados) y el ciclo de vida del análisis de datos.
+En esta primera semana del curso revisaremos los objetivos, evaluaciones y la estructura de trabajo del semestre. Luego, introduciremos el ecosistema **Tidyverse**: discutiremos el concepto de *Tidy Data* (datos ordenados) y el ciclo de vida del análisis de datos.
 
 En la sección aplicada, pasaremos de los vectores básicos a trabajar con una encuesta real y masiva (CASEN 2022). Aprenderemos a importar bases de datos, filtrar, seleccionar, transformar variables y, finalmente, a explorar visualmente la información utilizando la gramática de gráficos del paquete **ggplot2**.
 
@@ -25,11 +25,12 @@ En este laboratorio comenzaremos a utilizar funciones de `dplyr` y `ggplot2` par
 
 Para acompañar los contenidos de esta semana, por favor revisa el siguiente material:
 
-- **Boccardo, G. & Ruiz, F. (2019).** *RStudio para estadística descriptiva en ciencias sociales: Manual de apoyo docente para la asignatura Estadística Descriptiva*. Departamento de Sociología, Facultad de Ciencias Sociales, Universidad de Chile.
 - **Wickham, H. (2019).** *R para ciencia de datos*. [Versión en español disponible aquí](https://es.r4ds.hadley.nz/index.html).
-  - Particularmente los capítulos sobre [Transformación de datos](https://es.r4ds.hadley.nz/transform.html) y [Visualización de datos](https://es.r4ds.hadley.nz/data-visualisation.html).
+  - Particularmente los capítulos sobre [Transformación de datos](https://es.r4ds.hadley.nz/transform.html) y [Visualización de datos](https://es.r4ds.hadley.nz/data-visualisation.html).  
+- **Boccardo, G. & Ruiz, F. (2019).** *RStudio para estadística descriptiva en ciencias sociales: Manual de apoyo docente para la asignatura Estadística Descriptiva*. Departamento de Sociología, Facultad de Ciencias Sociales, Universidad de Chile.
+
 
 
 ## 📟 Dudas y Comunicación
 
-Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte a los horarios de atención de las ayudantes si tienes dificultades cargando la base de datos CASEN en tu computador.
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dificultades cargando la base de datos CASEN en tu computador o cualquier otra duda sobre el curso.

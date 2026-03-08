@@ -19,34 +19,30 @@ El objetivo de este práctico es aprender el uso de funciones y paquetes en R, c
 Para esto haremos uso de la encuesta [CASEN (2024)](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2024), la mayor encuesta de hogares realizada en Chile, a cargo del Ministerio de Desarrollo Social, de carácter transversal y multipropósito, es el principal instrumento de medición socioeconómica para el diseño y evaluación de la política social. Permite conocer periódicamente la situación socioeconómica de los hogares y de la población que reside en viviendas particulares, a través de preguntas referidas a composición familiar, educación, salud, vivienda, trabajo e ingresos, entre otros aspectos. 
 
 
-# 1. Paquetes y funciones en R   
-Cuando descargamos e instalamos R este contiene una cantidad limitada de funciones disponibles, las cuales podemos ampliar mediante la descarga de distintos paquetes creados por la comunidad de usuarios, los cuales nos permitirán, mediante nuevas funciones, ampliar las capacidades del programa, en términos de gestión de bases de datos, análisis estadísticos, visualización de datos, y muchas otras funciones.   
+# 1. Paquetes y funciones en R
 
-En la siguiente práctica queremos usar la base de datos de CASEN, la cuál está disponible en formato .sav (SPPS) y .dta (STATA), formatos que no son soportados por la versión base de R. Para poder cargar la base de datos como un objeto en R usaremos el paquete **haven**, el cual incluye funciones para cargar datos a R en diversos formatos.  
+Cuando descargamos e instalamos R, este contiene una cantidad limitada de funciones disponibles (lo que llamamos "R Base"). Afortunadamente, podemos ampliar enormemente sus capacidades mediante la descarga de distintos **paquetes** (librerías) creados por la comunidad de usuarios. Estos paquetes nos proporcionan nuevas herramientas para la gestión de bases de datos, análisis estadísticos avanzados y visualización.
+
+En la siguiente práctica trabajaremos con la base de datos de la encuesta **CASEN 2024**. A diferencia de otros formatos genéricos (como Excel o CSV), en este curso trabajaremos con la base en formato **`.RData`**.
+
+::: {.callout-note title="¿Qué es un archivo .RData?"}
+Un archivo `.RData` es un formato de guardado **nativo de R**. Su gran ventaja es que permite guardar uno o múltiples objetos (como bases de datos gigantes) comprimidos exactamente como estaban en la memoria de R. Esto hace que carguen muchísimo más rápido y mantengan toda su estructura interna intacta.
+:::
+
+## El uso del paquete `haven` y las etiquetas
+
+Aunque cargaremos un archivo nativo de R, **aún necesitamos usar el paquete `haven`**. 
+
+¿Por qué? Porque encuestas oficiales como CASEN suelen ser procesadas originalmente en programas como SPSS o Stata. Al transformar la base a R, las variables conservan una metadata especial llamada **etiquetas** (por ejemplo, guardar la instrucción visual de que un `1` significa *"Hombre"* y un `2` significa *"Mujer"*). El paquete `haven` dota a estas variables de una clase especial llamada `haven_labelled`. Si no cargamos el paquete, R no sabrá cómo interpretar correctamente esta metadata para nuestros análisis.
 
 ```{r}
+#| label: cargar-haven
+
 # install.packages("haven") 
-#este comando nos permite instalar paquetes alojados en CRAN 
-library(haven) #Este comando nos permite ejecutar el paquete
-```
+# Este comando nos permite instalar el paquete desde internet (solo se hace 1 vez).
 
-Una vez cargado el paquete debemos descargar la base de datos y ubicarla en nuestro computador para poder cargarla con la función **read_spss()**. Para esto debemos establecer un **directorio de trabajo**, es decir, la carpeta raíz a partir de la cual R buscará los archivos que queremos cargar en nuestro espacio de trabajo, y donde guardará los output de nuestros análisis.
-
-```{r, eval = FALSE }
-# La siguiente función nos permite identificar el directorio de trabajo actual
-getwd()
-
-#debemos fijar un directorio de trabajo a la carpeta en que tendremos nuestros archivos, por ejemplo:
-setwd("C:/Users/Gabriel/Desktop/Directorio R")
-# Nota: Debe usarse el simbolo "/" y NO "\"
-```
-
-
-Una vez que hemos fijado nuestro directorio de trabajo podemos cargar nuestra base de datos y asignarla como objeto, para que se guarde en el ambiente y poder usarla posteriormente en nuestros análisis.
-
-```{r, eval = FALSE}
-load("casen_2024.RData")
-casen <- casen_2024
+library(haven) 
+# Este comando "enciende" el paquete para usarlo en nuestra sesión actual.
 ```
 
 

@@ -209,22 +209,63 @@ El curso se evalúa mediante un sistema de **hitos escalonados**, uso de Quarto 
 
 *Nota de eximición: 5,5 (Sin notas bajo 4,0 en la prueba solemne).*
 
-## 🤖 Política de Inteligencia Artificial (IA) {.smaller background-color="white"}
+## 🤖 Política de Uso de IA {.smaller background-color="white"}
 
-En sintonía con la ciencia de datos moderna y el reglamento UDP, adoptamos un **uso autorizado, transparente y delimitado** de IA Generativa (ChatGPT, Claude, Copilot).
+Esta política está inspirada en el proyecto **[GENIAL](https://lse-dsi.github.io/genial/)** (LSE), que investiga con evidencia real cómo los/as estudiantes usan herramientas de IA generativa en su aprendizaje.
 
-::: {.callout-tip title="✅ Lo que SÍ está permitido (y fomentado)"}
+::: {.callout-tip title="✅ Uso abierto y autorizado"}
+El uso de herramientas de IA generativa (ChatGPT, Claude, Copilot, etc.) está **permitido** en este curso, con las siguientes condiciones:
 
+- Junto con cada evaluación, deberán entregar un **breve comentario** describiendo cómo usaron (o no) la IA en su proceso de trabajo.
+- Deberán adjuntar los **logs o registros** de sus interacciones relevantes con la IA.
 :::
 
-::: {.callout-important title="🚫 Lo que NO está permitido (Falta Ética)"}
-
+::: {.callout-note title="🎯 ¿Por qué este requisito?"}
+El objetivo no es fiscalizar, sino **promover un uso más consciente y crítico**. Al mismo tiempo, nos permite generar **evidencia y conocimiento** sobre cómo los/as estudiantes utilizan estas herramientas en el contexto del análisis de datos sociales.
 :::
 
-::: {.callout-warning title="📄 Anexo de Transparencia"}
-
+::: {.callout-warning title="⚠️ Excepción: Prueba Solemne"}
+Esta política **no aplica a la prueba solemne**, evaluación presencial e individual donde no está permitido el uso de IA.
 :::
 
+## 🌟 Beneficios del Uso de IA {.smaller background-color="white"}
+
+Cuando se usan bien, las herramientas de IA pueden ser aliadas en el aprendizaje:
+
+::: incremental
+- **Depuración de código:** Identificar y corregir errores en R de manera más eficiente.
+- **Exploración conceptual:** Solicitar explicaciones alternativas de conceptos vistos en clases.
+- **Retroalimentación preliminar:** Obtener feedback rápido sobre la estructura de un argumento o análisis.
+- **Productividad:** Acelerar tareas repetitivas para enfocarse en el análisis y la interpretación.
+- **Accesibilidad:** Reducir barreras de entrada a la programación estadística.
+:::
+
+::: {.callout-note icon=false}
+La IA es más útil como herramienta de aprendizaje **cuando ya se comprenden los fundamentos** del problema que se está abordando.
+:::
+
+## ⚠️ Riesgos: Aprender vs. Parecer que Aprendiste {.smaller background-color="white"}
+
+::: columns
+::: {.column width="52%"}
+**El problema central**
+
+La IA puede generar código, análisis o textos que **parecen correctos y bien escritos**, sin que el/la estudiante entienda qué está haciendo. El output se ve bien, pero la comprensión no ocurrió.
+
+Esto es especialmente riesgoso en un curso de análisis estadístico: el código puede correr sin errores y aun así no responder a los objetivos de la tarea.
+:::
+::: {.column width="48%"}
+**El aprendizaje requiere dificultad**
+
+Aprender implica, por definición, **involucrarse con lo que aún no se domina**. La dificultad no es un obstáculo al aprendizaje: es su mecanismo central.
+
+La IA puede eliminar esa dificultad... y con ello, el aprendizaje mismo.
+:::
+:::
+
+::: {.callout-important title="Evidencia del proyecto GENIAL — LSE (2023-24)"}
+En 220 estudiantes de 7 cursos, quienes usaron IA principalmente para "ir más rápido" produjeron trabajos de **menor calidad**. Muchos entregaron código que ejecutaba sin errores pero que **no respondía a los objetivos** de la tarea, sin notar la diferencia. [Ver proyecto GENIAL →](https://lse-dsi.github.io/genial/)
+:::
 
 # Apoyo y Logística del Curso
 
@@ -424,7 +465,7 @@ exp(coef(modelo_logistico)) # Odds Ratio
 
 ## Comunicar {.smaller background-color="white"}
 
-La regresión logística revela una **asociación significativa y positiva** entre el área de residencia rural y la pobreza. Específicamente, las personas que residen en áreas rurales tienen **odds de ser pobres 1.59 veces mayores** que quienes viven en áreas urbanas (p \< 2e-16).
+La regresión logística revela una **asociación significativa y positiva** entre el área de residencia rural y la pobreza. Específicamente, las personas que residen en áreas rurales tienen **odds de ser pobres 1.46 veces mayores** que quienes viven en áreas urbanas (p \< 0,001).
 
 Este resultado sugiere que el riesgo de pobreza es considerablemente mayor en zonas rurales de Chile, incluso en un modelo simple que solo considera el área de residencia. Este hallazgo destaca la necesidad de políticas públicas diferenciadas y focalizadas en áreas rurales para abordar eficazmente la problemática de la pobreza.
 

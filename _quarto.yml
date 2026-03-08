@@ -32,6 +32,8 @@ website:
           text: "🏠 Inicio"
         - href: 2026/syllabus.qmd
           text: "📓 Programa"
+        - href: 2026/ai-policy.qmd
+          text: "🤖 Política de IA"
         - section: "🗓️ Semanas"
           collapse: false
           contents:

@@ -1,0 +1,109 @@
+---
+title: "🤖 Política de Uso de Inteligencia Artificial"
+subtitle: "SOC9035 - Análisis Avanzado de Datos II"
+format: html
+toc: true
+---
+
+## Principio general: uso abierto y transparente
+
+En este curso adoptamos una política de **uso abierto y autorizado** de herramientas de IA generativa (ChatGPT, Claude, Copilot, Gemini, entre otras). Esta decisión refleja una postura pedagógica deliberada: en lugar de prohibir el uso de herramientas que los/as estudiantes ya utilizan —con o sin autorización— preferimos incorporarlas de manera **consciente, crítica y documentada**.
+
+Esta política está inspirada en el proyecto **[GENIAL](https://lse-dsi.github.io/genial/)** (*GENerative AI Tools as a Catalyst for Learning*), una iniciativa de la London School of Economics (LSE) que investigó, con datos reales de chatlogs de más de 200 estudiantes en 7 cursos, cómo el uso de IA generativa afecta el proceso de aprendizaje en educación superior.
+
+---
+
+## ¿Qué está permitido?
+
+El uso de herramientas de IA generativa está **permitido en todas las evaluaciones del curso**, con la excepción de la prueba solemne (ver más abajo). Esto incluye, pero no se limita a:
+
+- Usar IA para ayudar a depurar código en R.
+- Consultar conceptos o pedir explicaciones alternativas de contenidos del curso.
+- Usar IA para estructurar argumentos o recibir retroalimentación preliminar sobre redacción.
+- Usar IA para revisar salidas de modelos o interpretar resultados.
+
+---
+
+## ¿Qué se pide a cambio?
+
+Para cada evaluación en que se use IA (o en que se haya optado por no usarla), deberán entregar junto con su trabajo:
+
+1. **Un breve comentario** (1 párrafo) describiendo cómo utilizaron la IA en su proceso de trabajo: para qué la usaron, qué tan útil fue, y qué decisiones tomaron ustedes frente a lo que la IA les sugirió.
+
+2. **El log o registro** de las interacciones relevantes con la herramienta de IA (exportación del chat, capturas de pantalla u otro formato disponible).
+
+Si no usaron IA, simplemente indíquenlo en el comentario.
+
+::: {.callout-note title="¿Por qué pedimos esto?"}
+El objetivo **no es fiscalizar** el uso de IA. El objetivo es doble:
+
+- **Promover un uso más consciente y crítico:** La reflexión sobre el propio proceso de trabajo con IA ayuda a identificar cuándo la herramienta está apoyando el aprendizaje y cuándo lo está reemplazando.
+- **Generar evidencia:** Al documentar cómo los/as estudiantes usan estas herramientas en un curso de análisis de datos sociales, contribuimos colectivamente al conocimiento pedagógico sobre el tema.
+:::
+
+---
+
+## Excepción: Prueba Solemne
+
+Esta política **no aplica a la prueba solemne**, que es una evaluación de carácter individual y presencial. En esa instancia, **no está permitido el uso de herramientas de IA** ni de ningún recurso externo no autorizado explícitamente.
+
+---
+
+## Beneficios del uso de IA en el aprendizaje
+
+Cuando se usan estratégicamente, las herramientas de IA pueden apoyar genuinamente el proceso de aprendizaje:
+
+- **Depuración de código:** Identificar por qué un script falla o por qué un resultado es inesperado.
+- **Exploración conceptual:** Pedir que la IA explique de otro modo un concepto que no quedó claro en clases.
+- **Retroalimentación rápida:** Obtener una primera evaluación de la estructura de un argumento o análisis antes de consultar al equipo docente.
+- **Productividad:** Reducir tiempo en tareas más mecánicas (formateo, documentación, búsqueda de errores de sintaxis) para dedicar más atención a la interpretación y el análisis.
+
+---
+
+## Riesgos: aprender vs. parecer que aprendiste
+
+La evidencia del proyecto GENIAL —y nuestra propia experiencia docente— sugiere que el uso de IA también conlleva riesgos pedagógicos importantes que vale la pena comprender.
+
+### El problema de los outputs convincentes sin comprensión real
+
+Las herramientas de IA generativa producen outputs que suenan y parecen correctos, incluso cuando no lo son. En un curso de programación estadística, esto es especialmente problemático: el código puede ejecutar sin errores, las tablas pueden verse prolijas, el texto puede sonar técnico y preciso... y sin embargo, el análisis puede no responder en absoluto a los objetivos de la tarea.
+
+> *"El tono convincente y autoritario de los chatbots les daba incluso a los mejores estudiantes la impresión de que el output era preciso y verdadero."*
+> — Sallai, Cardoso-Silva & Barreto, Blog GENIAL (LSE, 2024)
+
+En el estudio GENIAL, varios estudiantes entregaron código generado por IA que corría perfectamente... pero que no resolvía el problema que se pedía. Lo más preocupante: no notaron la diferencia.
+
+### El aprendizaje requiere dificultad
+
+Aprender algo implica, por definición, **involucrarse con aquello que aún no se domina**. La dificultad cognitiva —el esfuerzo de entender algo que todavía no es claro— no es un obstáculo al aprendizaje: es su mecanismo central.
+
+Cuando la IA resuelve ese paso de dificultad en lugar de quien aprende, el resultado puede ser un trabajo que "salió bien" pero del que no se aprendió nada. Este es el riesgo más importante, porque es silencioso: la nota puede estar bien, pero la comprensión no ocurrió.
+
+> *"Fui línea por línea a entender qué hacía cada parte del código que generé con IA... después de entregarlo."*
+> — Estudiante participante en el proyecto GENIAL
+
+### La evidencia del proyecto GENIAL
+
+El proyecto GENIAL analizó los chatlogs de 220 estudiantes de cursos de estadística, ciencias de datos, gestión y políticas públicas en la LSE durante el año académico 2023-2024. Sus hallazgos más relevantes para este curso:
+
+- La mayoría de los/as estudiantes usó IA para **completar tareas más rápido**, no para aprender más.
+- Quienes usaron IA de esta manera tendieron a producir trabajos de **menor calidad** que quienes no la usaron.
+- Los/as estudiantes se beneficiaron del uso de IA **solo cuando ya comprendían bien** el propósito de la tarea y los conceptos involucrados.
+- El marco teórico **GENIAL** (basado en el ciclo de aprendizaje experiencial de Kolb) permite mapear si cada etapa del aprendizaje fue catalizada, disrumpida o simplemente saltada por el uso de IA.
+
+::: {.callout-tip title="Para saber más"}
+- Sitio del proyecto: [lse-dsi.github.io/genial](https://lse-dsi.github.io/genial/)
+- Preprint: Cardoso Silva, J., Sallai, D., Kearney, C., Panero, F., & Barreto, M. (2025). *Mapping Student-GenAI Interactions onto Experiential Learning: The GENIAL Framework*. SSRN. [https://doi.org/10.2139/ssrn.5674422](https://doi.org/10.2139/ssrn.5674422)
+:::
+
+---
+
+## En resumen
+
+| | |
+|:---|:---|
+| **¿Está permitido usar IA?** | Sí, en todas las evaluaciones **excepto** la prueba solemne. |
+| **¿Qué debo entregar?** | Un comentario breve + el log de las interacciones relevantes. |
+| **¿Por qué?** | Para promover uso consciente/crítico y generar evidencia pedagógica. |
+| **¿Cuál es el riesgo?** | Obtener buenos outputs sin comprender, saltando el proceso de aprendizaje. |
+| **¿Inspiración?** | Proyecto GENIAL (LSE): [lse-dsi.github.io/genial](https://lse-dsi.github.io/genial/) |
