@@ -9,7 +9,7 @@ toc: true
 
 En este curso adoptamos una política de **uso abierto y autorizado** de herramientas de IA generativa (ChatGPT, Claude, Copilot, Gemini, entre otras). Esta decisión refleja una postura pedagógica deliberada: en lugar de prohibir el uso de herramientas que los/as estudiantes ya utilizan —con o sin autorización— preferimos incorporarlas de manera **consciente, crítica y documentada**.
 
-Esta política está inspirada en el proyecto **[GENIAL](https://lse-dsi.github.io/genial/)** (*GENerative AI Tools as a Catalyst for Learning*), una iniciativa de la London School of Economics (LSE) que investigó, con datos reales de chatlogs de más de 200 estudiantes en 7 cursos, cómo el uso de IA generativa afecta el proceso de aprendizaje en educación superior.
+Esta política está inspirada en el proyecto **[GENIAL](https://lse-dsi.github.io/genial/)** (*GENerative AI Tools as a Catalyst for Learning*), una iniciativa de la London School of Economics (LSE) que investigó cómo el uso de IA generativa afecta el proceso de aprendizaje en cursos de datos sociales.
 
 ---
 
@@ -68,10 +68,7 @@ La evidencia del proyecto GENIAL —y nuestra propia experiencia docente— sugi
 
 Las herramientas de IA generativa producen outputs que suenan y parecen correctos, incluso cuando no lo son. En un curso de programación estadística, esto es especialmente problemático: el código puede ejecutar sin errores, las tablas pueden verse prolijas, el texto puede sonar técnico y preciso... y sin embargo, el análisis puede no responder en absoluto a los objetivos de la tarea.
 
-> *"El tono convincente y autoritario de los chatbots les daba incluso a los mejores estudiantes la impresión de que el output era preciso y verdadero."*
-> — Sallai, Cardoso-Silva & Barreto, Blog GENIAL (LSE, 2024)
-
-En el estudio GENIAL, varios estudiantes entregaron código generado por IA que corría perfectamente... pero que no resolvía el problema que se pedía. Lo más preocupante: no notaron la diferencia.
+En la investigación del proyecto GENIAL, varios estudiantes entregaron código generado por IA que corría perfectamente... pero que no resolvía el problema que se pedía. Lo más preocupante: no notaron la diferencia.
 
 ### El aprendizaje requiere dificultad
 
@@ -79,12 +76,9 @@ Aprender algo implica, por definición, **involucrarse con aquello que aún no s
 
 Cuando la IA resuelve ese paso de dificultad en lugar de quien aprende, el resultado puede ser un trabajo que "salió bien" pero del que no se aprendió nada. Este es el riesgo más importante, porque es silencioso: la nota puede estar bien, pero la comprensión no ocurrió.
 
-> *"Fui línea por línea a entender qué hacía cada parte del código que generé con IA... después de entregarlo."*
-> — Estudiante participante en el proyecto GENIAL
-
 ### La evidencia del proyecto GENIAL
 
-El proyecto GENIAL analizó los chatlogs de 220 estudiantes de cursos de estadística, ciencias de datos, gestión y políticas públicas en la LSE durante el año académico 2023-2024. Sus hallazgos más relevantes para este curso:
+El proyecto GENIAL analizó interacciones de estudiantes en cursos de análisis de datos sociales en la LSE durante el año académico 2023-2024. Sus hallazgos más relevantes para este curso:
 
 - La mayoría de los/as estudiantes usó IA para **completar tareas más rápido**, no para aprender más.
 - Quienes usaron IA de esta manera tendieron a producir trabajos de **menor calidad** que quienes no la usaron.
