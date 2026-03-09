@@ -45,6 +45,9 @@ library(haven)
 # Este comando "enciende" el paquete para usarlo en nuestra sesión actual.
 ```
 
+```{r, eval=FALSE}
+load(casen_2024.RData)
+```
 
 ```{r load, eval=TRUE, echo=FALSE}
 casen <- readRDS("../../data/casen24.rds")
@@ -202,13 +205,13 @@ Del mismo modo podemos obtener tablas de frecuencia absoluta y relativa.
 table(casen$sexo)
 #Para usar las etiquetas de las variables cargadas en e formato spss podemos usar el comando as_factor()
 table(as_factor(casen$sexo))
-#prop.table nos da una tabla de proporciones a partir de una tabla
-prop.table(table(as_factor(casen$sexo)))
+#proportions nos da una tabla de proporciones a partir de una tabla
+proportions(table(as_factor(casen$sexo)))
 
 #El comando table también nos permite obtener tablas cruzadas
 table(as_factor(casen$sexo),as_factor(casen$pobreza))
 #si añadimos el argumento 1 nos dará porcentajes fila y 2 nos dará porcentajes columna
-prop.table(table(as_factor(casen$sexo),as_factor(casen$pobreza)),1)
+proportions(table(as_factor(casen$sexo),as_factor(casen$pobreza)),1)
 ```
 
 
