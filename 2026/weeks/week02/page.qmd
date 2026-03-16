@@ -20,5 +20,6 @@ En este laboratorio descargarás y explorarás un proyecto reproducible de ejemp
 
 ## 📚 Lecturas Obligatorias
 
-- **Boccardo, G. & Ruiz, F. (2019).** *RStudio para estadística descriptiva en ciencias sociales*. Universidad de Chile.
+- **Rodríguez-Sánchez, F., Pérez-Luque, A. J., Bartomeus, I., & Varela, S. (2016)**. *Ciencia reproducible: qué, por qué, cómo. [https://revistaecosistemas.net/index.php/ecosistemas/article/view/1178/973](https://revistaecosistemas.net/index.php/ecosistemas/article/view/1178/973)   
+
 - **LISA-COES.** Protocolo IPO para investigación reproducible: [https://lisa-coes.netlify.app/ipo-repro/](https://lisa-coes.netlify.app/ipo-repro/)
