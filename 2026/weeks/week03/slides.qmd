@@ -75,7 +75,7 @@ El MAS es la base de gran parte de la **estadística inferencial** que aprendemo
 -   **Fórmulas "simples"** para calcular:
     -   Medias poblacionales (μ) a partir de medias muestrales (x̄).
     -   Proporciones poblacionales (P) a partir de proporciones muestrales (p̂).
-    -   Errores estándar (SE), que miden la variabilidad de nuestras estimaciones.
+    -   Errores estándar (SE), que miden la incertidumbre de nuestras estimaciones.
     -   Intervalos de Confianza (IC), que nos dan un rango plausible para el valor poblacional.
     -   Pruebas de hipótesis (test t, chi-cuadrado, etc.).
 -   **Intuición:** Si todos tienen la misma chance de ser elegidos, la muestra "en promedio" debería parecerse a la población.
@@ -296,7 +296,7 @@ La **documentación técnica** de la encuesta (como el "Diseño Muestral Casen 2
 -   Cuál es la variable de **ponderación** (`expr`, `expc`, etc.).
 -   Cuál es la variable que identifica los **estratos** (`varstrat` en CASEN).
 -   Cuál es la variable que identifica los **conglomerados/UPM** (`varunit` en CASEN).
--   Otros detalles importantes (ej. si los IDs de UPM se repiten entre estratos - `nest=TRUE`).
+-   Otros detalles técnicos del diseño (ej. número de etapas, corrección por población finita).
 
 **¡Siempre lee la documentación antes de analizar!**
 

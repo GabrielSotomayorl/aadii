@@ -76,10 +76,9 @@ Recordemos cómo creamos este objeto "receta" para CASEN en el práctico anterio
 ```{r, echo=TRUE, eval=FALSE}
 casen_design <- svydesign(
   ids = ~varunit,      # Le dice a R cuál es la variable de UPMs/Conglomerados
-  strata = ~varstrat,   # Le dice a R cuál es la variable de Estratos
+  strata = ~varstrat,  # Le dice a R cuál es la variable de Estratos
   weights = ~expr,     # Le dice a R cuál es la variable de Ponderadores
-  data = casen,        # Le dice a R dónde están los datos crudos
-  nest = TRUE          # Le dice a R que los IDs de UPMs pueden repetirse entre estratos
+  data = casen         # Le dice a R dónde están los datos crudos
 )
 ```
 
@@ -220,7 +219,11 @@ Dentro de `summarise`, usamos las funciones de `srvyr` que "imitan" a las de `su
 
 -   `survey_count(...)` / `survey_tally()`: Conteos poblacionales estimados (similares a `dplyr::count`).
 
-**Argumentos Importantes:** \* `na.rm = TRUE`: ¡Fundamental para manejar valores perdidos! \* `vartype = c("se", "ci", "var", "cv")`: Para pedir el tipo de medida de variabilidad (error estándar, intervalo confianza, varianza, coef. variación). Por defecto es "se". \* `level = 0.95`: Para cambiar el nivel de confianza del IC.
+**Argumentos Importantes:**
+
+-   `na.rm = TRUE`: ¡Fundamental para manejar valores perdidos!
+-   `vartype = c("se", "ci", "var", "cv")`: Tipo de medida de variabilidad a reportar (error estándar, intervalo de confianza, varianza, coeficiente de variación). Por defecto es `"se"`.
+-   `level = 0.95`: Nivel de confianza para el IC (por defecto 95%).
 
 ## Comparación Final: `survey` vs `srvyr` (Media edad por sexo) {.smaller}
 
@@ -261,6 +264,6 @@ En el bloque práctico de hoy:
 2.  Calcularemos **medias, proporciones y totales** ponderados con `srvyr`.
 3.  Practicaremos la obtención e interpretación de **errores estándar e intervalos de confianza**.
 4.  Realizaremos **análisis por subgrupos** usando `group_by`.
-5.  Construcción de gráficos integrando ggplot.
+5.  **Construiremos** gráficos de resultados ponderados integrando `ggplot2`.
 
 **¡Volvamos a RStudio!**
