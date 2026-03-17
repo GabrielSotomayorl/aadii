@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 En esta sesión práctica, vamos a dar los primeros pasos para trabajar con datos de encuestas complejas en R, usando la Encuesta CASEN 2024 como nuestro caso de estudio. Al finalizar este práctico, serás capaz de:
 
-1.  **Cargar** datos de encuestas en formato SPSS (`.sav`) en R.
+1.  **Cargar** datos de la Encuesta CASEN 2024 en R.
 2.  **Explorar** una base de datos de encuesta e **identificar** las variables clave que describen su diseño muestral complejo (ponderadores, estratos, conglomerados).
 3.  Realizar cálculos descriptivos **"ingenuos"** (ignorando el diseño muestral) como punto de comparación.
 4.  **Declarar** correctamente el diseño muestral complejo en R utilizando la función `svydesign()` del paquete `survey`.
@@ -80,6 +80,7 @@ summary(as_factor(casen$pobreza)) # Situación de pobreza
 ```
 
 **Interpretación de la Exploración:**
+
 *   La base tiene muchísimas variables (`r ncol(casen)`) y un gran número de casos (`r nrow(casen)`), correspondientes a personas.
 *   La **edad** va de 0 a 120 años, con una media muestral (aún no ponderada) de `r round(mean(casen$edad, na.rm=TRUE), 1)` años.
 *   El **sexo** está codificado (1=Hombre, 2=Mujer), con una leve mayoría de mujeres en la muestra.
@@ -102,17 +103,13 @@ Veamos cómo lucen estas variables en nuestros datos:
 ```{r}
 # Resumen del factor de expansión regional (ponderador)
 summary(casen$expr)
-# ¡Los pesos varían mucho! Van desde 2 hasta 5222, con una media de 98.3. 
-# Esto confirma que las probabilidades de selección fueron muy desiguales.
+# ¡Los pesos varían mucho! Esto confirma que las probabilidades de selección fueron muy desiguales.
 
 # Cantidad de estratos únicos definidos para la varianza
-length(unique(casen$varstrat)) 
-head(casen$varstrat)
+length(unique(casen$varstrat))
 
 # Cantidad de conglomerados (UPMs) únicos definidos para la varianza
 length(unique(casen$varunit))
-head(casen$varunit)
-# Nota: Hay muchos menos estratos (755) que conglomerados (12062), 
 ```
 
 **Importante:** Hemos localizado las variables `expr`, `varstrat`, y `varunit`. ¡Estas son las llaves para decirle a R cómo fue diseñada la muestra!
@@ -124,29 +121,28 @@ Antes de usar las herramientas correctas, calculemos estadísticas como si CASEN
 ```{r}
 # Media de edad simple (ignorando el diseño)
 media_edad_ingenua <- mean(casen$edad, na.rm = TRUE)
-print(paste("Media de edad (ingenua):", round(media_edad_ingenua, 2)))
+media_edad_ingenua
 
 # Media de escolaridad simple
 media_esc_ingenua <- mean(casen$esc, na.rm = TRUE)
-print(paste("Media de escolaridad (ingenua):", round(media_esc_ingenua, 2)))
+media_esc_ingenua
 
-# Proporción de sexo simple (usando table y prop.table)
+# Proporción de sexo simple
 tabla_sexo_ingenua <- table(casen$sexo)
 prop_sexo_ingenua <- prop.table(tabla_sexo_ingenua)
-print("Proporción por sexo (ingenua):")
-print(round(prop_sexo_ingenua, 3))
+round(prop_sexo_ingenua, 3)
 
-# Proporción de pobreza simple (variable dicotómica pobre_dic)
-casen <- casen %>% 
+# Creamos variable dicotómica de pobreza y calculamos proporción simple
+casen <- casen %>%
   mutate(pobre_dic = ifelse(pobreza %in% c(1, 2), 1, 0))
 
 tabla_pobreza_ingenua <- table(casen$pobre_dic)
 prop_pobreza_ingenua <- prop.table(tabla_pobreza_ingenua)
-print("Proporción de pobreza (ingenua):")
-print(round(prop_pobreza_ingenua, 3)) 
+round(prop_pobreza_ingenua, 3)
 ```
 
 **Resultados Ingenuos:**
+
 *   Edad media (ingenua): `r round(media_edad_ingenua, 2)` años.
 *   Escolaridad media (ingenua): `r round(media_esc_ingenua, 2)` años.
 *   Proporción de Hombres (ingenua): `r round(prop_sexo_ingenua["1"]*100, 1)`%.
@@ -163,21 +159,17 @@ Ahora, le enseñamos a R la "receta" de la muestra CASEN usando `svydesign()`.
 # Crear el objeto que describe el diseño muestral de CASEN
 casen_design <- svydesign(ids = ~varunit,      # Conglomerados (UPM)
                           strata = ~varstrat,   # Estratos
-                          weights = ~expr,     # Ponderador regional
-                          data = casen        # Base de datos
-                          )       
+                          weights = ~expr,      # Ponderador regional
+                          data = casen          # Base de datos
+                          )
 
-# Mensaje de confirmación
-print("Objeto de diseño muestral 'casen_design' creado.")
-
-# Inspeccionar el objeto creado
-print(casen_design)
-#summary(casen_design) # Comentado para brevedad
+casen_design
 ```
 
-**Interpretación de la Salida `print(casen_design)`:**
-R nos confirma que ha creado un objeto de diseño muestral. Nos indica que es un diseño "Stratified 1-level Cluster Sampling design" (Muestreo por Conglomerados Estratificado de 1 nivel - aunque sabemos que es bietápico, `survey` a menudo simplifica la descripción si solo se especifican las UPMs). Crucialmente, identifica:
-*   Que hay 12062 clusters (UPMs únicas definidas en `varunit`).
+**Interpretación:**
+R nos confirma que ha creado un objeto de diseño muestral de tipo "Stratified 1-level Cluster Sampling design" (aunque el diseño es bietápico, `survey` simplifica la descripción cuando solo se especifican las UPMs). Crucialmente, identifica:
+
+*   Que hay `r length(unique(casen$varunit))` clusters (UPMs únicas definidas en `varunit`).
 *   Que la estratificación está dada por `varstrat`.
 *   Que los ponderadores son `expr`.
 *   Que los datos provienen de `casen`.
@@ -191,13 +183,11 @@ Vamos a recalcular la **media de edad** y la **proporción de pobreza** usando e
 ```{r}
 # Media de edad PONDERADA
 media_edad_ponderada <- svymean(~edad, design = casen_design, na.rm = TRUE)
-print("Media de edad (ponderada y con diseño complejo):")
-print(media_edad_ponderada)
+media_edad_ponderada
 
 # Proporción de pobreza PONDERADA (usando pobre_dic)
 prop_pobreza_ponderada <- svymean(~pobre_dic, design = casen_design, na.rm = TRUE)
-print("Proporción de pobreza (ponderada y con diseño complejo):")
-print(prop_pobreza_ponderada) 
+prop_pobreza_ponderada
 ```
 
 **¡Ahora compara!**

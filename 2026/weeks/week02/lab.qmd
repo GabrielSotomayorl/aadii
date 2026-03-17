@@ -20,6 +20,7 @@ El objetivo de este práctico es mostrar, de manera sencilla, cómo estructurar 
 # 1. Proyecto de Ejemplo
 
 Este proyecto sigue el protocolo **IPO-R** (Input, Procesamiento, Output), con:
+
 - **Input:** Carpeta que contiene los datos originales.
 - **Procesamiento:** Scripts que preparan y analizan la información.
 - **Output:** Resultados generados (tablas y gráficos).

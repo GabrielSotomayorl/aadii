@@ -239,7 +239,8 @@ x <- list(u = c(2, 3, 4), v = "abc")
 x 
 ```
 
-Existen distintas formas de extraer un elemento guardado dentro de una lista: 
+Existen distintas formas de extraer un elemento guardado dentro de una lista:
+
 1. A partir de su nombre usando el **operador dólar `$`.**
 2. A partir de su posición usando **corchetes dobles `[[ ]]`.**
 
