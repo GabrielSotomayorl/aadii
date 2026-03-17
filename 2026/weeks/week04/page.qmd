@@ -1,0 +1,31 @@
+---
+title: "🗓️ Semana 04: Análisis de Encuestas Complejas con `srvyr` en R"
+---
+
+En esta semana profundizamos en las herramientas de R para el análisis de encuestas complejas. Partiendo del objeto de diseño muestral creado la semana anterior, aprenderemos a usar el paquete **`survey`** y su interfaz más intuitiva **`srvyr`**, que permite trabajar con la sintaxis familiar del tidyverse (`group_by`, `summarise`) para calcular estimaciones correctamente ponderadas.
+
+Trabajaremos con medias, proporciones y totales poblacionales, obtendremos **errores estándar e intervalos de confianza** que reflejan el diseño complejo, realizaremos **análisis por subgrupos** y visualizaremos los resultados con `ggplot2`.
+
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## 💻 Taller Aplicado (Práctico 4)
+
+En este laboratorio usaremos `srvyr` para calcular estadísticas descriptivas ponderadas sobre la CASEN 2024, interpretaremos los errores estándar e intervalos de confianza, y construiremos visualizaciones correctas integrando `srvyr` con `ggplot2`.
+
+👉 **[Ir al Práctico 4: Análisis de Encuestas Complejas con `srvyr`](lab.qmd)**
+
+## 📚 Lecturas Obligatorias
+
+- **División Observatorio Social. (2026, febrero).** *Metodología de Diseño Muestral CASEN 2024*. Ministerio de Desarrollo Social y Familia. [https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2024/Diseno_Muestral_Casen_2024.pdf](https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2024/Diseno_Muestral_Casen_2024.pdf)
+
+- **Zimmer, S. A., Powell, R. J., & Velásquez, I. C. (2024).** *Exploring complex survey data analysis using R*.
+
+## 📟 Dudas y Comunicación
+
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dificultades cargando la base de datos CASEN en tu computador o cualquier otra duda sobre el curso.

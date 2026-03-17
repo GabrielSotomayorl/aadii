@@ -1,0 +1,223 @@
+---
+title: "Práctico 3: Explorando Encuestas Complejas (CASEN) y Declarando el Diseño en R"
+subtitle: "Explorando Encuestas Complejas (CASEN) y Declarando el Diseño en R"
+date: "2026-03-23"
+lang: es
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-tools: true
+    df-print: paged
+    body-classes: lab-content
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## 0. Objetivos del Práctico
+
+En esta sesión práctica, vamos a dar los primeros pasos para trabajar con datos de encuestas complejas en R, usando la Encuesta CASEN 2024 como nuestro caso de estudio. Al finalizar este práctico, serás capaz de:
+
+1.  **Cargar** datos de encuestas en formato SPSS (`.sav`) en R.
+2.  **Explorar** una base de datos de encuesta e **identificar** las variables clave que describen su diseño muestral complejo (ponderadores, estratos, conglomerados).
+3.  Realizar cálculos descriptivos **"ingenuos"** (ignorando el diseño muestral) como punto de comparación.
+4.  **Declarar** correctamente el diseño muestral complejo en R utilizando la función `svydesign()` del paquete `survey`.
+5.  Realizar un primer cálculo **ponderado** (una media) y **constatar** la diferencia con el cálculo ingenuo.
+
+## 1. Preparación del Entorno
+
+Antes de empezar, necesitamos asegurarnos de tener las herramientas adecuadas en R.
+
+*   **Paquetes:** Cargaremos los paquetes `tidyverse` (para manipulación general de datos), `haven` (para leer archivos de SPSS/Stata/SAS) y `survey` (para análisis de encuestas complejas).
+*   **RProject:** Es una buena práctica trabajar dentro de un RStudio Project para mantener todo organizado y facilitar el manejo de rutas de archivos. Si no tienes uno para este curso, considera crearlo.
+
+```{r}
+# Si no tienes instalados los paquetes, ejecuta primero estas líneas (quitando el #):
+# install.packages("tidyverse")
+# install.packages("haven")
+# install.packages("survey")
+
+# Cargar los paquetes necesarios para la sesión
+library(tidyverse)
+library(haven)
+library(survey)
+```
+
+¡Listo! Ahora estamos preparados para trabajar con los datos.
+
+## 2. Cargando y Explorando Datos CASEN 2024
+
+La Encuesta de Caracterización Socioeconómica Nacional (CASEN) es una de las encuestas de hogares más importantes de Chile. Utilizaremos la versión 2024, disponible en formato `.RData` en el sitio del Ministerio de Desarrollo Social y Familia. Para cargarla, descargamos el archivo y usamos `load()`. Como el objeto viene nombrado `casen_2024`, lo renombramos a `casen` para simplificar el código.
+
+```{r, eval=FALSE}
+load("casen_2024.RData")
+casen <- casen_2024
+```
+
+```{r load, eval=TRUE, echo=FALSE}
+casen <- readRDS("../../data/casen24.rds")
+```
+
+
+Ahora que tenemos la base `casen` en nuestro entorno, vamos a explorarla un poco.
+
+```{r}
+# Vistazo rápido a la estructura y tipos de variables
+#glimpse(casen) # Comentado para brevedad
+
+# Ver las primeras filas de la base
+head(casen)
+
+# Resumen de algunas variables sociodemográficas clave
+summary(casen$edad) 
+summary(as_factor(casen$sexo)) 
+summary(casen$esc) # Años de escolaridad
+summary(casen$ytotcorh) # Ingreso total corregido del hogar
+summary(as_factor(casen$pobreza)) # Situación de pobreza
+```
+
+**Interpretación de la Exploración:**
+*   La base tiene muchísimas variables (`r ncol(casen)`) y un gran número de casos (`r nrow(casen)`), correspondientes a personas.
+*   La **edad** va de 0 a 120 años, con una media muestral (aún no ponderada) de `r round(mean(casen$edad, na.rm=TRUE), 1)` años.
+*   El **sexo** está codificado (1=Hombre, 2=Mujer), con una leve mayoría de mujeres en la muestra.
+*   La **escolaridad** (`esc`) tiene un rango amplio y presenta valores perdidos (`NA's`). La media muestral es de `r round(mean(casen$esc, na.rm=TRUE), 1)` años.
+*   El **ingreso del hogar** (`ytotcorh`) muestra una gran dispersión (comparar mediana y media, y el máximo valor) y también tiene algunos `NA`.
+*   La variable **pobreza** (1=extrema, 2=no extrema, 3=no pobre) muestra que la mayoría de la muestra se clasifica como no pobre.
+
+**Reflexión:** Esta exploración inicial nos da una idea general de los datos, pero recordamos que estas son estadísticas *de la muestra*, no necesariamente representativas de la población chilena todavía.
+
+### Identificando las Variables del Diseño Muestral
+
+Como vimos en la clase, para analizar correctamente esta encuesta, necesitamos identificar las variables que definen su diseño complejo. Basándonos en la documentación oficial de CASEN (que siempre deberías consultar), estas variables suelen ser:
+
+1.  **Ponderador / Factor de Expansión:** `expr` (regional).
+2.  **Estrato:** `varstrat`.
+3.  **Conglomerado / UPM:** `varunit`.
+
+Veamos cómo lucen estas variables en nuestros datos:
+
+```{r}
+# Resumen del factor de expansión regional (ponderador)
+summary(casen$expr)
+# ¡Los pesos varían mucho! Van desde 2 hasta 5222, con una media de 98.3. 
+# Esto confirma que las probabilidades de selección fueron muy desiguales.
+
+# Cantidad de estratos únicos definidos para la varianza
+length(unique(casen$varstrat)) 
+head(casen$varstrat)
+
+# Cantidad de conglomerados (UPMs) únicos definidos para la varianza
+length(unique(casen$varunit))
+head(casen$varunit)
+# Nota: Hay muchos menos estratos (755) que conglomerados (12062), 
+```
+
+**Importante:** Hemos localizado las variables `expr`, `varstrat`, y `varunit`. ¡Estas son las llaves para decirle a R cómo fue diseñada la muestra!
+
+## 3. El Error Común: Análisis Ingenuo
+
+Antes de usar las herramientas correctas, calculemos estadísticas como si CASEN fuera una muestra aleatoria simple (MAS), ignorando el diseño.
+
+```{r}
+# Media de edad simple (ignorando el diseño)
+media_edad_ingenua <- mean(casen$edad, na.rm = TRUE)
+print(paste("Media de edad (ingenua):", round(media_edad_ingenua, 2)))
+
+# Media de escolaridad simple
+media_esc_ingenua <- mean(casen$esc, na.rm = TRUE)
+print(paste("Media de escolaridad (ingenua):", round(media_esc_ingenua, 2)))
+
+# Proporción de sexo simple (usando table y prop.table)
+tabla_sexo_ingenua <- table(casen$sexo)
+prop_sexo_ingenua <- prop.table(tabla_sexo_ingenua)
+print("Proporción por sexo (ingenua):")
+print(round(prop_sexo_ingenua, 3))
+
+# Proporción de pobreza simple (variable dicotómica pobre_dic)
+casen <- casen %>% 
+  mutate(pobre_dic = ifelse(pobreza %in% c(1, 2), 1, 0))
+
+tabla_pobreza_ingenua <- table(casen$pobre_dic)
+prop_pobreza_ingenua <- prop.table(tabla_pobreza_ingenua)
+print("Proporción de pobreza (ingenua):")
+print(round(prop_pobreza_ingenua, 3)) 
+```
+
+**Resultados Ingenuos:**
+*   Edad media (ingenua): `r round(media_edad_ingenua, 2)` años.
+*   Escolaridad media (ingenua): `r round(media_esc_ingenua, 2)` años.
+*   Proporción de Hombres (ingenua): `r round(prop_sexo_ingenua["1"]*100, 1)`%.
+*   Proporción de Mujeres (ingenua): `r round(prop_sexo_ingenua["2"]*100, 1)`%.
+*   Proporción de Pobreza (ingenua): `r round(prop_pobreza_ingenua["1"]*100, 1)`%.
+
+**Guarda estos números.** Los usaremos para comparar.
+
+## 4. Declarando el Diseño Muestral con `survey`
+
+Ahora, le enseñamos a R la "receta" de la muestra CASEN usando `svydesign()`.
+
+```{r}
+# Crear el objeto que describe el diseño muestral de CASEN
+casen_design <- svydesign(ids = ~varunit,      # Conglomerados (UPM)
+                          strata = ~varstrat,   # Estratos
+                          weights = ~expr,     # Ponderador regional
+                          data = casen        # Base de datos
+                          )       
+
+# Mensaje de confirmación
+print("Objeto de diseño muestral 'casen_design' creado.")
+
+# Inspeccionar el objeto creado
+print(casen_design)
+#summary(casen_design) # Comentado para brevedad
+```
+
+**Interpretación de la Salida `print(casen_design)`:**
+R nos confirma que ha creado un objeto de diseño muestral. Nos indica que es un diseño "Stratified 1-level Cluster Sampling design" (Muestreo por Conglomerados Estratificado de 1 nivel - aunque sabemos que es bietápico, `survey` a menudo simplifica la descripción si solo se especifican las UPMs). Crucialmente, identifica:
+*   Que hay 12062 clusters (UPMs únicas definidas en `varunit`).
+*   Que la estratificación está dada por `varstrat`.
+*   Que los ponderadores son `expr`.
+*   Que los datos provienen de `casen`.
+
+¡Ahora R "sabe" que esta no es una muestra simple y cómo está estructurada!
+
+## 5. Primer Cálculo Respetando el Diseño
+
+Vamos a recalcular la **media de edad** y la **proporción de pobreza** usando el objeto `casen_design` y la función `svymean()`.
+
+```{r}
+# Media de edad PONDERADA
+media_edad_ponderada <- svymean(~edad, design = casen_design, na.rm = TRUE)
+print("Media de edad (ponderada y con diseño complejo):")
+print(media_edad_ponderada)
+
+# Proporción de pobreza PONDERADA (usando pobre_dic)
+prop_pobreza_ponderada <- svymean(~pobre_dic, design = casen_design, na.rm = TRUE)
+print("Proporción de pobreza (ponderada y con diseño complejo):")
+print(prop_pobreza_ponderada) 
+```
+
+**¡Ahora compara!**
+
+1.  **Edad:** La media ingenua fue **`r round(media_edad_ingenua, 2)` años**. La media ponderada es **`r round(as.numeric(media_edad_ponderada), 1)` años** (SE=`r round(SE(media_edad_ponderada), 3)`). ¡Son diferentes! La media ponderada, que representa mejor a la población, es menor.
+2.  **Pobreza:** La proporción ingenua de pobreza fue **`r round(prop_pobreza_ingenua["1"]*100, 1)`%** (`r round(prop_pobreza_ingenua["1"], 3)`). La proporción ponderada es **`r round(as.numeric(prop_pobreza_ponderada)*100, 1)`%** (`r round(as.numeric(prop_pobreza_ponderada), 3)`, SE=`r round(SE(prop_pobreza_ponderada), 4)`). ¡También es diferente! La estimación que considera el diseño muestral es más baja.
+
+**Pregunta de Reflexión:** ¿Por qué crees que los resultados ponderados difieren de los resultados ingenuos? 
+
+¿Qué implica esto para nuestras conclusiones si solo hubiéramos usado los cálculos ingenuos?
+*Respuesta posible:* Hubiéramos sobreestimado la edad promedio de la población y también la tasa de pobreza. Nuestras conclusiones sobre la sociedad chilena habrían sido incorrectas.
+
+## 6. Conclusión
+
+¡Felicitaciones! Has dado tus primeros pasos en el análisis de encuestas complejas en R.
+
+*   Aprendiste a cargar datos de CASEN.
+*   Identificaste las variables cruciales del diseño muestral (`expr`, `varstrat`, `varunit`).
+*   Declaraste este diseño a R usando `svydesign()`.
+*   **Comprobaste empíricamente** que ignorar los ponderadores lleva a **estimaciones diferentes (y probablemente sesgadas)**, comparando los resultados ingenuos con los obtenidos usando `svymean()`.
+*   Notaste que `svymean` también entrega un **Error Estándar (SE)**, que mide la incertidumbre de la estimación considerando el diseño.
+
+En la próxima sesión, profundizaremos en cómo realizar más análisis (proporciones por grupo, totales) de manera más fácil usando el paquete `srvyr` y cómo interpretar estos errores estándar.

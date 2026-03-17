@@ -58,6 +58,20 @@ website:
                   text: "👨‍🏫 Material de clase"
                 - href: 2026/weeks/week02/lab.qmd
                   text: "💻 Práctico"
+            - section: "Semana 03"
+              collapse: false
+              contents:
+                - href: 2026/weeks/week03/page.qmd
+                  text: "👨‍🏫 Material de clase"
+                - href: 2026/weeks/week03/lab.qmd
+                  text: "💻 Práctico"
+            - section: "Semana 04"
+              collapse: false
+              contents:
+                - href: 2026/weeks/week04/page.qmd
+                  text: "👨‍🏫 Material de clase"
+                - href: 2026/weeks/week04/lab.qmd
+                  text: "💻 Práctico"
 
   navbar:
     background: primary

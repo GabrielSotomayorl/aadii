@@ -1,0 +1,31 @@
+---
+title: "🗓️ Semana 03: Fundamentos de los Diseños Muestrales Complejos"
+---
+
+En esta semana abordaremos una pregunta central para el análisis de datos sociales: ¿por qué no podemos aplicar estadísticas estándar a encuestas como la CASEN? Revisaremos los fundamentos teóricos del **muestreo probabilístico** y las limitaciones prácticas del Muestreo Aleatorio Simple (MAS), para luego introducir las tres estrategias que caracterizan los **diseños muestrales complejos**: estratificación, muestreo por conglomerados y ponderación mediante factores de expansión.
+
+En la parte aplicada, daremos los primeros pasos en R para trabajar con la **Encuesta CASEN 2024**: identificaremos las variables del diseño muestral (`varstrat`, `varunit`, `expr`), realizaremos cálculos ingenuos como contraste y declararemos correctamente el diseño usando `survey::svydesign()`.
+
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## 💻 Taller Aplicado (Práctico 3)
+
+En este laboratorio cargaremos la base CASEN 2024, identificaremos las variables del diseño muestral y declararemos el diseño complejo en R. Compararemos estimaciones ingénuas (sin ponderar) con estimaciones correctamente ponderadas usando `svymean()`.
+
+👉 **[Ir al Práctico 3: Explorando Encuestas Complejas (CASEN) y Declarando el Diseño en R](lab.qmd)**
+
+## 📚 Lecturas Obligatorias
+
+- **División Observatorio Social. (2026, febrero).** *Metodología de Diseño Muestral CASEN 2024*. Ministerio de Desarrollo Social y Familia. [https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2024/Diseno_Muestral_Casen_2024.pdf](https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2024/Diseno_Muestral_Casen_2024.pdf)
+
+- **Zimmer, S. A., Powell, R. J., & Velásquez, I. C. (2024).** *Exploring complex survey data analysis using R*.
+
+## 📟 Dudas y Comunicación
+
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dificultades cargando la base de datos CASEN en tu computador o cualquier otra duda sobre el curso.

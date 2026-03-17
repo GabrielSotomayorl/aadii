@@ -1,0 +1,254 @@
+---
+title: "Práctico 4: Análisis de Encuestas Complejas con `srvyr`"
+subtitle: "Análisis de Encuestas Complejas con `srvyr`"
+date: "2026-03-30"
+lang: es
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-tools: true
+    df-print: paged
+    body-classes: lab-content
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## 0. Objetivos del Práctico
+
+En esta sesión, pondremos en práctica los conceptos de análisis de encuestas complejas utilizando principalmente el paquete `srvyr` por su sintaxis amigable estilo `tidyverse`. Al finalizar, podrás:
+
+1.  **Crear** un objeto de diseño muestral (`tbl_svy`) utilizando `srvyr`.
+2.  **Calcular** estimaciones descriptivas ponderadas (medias, proporciones, totales) usando `summarise` y las funciones `survey_*`.
+3.  **Obtener e interpretar** medidas de incertidumbre como errores estándar (SE) e intervalos de confianza (IC) para estas estimaciones.
+4.  Realizar **análisis descriptivos por subgrupos** de manera eficiente usando `group_by`.
+5.  **Visualizar** resultados ponderados utilizando `ggplot2` después de calcular las estadísticas con `srvyr`.
+
+## 1. Preparación y Declaración del Diseño con `srvyr`
+
+Comenzamos cargando los paquetes necesarios y los datos de CASEN 2024 (igual que en el práctico anterior). Además de `tidyverse`, `haven` y `survey`, ahora cargamos `srvyr`.
+
+```{r load, eval=TRUE, echo=FALSE}
+casen <- readRDS("../../data/casen24.rds")
+```
+
+```{r}
+# Cargar paquetes
+library(tidyverse)
+library(haven)
+library(survey)
+library(srvyr) # ¡El paquete clave de hoy!
+```
+
+```{r, eval=FALSE}
+load("casen_2024.RData")
+casen <- casen_2024
+```
+
+```{r}
+if (!"pobre_dic" %in% names(casen)) {
+  casen <- casen %>% 
+    mutate(pobre_dic = ifelse(pobreza %in% c(1, 2), 1, 0))
+}
+```
+
+
+
+Ahora, creamos el objeto de diseño `tbl_svy` usando `srvyr::as_survey_design()`.
+
+```{r}
+# Crear el objeto tbl_svy con srvyr
+casen_design_srvyr <- as_survey_design(casen, 
+                                       ids = varunit,    # Variable de conglomerados (UPM)
+                                       strata = varstrat, # Variable de estratos
+                                       weights = expr )   # Variable de ponderador regional
+                                          
+
+# Inspeccionar el objeto creado con srvyr
+#print(casen_design_srvyr) # Comentado para no alargar el output renderizado
+```
+
+## 2. Análisis Descriptivo con `srvyr`
+
+Usaremos el flujo `objeto_srvyr %>% summarise(...)` para calcular estadísticas descriptivas ponderadas.
+
+### Medias Ponderadas
+
+Calculemos la media de edad y escolaridad, pidiendo directamente el Intervalo de Confianza (IC) al 95% (`vartype = "ci"`).
+
+```{r}
+# Calcular medias ponderadas con IC 95%
+medias_ci <- casen_design_srvyr %>%
+  summarise(
+    edad_media = survey_mean(edad, na.rm = TRUE, vartype = "ci"),
+    esc_media = survey_mean(esc, na.rm = TRUE, vartype = "ci") 
+  )
+
+print(medias_ci)
+```
+
+**Interpretación:** 
+La salida muestra las estimaciones ponderadas y sus intervalos de confianza al 95%.
+-   **Edad:** La edad promedio estimada para la población cubierta por CASEN 2024 es **`r round(medias_ci$edad_media, 1)` años**. Con un 95% de confianza, la verdadera edad promedio poblacional se encuentra entre **`r round(medias_ci$edad_media_low, 1)` y `r round(medias_ci$edad_media_upp, 1)` años**.
+-   **Escolaridad:** La escolaridad promedio estimada es de **`r round(medias_ci$esc_media, 1)` años**. El intervalo de confianza (95%) es muy estrecho, yendo de **`r round(medias_ci$esc_media_low, 1)` a `r round(medias_ci$esc_media_upp, 1)` años**, lo que indica una alta precisión en esta estimación.
+
+### Proporciones Ponderadas
+
+Calcularemos la tasa de pobreza (usando `pobre_dic`) y la proporción por sexo.
+
+```{r}
+# 1. Proporción de pobreza usando survey_mean en dummy
+tasa_pobreza <- casen_design_srvyr %>%
+  summarise(pobreza_prop = survey_mean(pobre_dic, na.rm = TRUE, vartype = "ci"))
+
+print(tasa_pobreza)
+
+# 2. Proporción por sexo usando group_by + survey_prop
+prop_sexo <- casen_design_srvyr %>%
+  # Usamos as_factor para obtener etiquetas si haven las cargó
+  mutate(sexo_factor = haven::as_factor(sexo)) %>% 
+  group_by(sexo_factor) %>% 
+  summarise(proporcion = survey_prop(vartype = "ci")) 
+
+print(prop_sexo)
+```
+
+**Interpretación:**
+-   **Tasa de Pobreza:** Se estima que el **`r round(tasa_pobreza$pobreza_prop*100, 1)`%** de la población se encuentra en situación de pobreza (extrema o no extrema). El intervalo de confianza del 95% para esta estimación va de **`r round(tasa_pobreza$pobreza_prop_low*100, 1)`% a `r round(tasa_pobreza$pobreza_prop_upp*100, 1)`%**.
+-   **Distribución por Sexo:** La población estimada se distribuye en un **`r round(prop_sexo$proporcion[1]*100, 1)`% de hombres** (IC 95%: `r round(prop_sexo$proporcion_low[1]*100, 1)`% - `r round(prop_sexo$proporcion_upp[1]*100, 1)`%) y un **`r round(prop_sexo$proporcion[2]*100, 1)`% de mujeres** (IC 95%: `r round(prop_sexo$proporcion_low[2]*100, 1)`% - `r round(prop_sexo$proporcion_upp[2]*100, 1)`%). Los intervalos estrechos reflejan una división muy cercana a la mitad en la población.
+
+### Totales Poblacionales Estimados
+
+```{r}
+# Estimar el número total de personas 
+total_personas <- casen_design_srvyr %>%
+  summarise(total_pers = survey_total(vartype = "ci"))
+
+print(total_personas)
+
+# Estimar el número total de personas en pobreza
+total_pobres <- casen_design_srvyr %>%
+  summarise(total_pob = survey_total(pobre_dic, na.rm = TRUE, vartype = "ci"))
+  
+print(total_pobres)
+```
+
+**Interpretación:**
+-   **Población Total:** CASEN 2024 estima una población total (cubierta por la encuesta y usando el ponderador regional `expr`) de aproximadamente **`r round(total_personas$total_pers/1e6, 1)` millones de personas**. El IC 95% sugiere que el valor real está entre `r round(total_personas$total_pers_low/1e6, 1)` y `r round(total_personas$total_pers_upp/1e6, 1)` millones.
+-   **Total Personas Pobres:** De esa población, se estima que **`r format(round(total_pobres$total_pob, 0), big.mark=",")` personas** están en situación de pobreza. El IC 95% para este total va desde `r format(round(total_pobres$total_pob_low, 0), big.mark=",")` hasta `r format(round(total_pobres$total_pob_upp, 0), big.mark=",")` personas.
+
+## 3. Análisis por Subgrupos (`group_by`)
+
+Usemos `group_by()` para calcular estadísticas para diferentes subgrupos.
+
+```{r}
+# Media de ingreso del hogar (ytotcorh) por región
+ingreso_x_region <- casen_design_srvyr %>%
+  mutate(region_factor = haven::as_factor(region)) %>% # Usar etiquetas
+    filter(pco1== 1) %>% #filtramos por jefe de hogar
+  group_by(region_factor) %>%
+  summarise(ingreso_medio_hogar = survey_mean(ytotcorh, na.rm = TRUE, vartype = "se"))
+
+
+print(ingreso_x_region)
+
+# Tasa de pobreza (proporción de pobre_dic == 1) por zona (urbana/rural)
+pobreza_x_zona <- casen_design_srvyr %>%
+  mutate(zona_factor = haven::as_factor(area)) %>% # Usar etiquetas ('area' es la variable original)
+  group_by(zona_factor) %>%
+  summarise(tasa_pobreza = survey_mean(pobre_dic, na.rm = TRUE, vartype = "ci"))
+
+print(pobreza_x_zona)
+
+# Media de escolaridad por sexo
+esc_x_sexo <- casen_design_srvyr %>%
+  mutate(sexo_factor = haven::as_factor(sexo)) %>% # Usar etiquetas
+  group_by(sexo_factor) %>%
+  summarise(esc_media = survey_mean(esc, na.rm = TRUE, vartype = "ci"))
+
+print(esc_x_sexo)
+```
+
+```{r, echo=FALSE}
+# Valores auxiliares para interpretación inline
+max_region_row <- ingreso_x_region %>% slice_max(ingreso_medio_hogar, n = 1)
+min_region_row <- ingreso_x_region %>% slice_min(ingreso_medio_hogar, n = 1)
+pob_urbana_row <- pobreza_x_zona %>% filter(str_detect(tolower(as.character(zona_factor)), "urbano"))
+pob_rural_row  <- pobreza_x_zona %>% filter(str_detect(tolower(as.character(zona_factor)), "rural"))
+esc_hombre_row <- esc_x_sexo %>% filter(str_detect(tolower(as.character(sexo_factor)), "hombre"))
+esc_mujer_row  <- esc_x_sexo %>% filter(str_detect(tolower(as.character(sexo_factor)), "mujer"))
+```
+
+**Interpretación y Reflexión:**
+
+*   **Ingreso por Región:** La tabla muestra el ingreso medio estimado y su error estándar (SE) para cada región. Vemos diferencias: `r max_region_row$region_factor` tiene el ingreso medio estimado más alto (\$`r format(round(max_region_row$ingreso_medio_hogar, 0), big.mark=",")`; SE \$`r format(round(max_region_row$ingreso_medio_hogar_se, 0), big.mark=",")`), mientras que `r min_region_row$region_factor` presenta el más bajo (\$`r format(round(min_region_row$ingreso_medio_hogar, 0), big.mark=",")`; SE \$`r format(round(min_region_row$ingreso_medio_hogar_se, 0), big.mark=",")`). Errores estándar más pequeños indican mayor precisión en la estimación para esa región específica.
+*   **Pobreza por Zona:** La tasa de pobreza estimada es notablemente más alta en la zona **Rural (`r round(pob_rural_row$tasa_pobreza*100, 1)`%)** que en la zona **Urbana (`r round(pob_urbana_row$tasa_pobreza*100, 1)`%)**. Crucialmente, los intervalos de confianza **no se solapan** (Rural: `r round(pob_rural_row$tasa_pobreza_low*100, 1)`%-`r round(pob_rural_row$tasa_pobreza_upp*100, 1)`%; Urbana: `r round(pob_urbana_row$tasa_pobreza_low*100, 1)`%-`r round(pob_urbana_row$tasa_pobreza_upp*100, 1)`%). Esto nos da una fuerte evidencia de que la pobreza es significativamente mayor en zonas rurales según esta encuesta.
+*   **Escolaridad por Sexo:** La escolaridad media estimada es casi idéntica: **`r round(esc_hombre_row$esc_media, 1)` años para hombres** (IC 95%: `r round(esc_hombre_row$esc_media_low, 1)` - `r round(esc_hombre_row$esc_media_upp, 1)`) y **`r round(esc_mujer_row$esc_media, 1)` años para mujeres** (IC 95%: `r round(esc_mujer_row$esc_media_low, 1)` - `r round(esc_mujer_row$esc_media_upp, 1)`). Los intervalos de confianza **se solapan**, lo que sugiere que la diferencia observada es muy pequeña y probablemente no sea estadísticamente significativa (aunque para confirmarlo necesitaríamos una prueba formal).
+
+## 4. Visualización de Resultados Ponderados con `ggplot2`
+
+Recordatorio importante: `ggplot2` no aplica automáticamente ponderadores ni calcula errores complejos. Necesita un data frame resumen con las estadísticas ya calculadas correctamente.
+
+**El flujo correcto:**
+1.  **Calcular con `srvyr`:** Usa `group_by` y `summarise` para obtener las medias/proporciones y sus ICs/SEs. Guarda esto en un **nuevo tibble**.
+2.  **Visualizar con `ggplot2`:** Usa ese **nuevo tibble** como input para `ggplot`.
+
+**Ejemplo: Graficar la tasa de pobreza por zona**
+
+Reutilizamos el cálculo anterior, asegurándonos de tener el tibble.
+
+```{r}
+# 1. Calcular estadísticas ponderadas con srvyr (ya lo hicimos antes, verificamos)
+pobreza_x_zona_data <- casen_design_srvyr %>%
+  mutate(zona_factor = haven::as_factor(area)) %>% 
+  group_by(zona_factor) %>%
+  summarise(
+    tasa_pobreza = survey_mean(pobre_dic, na.rm = TRUE, vartype = "ci") 
+  )
+
+print(pobreza_x_zona_data) # Tibble listo para ggplot
+```
+
+Ahora, graficamos usando `pobreza_x_zona_data`.
+
+```{r}
+# 2. Crear el gráfico con ggplot2 usando el tibble resumen
+ggplot(pobreza_x_zona_data, aes(x = zona_factor, y = tasa_pobreza, fill = zona_factor)) +
+  geom_col(width = 0.6) + # Gráfico de columnas
+  geom_errorbar(
+    aes(ymin = tasa_pobreza_low, ymax = tasa_pobreza_upp), # Usamos los límites del IC
+    width = 0.2, # Ancho de las barras de error
+    linewidth = 0.8 # Grosor de la línea
+  ) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) + # Eje Y en porcentaje
+  # Usaremos colores específicos para Urbano/Rural si lo deseamos
+  # scale_fill_manual(values = c("Urbano" = "lightblue", "Rural" = "darkgreen")) + 
+  scale_fill_viridis_d(option = "D", begin = 0.2, end = 0.7) + # Paleta Viridis (accesible)
+  labs(
+    title = "Tasa de Pobreza Estimada por Zona",
+    subtitle = "Encuesta CASEN 2024 (con IC 95%)",
+    x = "Zona Geográfica",
+    y = "Tasa de Pobreza Estimada",
+    fill = "Zona" 
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "bottom") 
+```
+
+**Interpretación del Gráfico:** Este gráfico visualiza claramente las estimaciones de pobreza por zona calculadas previamente. Las barras muestran las tasas puntuales (mayor en Rural) y las barras de error (Intervalos de Confianza al 95%) confirman visualmente que la diferencia es significativa, ya que no hay solapamiento entre ellas. El uso de colores distintos ayuda a diferenciar las categorías.
+
+**Recuerda:** Siempre calcula primero con `srvyr`/`survey`, luego visualiza con `ggplot2`.
+
+## 5. Conclusión
+
+¡Excelente trabajo! En esta sesión práctica has aprendido a:
+
+*   Usar `srvyr` para declarar el diseño muestral de forma `tidyverse`.
+*   Calcular medias, proporciones y totales ponderados usando `summarise` y las funciones `survey_*`.
+*   Obtener e interpretar errores estándar e intervalos de confianza que reflejan el diseño complejo.
+*   Realizar análisis por subgrupos fácilmente con `group_by`.
+*   **Visualizar correctamente** los resultados ponderados usando `ggplot2` después de calcular las estadísticas necesarias.
+
+Ahora tienes las herramientas fundamentales para empezar a analizar datos de encuestas complejas como CASEN de manera rigurosa y eficiente en R, incluyendo la capacidad de crear visualizaciones informativas y correctas. ¡El siguiente paso es practicar con diferentes variables y preguntas de investigación!
