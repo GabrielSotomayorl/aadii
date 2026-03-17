@@ -125,7 +125,7 @@ svyby(
   formula = ~edad,      # La variable a analizar
   by = ~sexo,           # La variable que define los grupos
   design = casen_design, # El objeto de diseño
-  FUN = svymean,        # ¡La función que queremos aplicar a cada grupo!
+  FUN = svymean,        # Función a aplicar a cada subgrupo
   na.rm = TRUE          # Argumento para pasar a svymean
 )
 ```
@@ -200,7 +200,7 @@ objeto_srvyr %>%
   )
 ```
 
--   **¡Igual que `dplyr`!** Pero usando las funciones `survey_*()` dentro de `summarise`.
+-   La sintaxis es idéntica a `dplyr`, usando las funciones `survey_*()` dentro de `summarise`.
 
 ## `srvyr`: Funciones Espejo `survey_*()` {.smaller}
 
@@ -221,7 +221,7 @@ Dentro de `summarise`, usamos las funciones de `srvyr` que "imitan" a las de `su
 
 **Argumentos Importantes:**
 
--   `na.rm = TRUE`: ¡Fundamental para manejar valores perdidos!
+-   `na.rm = TRUE`: Necesario para manejar valores perdidos.
 -   `vartype = c("se", "ci", "var", "cv")`: Tipo de medida de variabilidad a reportar (error estándar, intervalo de confianza, varianza, coeficiente de variación). Por defecto es `"se"`.
 -   `level = 0.95`: Nivel de confianza para el IC (por defecto 95%).
 
@@ -241,7 +241,7 @@ casen_design_srvyr %>%
   summarise(edad_media = survey_mean(edad, na.rm = TRUE))
 ```
 
-Ambos dan el mismo resultado numérico, pero `srvyr` se integra más fluidamente en un flujo de trabajo `tidyverse`. **¡En el práctico usaremos principalmente `srvyr`!**
+Ambos dan el mismo resultado numérico, pero `srvyr` se integra más fluidamente en un flujo de trabajo `tidyverse`. En el práctico trabajaremos principalmente con `srvyr`.
 
 ## Interpretando Resultados: SE, DEFF, IC (Recordatorio) {.smaller .dark-background}
 
@@ -256,7 +256,7 @@ Recuerda:
 -   Usa el SE para construir **Intervalos de Confianza (ICs)** (`vartype="ci"` lo hace por ti) que te dan un rango plausible para el valor poblacional.
 -   **Reporta siempre la incertidumbre (SE o IC)** junto a tus estimaciones.
 
-## Próximos Pasos: ¡A Practicar con `srvyr`! {.smaller}
+## Próximos Pasos {.smaller}
 
 En el bloque práctico de hoy:
 
@@ -266,4 +266,4 @@ En el bloque práctico de hoy:
 4.  Realizaremos **análisis por subgrupos** usando `group_by`.
 5.  **Construiremos** gráficos de resultados ponderados integrando `ggplot2`.
 
-**¡Volvamos a RStudio!**
+Pasemos a RStudio.

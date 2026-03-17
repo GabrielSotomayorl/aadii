@@ -187,7 +187,7 @@ La Encuesta CASEN utiliza múltiples niveles de estratificación:
     2.  **Etapa 2:** Dentro de las UPM seleccionadas, seleccionar Viviendas (Unidades Secundarias de Muestreo - USM).
     3.  (Etapa 3 implícita): Dentro de las viviendas seleccionadas, encuestar a todos los hogares/personas.
 -   **¿Por qué usar conglomerados?**
-    -   **¡Reducción drástica de Costos y Logística!**
+    -   **Reducción significativa de costos y logística**
         -   No se necesita un marco muestral de *todas* las viviendas del país, solo de los conglomerados (Etapa 1) y luego listas de viviendas *solo* en los conglomerados seleccionados (Etapa 2).
         -   Concentra geográficamente el trabajo de los encuestadores.
 
@@ -219,7 +219,7 @@ Cuando combinamos **estratificación** (donde podemos sobrerrepresentar estratos
 
 ...el resultado es que **no todos los individuos o viviendas en la población tienen la misma probabilidad final de ser incluidos en la muestra.**
 
-> ¡Hemos roto el supuesto fundamental del MAS!
+> El resultado es la ruptura del supuesto fundamental del MAS.
 
 ¿Cómo resolvemos esto para poder hacer inferencia válida?
 
@@ -243,7 +243,7 @@ Los ponderadores que encontramos en las bases de datos como CASEN suelen incluir
 1.  **Ajuste por No Respuesta:** Corrige el hecho de que no todas las unidades seleccionadas participan (algunas rechazan, no se encuentran, etc.). Se intenta dar más peso a los que sí respondieron para compensar a los que no, asumiendo que son similares (dentro de ciertos grupos).
 2.  **Ajuste por Post-Estratificación (Calibración):** Ajusta los pesos para que las sumas ponderadas de la muestra coincidan con **totales poblacionales conocidos** de fuentes externas (ej. proyecciones de población del INE por Región-Sexo-Edad). Esto mejora la precisión y consistencia de las estimaciones.
 
-## ¡Usa los Ponderadores! {.dark-background .smaller}
+## El Uso Correcto de los Ponderadores {.dark-background .smaller}
 
 Si trabajas con datos de una encuesta con diseño complejo (como CASEN):
 
@@ -258,7 +258,7 @@ Si trabajas con datos de una encuesta con diseño complejo (como CASEN):
 -   **Estimaciones SESGADAS:** No representan a la población real, sino a la muestra *tal como fue seleccionada* (con sus sobrerrepresentaciones y subrepresentaciones).
 -   **Conclusiones ERRÓNEAS** sobre la población.
 
-> **¡El ponderador es la llave para generalizar correctamente!**
+> **El ponderador es la llave para generalizar correctamente.**
 
 ## El Impacto en el Análisis: ¿Por Qué Software Especial? {.smaller}
 
@@ -298,9 +298,9 @@ La **documentación técnica** de la encuesta (como el "Diseño Muestral Casen 2
 -   Cuál es la variable que identifica los **conglomerados/UPM** (`varunit` en CASEN).
 -   Otros detalles técnicos del diseño (ej. número de etapas, corrección por población finita).
 
-**¡Siempre lee la documentación antes de analizar!**
+**Leer la documentación antes de analizar es indispensable.**
 
-## Próximos Pasos: ¡A Practicar! {.smaller}
+## Próximos Pasos {.smaller}
 
 En el bloque práctico de hoy:
 

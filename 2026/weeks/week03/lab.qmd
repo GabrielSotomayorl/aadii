@@ -46,7 +46,7 @@ library(haven)
 library(survey)
 ```
 
-¡Listo! Ahora estamos preparados para trabajar con los datos.
+Con los paquetes cargados, estamos preparados para trabajar con los datos.
 
 ## 2. Cargando y Explorando Datos CASEN 2024
 
@@ -103,7 +103,7 @@ Veamos cómo lucen estas variables en nuestros datos:
 ```{r}
 # Resumen del factor de expansión regional (ponderador)
 summary(casen$expr)
-# ¡Los pesos varían mucho! Esto confirma que las probabilidades de selección fueron muy desiguales.
+# Los pesos varían considerablemente, lo que confirma que las probabilidades de selección fueron desiguales.
 
 # Cantidad de estratos únicos definidos para la varianza
 length(unique(casen$varstrat))
@@ -112,7 +112,7 @@ length(unique(casen$varstrat))
 length(unique(casen$varunit))
 ```
 
-**Importante:** Hemos localizado las variables `expr`, `varstrat`, y `varunit`. ¡Estas son las llaves para decirle a R cómo fue diseñada la muestra!
+Con estas tres variables, R dispondrá de toda la información necesaria para entender la estructura del diseño muestral.
 
 ## 3. El Error Común: Análisis Ingenuo
 
@@ -174,7 +174,7 @@ R nos confirma que ha creado un objeto de diseño muestral de tipo "Stratified 1
 *   Que los ponderadores son `expr`.
 *   Que los datos provienen de `casen`.
 
-¡Ahora R "sabe" que esta no es una muestra simple y cómo está estructurada!
+A partir de aquí, R tiene toda la información sobre el diseño muestral y la usará en cada cálculo posterior.
 
 ## 5. Primer Cálculo Respetando el Diseño
 
@@ -190,10 +190,10 @@ prop_pobreza_ponderada <- svymean(~pobre_dic, design = casen_design, na.rm = TRU
 prop_pobreza_ponderada
 ```
 
-**¡Ahora compara!**
+**Comparación de resultados:**
 
-1.  **Edad:** La media ingenua fue **`r round(media_edad_ingenua, 2)` años**. La media ponderada es **`r round(as.numeric(media_edad_ponderada), 1)` años** (SE=`r round(SE(media_edad_ponderada), 3)`). ¡Son diferentes! La media ponderada, que representa mejor a la población, es menor.
-2.  **Pobreza:** La proporción ingenua de pobreza fue **`r round(prop_pobreza_ingenua["1"]*100, 1)`%** (`r round(prop_pobreza_ingenua["1"], 3)`). La proporción ponderada es **`r round(as.numeric(prop_pobreza_ponderada)*100, 1)`%** (`r round(as.numeric(prop_pobreza_ponderada), 3)`, SE=`r round(SE(prop_pobreza_ponderada), 4)`). ¡También es diferente! La estimación que considera el diseño muestral es más baja.
+1.  **Edad:** La media ingenua fue **`r round(media_edad_ingenua, 2)` años**; la media ponderada es **`r round(as.numeric(media_edad_ponderada), 1)` años** (SE=`r round(SE(media_edad_ponderada), 3)`). Las estimaciones difieren: la versión ponderada, que representa mejor a la población, es menor.
+2.  **Pobreza:** La proporción ingenua fue **`r round(prop_pobreza_ingenua["1"]*100, 1)`%** (`r round(prop_pobreza_ingenua["1"], 3)`); la proporción ponderada es **`r round(as.numeric(prop_pobreza_ponderada)*100, 1)`%** (`r round(as.numeric(prop_pobreza_ponderada), 3)`, SE=`r round(SE(prop_pobreza_ponderada), 4)`). La diferencia también es apreciable: la estimación que respeta el diseño muestral resulta más baja.
 
 **Pregunta de Reflexión:** ¿Por qué crees que los resultados ponderados difieren de los resultados ingenuos? 
 
@@ -202,7 +202,7 @@ prop_pobreza_ponderada
 
 ## 6. Conclusión
 
-¡Felicitaciones! Has dado tus primeros pasos en el análisis de encuestas complejas en R.
+En este práctico dimos los primeros pasos en el análisis de encuestas complejas en R.
 
 *   Aprendiste a cargar datos de CASEN.
 *   Identificaste las variables cruciales del diseño muestral (`expr`, `varstrat`, `varunit`).
