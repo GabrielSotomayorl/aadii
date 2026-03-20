@@ -167,13 +167,12 @@ El primer paso con `srvyr` es crear un objeto especial `tbl_svy`, análogo al `s
 
 ``` r
 # Usando los mismos argumentos que svydesign, pero estilo tidyverse
-casen_design_srvyr <- as_survey_design(casen, 
+casen_design_srvyr <- as_survey_design(casen,
                                        ids = varunit,    # Sin tilde, nombre directo
                                        strata = varstrat, # Sin tilde
-                                       weights = expr,    # Sin tilde
-                                       nest = TRUE)
+                                       weights = expr)    # Sin tilde
 
-print(casen_design_srvyr)
+casen_design_srvyr
 ```
 
 -   Notar que ahora pasamos los nombres de las variables **directamente**, sin la tilde (`~`), como es usual en `dplyr`.

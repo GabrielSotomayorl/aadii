@@ -229,7 +229,7 @@ ggplot(pobreza_x_zona, aes(x = zona_factor, y = tasa_pobreza, fill = zona_factor
 
 ## 5. Conclusión
 
-¡Excelente trabajo! En esta sesión práctica has aprendido a:
+En esta sesión práctica has aprendido a:
 
 *   Usar `srvyr` para declarar el diseño muestral de forma `tidyverse`.
 *   Calcular medias, proporciones y totales ponderados usando `summarise` y las funciones `survey_*`.
@@ -237,4 +237,4 @@ ggplot(pobreza_x_zona, aes(x = zona_factor, y = tasa_pobreza, fill = zona_factor
 *   Realizar análisis por subgrupos fácilmente con `group_by`.
 *   **Visualizar correctamente** los resultados ponderados usando `ggplot2` después de calcular las estadísticas necesarias.
 
-Ahora tienes las herramientas fundamentales para empezar a analizar datos de encuestas complejas como CASEN de manera rigurosa y eficiente en R, incluyendo la capacidad de crear visualizaciones informativas y correctas. ¡El siguiente paso es practicar con diferentes variables y preguntas de investigación!
+Ahora tienes las herramientas fundamentales para analizar datos de encuestas complejas como CASEN de manera rigurosa y eficiente en R, incluyendo la capacidad de crear visualizaciones informativas y correctas. El paso siguiente es aplicar estas herramientas a diferentes variables y preguntas de investigación.
