@@ -50,7 +50,7 @@ Con los paquetes cargados, estamos preparados para trabajar con los datos.
 
 ## 2. Cargando y Explorando Datos CASEN 2024
 
-La Encuesta de Caracterización Socioeconómica Nacional (CASEN) es una de las encuestas de hogares más importantes de Chile. Utilizaremos la versión 2024, disponible en formato `.RData` en el sitio del Ministerio de Desarrollo Social y Familia. Para cargarla, descargamos el archivo y usamos `load()`. Como el objeto viene nombrado `casen_2024`, lo renombramos a `casen` para simplificar el código.
+La Encuesta de Caracterización Socioeconómica Nacional (CASEN) es una de las encuestas de hogares más importantes de Chile. Utilizaremos la versión 2024, disponible en el [sitio oficial del Ministerio de Desarrollo Social y Familia](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2024) en formato `.RData`. Para cargarla, descargamos el archivo y usamos `load()`. Como el objeto viene nombrado `casen_2024`, lo renombramos a `casen` para simplificar el código.
 
 ```{r, eval=FALSE}
 load("casen_2024.RData")

@@ -28,7 +28,7 @@ En esta sesión, pondremos en práctica los conceptos de análisis de encuestas 
 
 ## 1. Preparación y Declaración del Diseño con `srvyr`
 
-Comenzamos cargando los paquetes necesarios y los datos de CASEN 2024 (igual que en el práctico anterior). Además de `tidyverse`, `haven` y `survey`, ahora cargamos `srvyr`.
+Comenzamos cargando los paquetes necesarios y los datos de CASEN 2024 (igual que en el práctico anterior). Recuerda que los datos provienen de la [Encuesta CASEN 2024](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2024), disponible en el sitio del Ministerio de Desarrollo Social y Familia. Además de `tidyverse`, `haven` y `survey`, ahora cargamos `srvyr`.
 
 ```{r load, eval=TRUE, echo=FALSE}
 casen <- readRDS("../../data/casen24.rds")
@@ -227,7 +227,84 @@ ggplot(pobreza_x_zona, aes(x = zona_factor, y = tasa_pobreza, fill = zona_factor
 
 **Recuerda:** Siempre calcula primero con `srvyr`/`survey`, luego visualiza con `ggplot2`.
 
-## 5. Conclusión
+## 5. Actividad: Estadísticas de Ingresos y Escolaridad según Orientación Sexual
+
+En esta actividad calcularás estadísticas descriptivas para las variables de ingresos del trabajo, escolaridad y edad, desagregadas por orientación sexual, usando el módulo OSIG (Orientación Sexual e Identidad de Género) de CASEN 2024.
+
+### Contexto metodológico
+
+El módulo OSIG es **autoaplicado** y solo lo responden las personas que están presentes en el hogar al momento de la encuesta. Esto implica dos consecuencias importantes:
+
+1.  **Factor de expansión propio:** la variable `expr_osig` es el ponderador específico para este módulo. Aunque los estratos (`varstrat`) y conglomerados (`varunit`) son los mismos que en el diseño general, **el factor de expansión cambia**.
+2.  **Casos sin respuesta:** quienes no tienen valor en `expr_osig` no pertenecen al universo del módulo. Para un análisis válido, hay que **dar por perdidos esos casos** y trabajar solo con quienes tienen `expr_osig` válido.
+
+Las variables relevantes son:
+
+| Variable | Descripción |
+|---|---|
+| `os1` | Orientación sexual (-99=Prefiere no responder, -88=No sabe, 1=Heterosexual, 2=Gay/Lesbiana, 3=Bisexual, 4=Otra) |
+| `expr_osig` | Factor de expansión orientación sexual e identidad de género |
+| `ytrabajocor` | Ingreso del trabajo corregido |
+| `esc` | Años de escolaridad |
+| `edad` | Edad en años |
+
+### Código guía (estructura — **no ejecutar**)
+
+El siguiente código es una **guía estructural incompleta**. Contiene las instrucciones generales y algunos huecos (`...`) que debes completar para resolver la actividad.
+
+```{r, eval=FALSE}
+# PASO 1: Filtrar la base — conservar solo casos con expr_osig válido
+casen_osig <- casen %>%
+  filter(!is.na(expr_osig))
+
+# ¿Cuántos casos quedan luego del filtro?
+nrow(casen_osig)
+
+# PASO 2: Explorar la variable de orientación sexual
+# Revisar categorías y decidir cómo tratar los -99 (Prefiere no responder) y -88 (No sabe)
+table(casen_osig$os1, useNA = "always")
+
+# PASO 3: Declarar el diseño muestral con el factor de expansión OSIG
+# Mismos ids y strata que el diseño general, pero weights = expr_osig
+casen_osig_design <- as_survey_design(
+  ...,           # <-- base de datos filtrada
+  ids     = ..., # <-- conglomerados
+  strata  = ..., # <-- estratos
+  weights = ...  # <-- factor de expansión del módulo OSIG
+)
+
+# PASO 4: Calcular estadísticas de ytrabajocor, esc y edad por orientación sexual
+# Recuerda filtrar las categorías -99 y -88 antes de agrupar
+estadisticas_osig <- casen_osig_design %>%
+  mutate(os1_factor = haven::as_factor(os1)) %>%
+  filter(...) %>%       # <-- excluir "Prefiere no responder" y "No sabe"
+  group_by(os1_factor) %>%
+  summarise(
+    ingreso_trabajo_medio = survey_mean(..., na.rm = TRUE, vartype = "ci"),
+    esc_media             = survey_mean(..., na.rm = TRUE, vartype = "ci"),
+    edad_media            = survey_mean(..., na.rm = TRUE, vartype = "ci")
+  )
+
+estadisticas_osig
+```
+
+### Preguntas de interpretación
+
+Una vez que obtengas los resultados, reflexiona sobre los siguientes puntos:
+
+1.  **Describe** las diferencias observadas en ingresos del trabajo, escolaridad y edad entre grupos de orientación sexual. ¿Los intervalos de confianza se solapan? ¿Qué implica eso?
+
+2.  **Hipótesis:** ¿A qué podrían deberse las diferencias que encuentras? Propón al menos una hipótesis alternativa a una relación "directa" entre orientación sexual e ingresos.
+
+3.  **Interpretación con cautela:** Los resultados de este cruce bivariado deben leerse con cuidado. Una diferencia en ingresos entre grupos no necesariamente refleja una relación directa: los grupos de orientación sexual pueden diferir en su **composición etaria**, **nivel educativo**, **sector de inserción laboral**, entre otros factores. Para aislar el efecto neto de la orientación sexual sobre los ingresos sería necesario **controlar estadísticamente** por esas variables — algo que abordaremos en la próxima clase con **regresión lineal**.
+
+::: callout-note
+## Nota metodológica
+
+El módulo OSIG tiene una cobertura más limitada que el cuestionario general de CASEN, ya que solo lo responden personas presentes en el hogar. Esto introduce una posible **no-respuesta diferencial** que también debe tenerse en cuenta al interpretar los resultados.
+:::
+
+## 6. Conclusión
 
 En esta sesión práctica has aprendido a:
 
