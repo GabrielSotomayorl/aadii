@@ -1,0 +1,29 @@
+---
+title: "🗓️ Semana 05: Introducción a los Modelos Multivariados y Regresión Lineal Múltiple"
+---
+
+En esta semana iniciamos el análisis multivariado. Discutimos por qué los fenómenos sociales requieren considerar múltiples variables de forma simultánea, y presentamos un mapa conceptual que distingue entre enfoques **exploratorios** y **confirmatorios**, y entre modelos de **medición** y **relacionales**.
+
+Repasamos los conceptos estadísticos fundamentales —varianza, covarianza y correlación de Pearson— y su extensión a variables ordinales y dicotómicas mediante correlaciones **policóricas y tetracóricas**. A partir de ahí, revisitamos la **Regresión Lineal Múltiple (RLM)**: la lógica de mínimos cuadrados, el **control estadístico**, la interpretación de coeficientes crudos y estandarizados, y el ajuste del modelo mediante $R^2$ y $R^2$ ajustado. Cerramos con la inferencia correcta bajo diseños muestrales complejos usando `svyglm`.
+
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## 💻 Taller Aplicado (Práctico 5)
+
+En este laboratorio ajustaremos modelos de regresión lineal simple y múltiple con `survey::svyglm()` usando datos CASEN 2024. Interpretaremos coeficientes parciales para predictores continuos y categóricos (dicotómicos y politómicos), calcularemos **coeficientes estandarizados (Betas)** de forma manual, y realizaremos diagnósticos básicos del modelo (linealidad, homocedasticidad, normalidad de residuos y multicolinealidad mediante VIF).
+
+👉 **[Ir al Práctico 5: Regresión Lineal Múltiple con Muestras Complejas en R](lab.qmd)**
+
+## 📚 Lecturas Obligatorias
+
+- **Darlington, R. B. & Hayes, A. F. (2017).** *Regression analysis and linear models: concepts, applications, and implementation*. Guilford Press.
+
+## 📟 Dudas y Comunicación
+
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dificultades con la base de datos CASEN o cualquier otra duda sobre el curso.
