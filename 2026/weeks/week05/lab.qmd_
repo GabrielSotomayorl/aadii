@@ -1,6 +1,6 @@
 ---
-title: "Práctico 5: Regresión Lineal Múltiple con Muestras Complejas en R"
-subtitle: "Regresión Lineal Múltiple con survey"
+title: "Práctico 5: Regresión Lineal Múltiple con Muestras Complejas"
+subtitle: "¿Existe una brecha de ingresos por orientación sexual en Chile?"
 date: "2026-04-06"
 lang: es
 format:
@@ -18,326 +18,352 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ## 0. Objetivos del Práctico
 
-En este práctico, aplicaremos la **Regresión Lineal Múltiple (RLM)** a datos de encuestas complejas usando el paquete `survey`. Al finalizar, serás capaz de:
+La encuesta CASEN 2024 incorpora por primera vez a escala nacional una pregunta sobre orientación sexual. Esto nos permite explorar si las personas no heterosexuales enfrentan una brecha de ingresos respecto a las personas heterosexuales en el mercado laboral chileno.
 
-1.  **Especificar y ajustar** modelos RLM con `survey::svyglm()`, incorporando el diseño muestral complejo.
-2.  **Interpretar** correctamente los **coeficientes no estandarizados** para variables continuas y categóricas (dicotómicas y politómicas), entendiendo el concepto de control estadístico.
-3.  Obtener e interpretar **coeficientes estandarizados (Betas)** para comparar la magnitud relativa de los efectos.
-4.  Evaluar la **significancia estadística** de los predictores utilizando los errores estándar y p-valores calculados correctamente por `svyglm`.
-5.  Realizar e interpretar **diagnósticos básicos** del modelo (linealidad, homocedasticidad, normalidad de residuos, multicolinealidad) como material complementario.
+La pregunta de investigación parece simple, pero su respuesta no lo es: sin controles estadísticos, la brecha no es visible —e incluso podría parecer invertida—. Solo al aplicar **Regresión Lineal Múltiple** con **`svyglm()`** y controlar por educación, edad, sexo y territorio emerge la brecha real. Esto ilustra de manera directa el valor del control estadístico en ciencias sociales.
 
-## 1. Preparación del Entorno y Datos
+Al finalizar este práctico, podrás:
 
-Primero, cargamos los paquetes necesarios y preparamos los datos de CASEN 2022.
+1.  **Aplicar** `survey::svyglm()` con un diseño muestral **específico para un subgrupo poblacional** (`expr_osig`).
+2.  **Interpretar** cómo el control estadístico revela efectos que la estadística descriptiva oculta.
+3.  **Comparar** coeficientes parciales para predictores continuos y categóricos a lo largo de modelos anidados.
+4.  **Calcular** coeficientes estandarizados (Betas) e interpretar la magnitud relativa de cada predictor.
+5.  **Realizar** diagnósticos básicos del modelo ajustado.
 
-```{r load_packages}
-# Cargar paquetes necesarios. Pacman los instala si no están presentes.
-if (!require("pacman")) install.packages("pacman")
+## 1. Preparación y Declaración del Diseño
 
-pacman::p_load(tidyverse, 
-               haven, 
-               survey, 
-               texreg, # Para tablas de regresión bien formateadas
-               # jtools, # Removido por ahora, usaremos método manual para estandarizar
-               car)    # Para VIF
+Cargamos los paquetes y los datos. Los datos corresponden a la [CASEN 2024](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2024), disponibles en el sitio del Ministerio de Desarrollo Social y Familia. La carga del archivo `.RData` y el renombramiento del objeto siguen el mismo procedimiento de los prácticos anteriores.
+
+```{r load, eval=TRUE, echo=FALSE}
+casen <- readRDS("../../data/casen24.rds")
 ```
 
-```{r load_data}
-# --- Código para cargar CASEN 2022 ---
-#temp <- tempfile() 
-#download.file("https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2022/Base%20de%20datos%20Casen%202022%20SPSS.sav.zip", temp, mode = "wb") 
-#casen <- haven::read_sav(unz(temp, "Base de datos Casen 2022 SPSS.sav")) 
-#unlink(temp); remove(temp) 
-#print("Datos CASEN 2022 cargados.")
-# --- Fin código carga ---
+```{r paquetes}
+library(tidyverse)
+library(haven)
+library(survey)
+library(texreg)
+library(car)
+```
 
-casen <- readRDS("../../data/casen24.rds")
+```{r, eval=FALSE}
+load("casen_2024.RData")
+casen <- casen_2024
+```
 
-# Seleccionar variables de interés y preparar
+### 1.1 Preparación de variables
+
+Seleccionamos las variables de interés e imponemos los filtros necesarios para trabajar con la submuestra de personas que respondieron la pregunta de orientación sexual, tienen ingreso laboral positivo y tienen información completa en todas las variables del modelo.
+
+Una nota sobre el diseño muestral: CASEN 2024 incluye un **factor de expansión específico** (`expr_osig`) para la submuestra que respondió la pregunta de orientación sexual e identidad de género. Usar este ponderador en lugar del general (`expr`) produce estimaciones más adecuadas para este grupo poblacional.
+
+```{r preparacion}
 casen_model_data <- casen %>%
   select(
-    ytrabajocor, # Ingreso del trabajo (VD)
-    esc,         # Años de escolaridad (VI continua)
-    edad,        # Edad (VI continua)
-    sexo,        # Sexo (VI categórica dicotómica)
-    region,      # Región para crear macrozona (VI categórica politómica)
-    # Variables de diseño muestral
-    expr, varstrat, varunit 
+    ytrabajocor,   # Ingreso del trabajo (VD)
+    os1,           # Orientación sexual
+    esc,           # Años de escolaridad
+    edad,          # Edad
+    sexo,          # Sexo
+    region,        # Región (para macrozona)
+    expr_osig,     # Ponderador específico OS
+    varstrat,      # Estrato de diseño
+    varunit        # Unidad primaria de muestreo
   ) %>%
-  # Crear factor para sexo (1=Hombre, 2=Mujer; R usará Hombre como ref.)
-  mutate(sexo_factor = factor(sexo, levels = c(1, 2), labels = c("Hombre", "Mujer"))) %>%
-  # Crear factor para macrozona (Metropolitana como referencia)
-  mutate(macrozona = case_when(
-            region %in% c(15, 1, 2, 3, 4) ~ "Norte",
-            region %in% c(5, 6, 7, 16)    ~ "Centro", 
-            region %in% c(8, 9, 14, 10, 11, 12) ~ "Sur",
-            region == 13                 ~ "Metropolitana",
-            TRUE ~ NA_character_ 
-         )) %>%
-  # Establecer "Metropolitana" como nivel de referencia para el factor
-  mutate(macrozona = factor(macrozona, 
-                            levels = c("Metropolitana", "Norte", "Centro", "Sur"))) %>%
-  # Filtrar casos con NA en las variables clave del modelo Y LAS VARIABLES DE DISEÑO
-  # ¡OJO! Esto elimina muchos casos y puede sesgar resultados. Es una simplificación.
-  filter(complete.cases(ytrabajocor, esc, edad, sexo_factor, macrozona, expr, varstrat, varunit)) %>%
-  # Filtrar ingresos <= 0 
-  filter(ytrabajocor > 0) 
-
-# Verificar dimensiones y estructura final
-print(paste("Número de casos completos y con ingreso positivo:", nrow(casen_model_data)))
-# glimpse(casen_model_data) # Comentado para brevedad
+  # Filtrar: os1 respondida y válida, expr_osig disponible, ingreso positivo
+  filter(
+    !is.na(os1), os1 > 0,
+    !is.na(expr_osig),
+    !is.na(ytrabajocor), ytrabajocor > 0
+  ) %>%
+  # Crear factor de orientación sexual: Heterosexual vs. No heterosexual
+  mutate(
+    os_factor = factor(
+      ifelse(os1 == 1, "Heterosexual", "No heterosexual"),
+      levels = c("Heterosexual", "No heterosexual")
+    )
+  ) %>%
+  # Sexo como factor (Hombre = referencia)
+  mutate(
+    sexo_factor = factor(sexo, levels = c(1, 2), labels = c("Hombre", "Mujer"))
+  ) %>%
+  # Macrozona (Metropolitana = referencia)
+  mutate(
+    macrozona = case_when(
+      region %in% c(15, 1, 2, 3, 4)       ~ "Norte",
+      region %in% c(5, 6, 7, 16)          ~ "Centro",
+      region %in% c(8, 9, 14, 10, 11, 12) ~ "Sur",
+      region == 13                         ~ "Metropolitana",
+      TRUE ~ NA_character_
+    ),
+    macrozona = factor(macrozona, levels = c("Metropolitana", "Norte", "Centro", "Sur"))
+  ) %>%
+  # Conservar solo casos completos en todas las variables del modelo
+  filter(complete.cases(ytrabajocor, os_factor, esc, edad, sexo_factor, macrozona,
+                        expr_osig, varstrat, varunit))
 ```
 
-Ahora, **declaramos el diseño muestral complejo** usando `survey::svydesign()`.
+```{r n_inline, echo=FALSE}
+n_total    <- nrow(casen_model_data)
+n_het      <- sum(casen_model_data$os_factor == "Heterosexual")
+n_nohet    <- sum(casen_model_data$os_factor == "No heterosexual")
+pct_nohet  <- round(n_nohet / n_total * 100, 1)
+```
 
-```{r declare_design}
-# Declarar el diseño muestral complejo
+La muestra de trabajo cuenta con **`r format(n_total, big.mark=",")`** casos: `r format(n_het, big.mark=",")` personas heterosexuales y `r format(n_nohet, big.mark=",")` no heterosexuales (`r pct_nohet`% del total).
+
+### 1.2 Declaración del diseño muestral
+
+Declaramos el diseño con el ponderador específico de orientación sexual (`expr_osig`) y las variables de estratificación y conglomerados estándar de CASEN.
+
+```{r design}
 casen_design <- svydesign(
-  ids = ~varunit,      
-  strata = ~varstrat,   
-  weights = ~expr,     
-  data = casen_model_data, # ¡Usamos la base filtrada!
+  ids     = ~varunit,
+  strata  = ~varstrat,
+  weights = ~expr_osig,
+  data    = casen_model_data
 )
-
-print("Objeto de diseño muestral 'casen_design' creado.")
-# print(casen_design) # Comentado para brevedad
+casen_design
 ```
 
-## 2. Regresión Lineal Simple con `svyglm`
+## 2. El Punto de Partida: Descriptivos por Orientación Sexual
 
-Ajustemos un modelo simple de ingresos (`ytrabajocor`) predichos solo por años de escolaridad (`esc`).
+Antes de modelar, exploramos las diferencias descriptivas entre grupos. Calculamos el ingreso medio y la escolaridad media por orientación sexual, usando el diseño declarado.
+
+```{r descriptivos}
+desc_os <- svyby(~ytrabajocor + esc + edad, ~os_factor, casen_design, svymean, na.rm = TRUE)
+desc_os
+```
+
+```{r desc_inline, echo=FALSE}
+ingreso_het   <- round(desc_os$ytrabajocor[desc_os$os_factor == "Heterosexual"], 0)
+ingreso_nohet <- round(desc_os$ytrabajocor[desc_os$os_factor == "No heterosexual"], 0)
+esc_het       <- round(desc_os$esc[desc_os$os_factor == "Heterosexual"], 1)
+esc_nohet     <- round(desc_os$esc[desc_os$os_factor == "No heterosexual"], 1)
+edad_het      <- round(desc_os$edad[desc_os$os_factor == "Heterosexual"], 1)
+edad_nohet    <- round(desc_os$edad[desc_os$os_factor == "No heterosexual"], 1)
+```
+
+Las personas heterosexuales tienen un ingreso medio de $`r format(ingreso_het, big.mark=",")` pesos, mientras que las no heterosexuales alcanzan $`r format(ingreso_nohet, big.mark=",")` pesos. La diferencia bruta parece pequeña o incluso favorable a las personas no heterosexuales. Sin embargo, estas últimas tienen en promedio `r esc_nohet` años de escolaridad frente a `r esc_het` de las heterosexuales, y son considerablemente más jóvenes (`r edad_nohet` vs `r edad_het` años). Estas diferencias en las características observadas **ocultan** la brecha estructural. El análisis de regresión permitirá separar estos efectos.
+
+## 3. Regresión Lineal Simple: El Efecto Bruto
+
+Ajustamos primero un modelo simple que solo incluye la orientación sexual como predictor, sin ningún control.
 
 ```{r rls_model, results='asis'}
-# Modelo RLS con diseño complejo
-modelo_rls_svy <- svyglm(ytrabajocor ~ esc, design = casen_design)
+modelo_m1 <- svyglm(ytrabajocor ~ os_factor, design = casen_design)
 
-# Resumen del modelo formateado con texreg para HTML
-htmlreg(modelo_rls_svy, 
-        custom.coef.names = c("Intercepto", "Años de Escolaridad"),
-        caption = "Tabla 1: RLS de Ingreso del Trabajo por Escolaridad (CASEN 2022, Diseño Complejo)",
-        caption.above = TRUE) 
-
-# --- Para visualización directa en consola (opcional) ---
-# Nota: screenreg muestra los resultados directamente en la consola de R.
-# screenreg(modelo_rls_svy, 
-#         custom.coef.names = c("Intercepto", "Años de Escolaridad"),
-#         caption = "Tabla 1: RLS de Ingreso del Trabajo por Escolaridad (CASEN 2022, Diseño Complejo)",
-#         caption.above = TRUE) 
+htmlreg(modelo_m1,
+        custom.coef.names = c("Intercepto", "No heterosexual (ref. Heterosexual)"),
+        caption = "Tabla 1: RLS de Ingreso por Orientación Sexual (sin controles)",
+        caption.above = TRUE)
 ```
 
-**Interpretación (Tabla 1):**
-*   **Intercepto (a):** El ingreso estimado para una persona con 0 años de escolaridad es de **-537,675 pesos**. Este valor negativo carece de interpretación práctica en este contexto (ingreso no puede ser negativo y esc=0 es raro para la población trabajadora), pero es el punto donde la línea de regresión cruza el eje Y. Es estadísticamente significativo (p < 0.001).
-*   **Años de Escolaridad (b):** Por cada año adicional de escolaridad, se estima que el ingreso del trabajo aumenta en promedio en **102,895 pesos**. Este efecto es **altamente significativo** (p < 0.001), indicando una fuerte relación positiva y lineal entre más años de estudio y mayores ingresos laborales, incluso considerando el diseño complejo.
-
-## 3. Regresión Lineal Múltiple con `svyglm`: Control Estadístico
-
-Añadimos `edad` al modelo para estimar su efecto neto y ver cómo impacta en el coeficiente de `esc`.
-
-```{r rlm_cont_model, results='asis'}
-# Modelo RLM con predictores continuos (esc y edad)
-modelo_rlm_cont_svy <- svyglm(ytrabajocor ~ esc + edad, design = casen_design)
-
-# Presentar modelos comparados
-htmlreg(list(modelo_rls_svy, modelo_rlm_cont_svy), 
-        custom.model.names = c("Modelo 1: RLS (Esc)", "Modelo 2: RLM (Esc + Edad)"),
-        custom.coef.names = c("Intercepto", "Años de Escolaridad", "Edad"),
-        caption = "Tabla 2: Comparación RLS y RLM (Continuas)",
-        caption.above = TRUE)
-
-# --- Para visualización directa en consola (opcional) ---
-# screenreg(list(modelo_rls_svy, modelo_rlm_cont_svy), 
-#         custom.model.names = c("Modelo 1: RLS (Esc)", "Modelo 2: RLM (Esc + Edad)"),
-#         custom.coef.names = c("Intercepto", "Años de Escolaridad", "Edad"),
-#         caption = "Tabla 2: Comparación RLS y RLM (Continuas)",
-#         caption.above = TRUE)
+```{r m1_inline, echo=FALSE}
+b_os_m1 <- round(coef(modelo_m1)["os_factorNo heterosexual"], 0)
+p_os_m1 <- summary(modelo_m1)$coefficients["os_factorNo heterosexual", "Pr(>|t|)"]
 ```
 
-**Interpretación Clave (Tabla 2):**
-*   **Coeficiente `esc` (Modelo 2):** El efecto estimado de la escolaridad **aumenta** a **115,244 pesos** por año adicional, *manteniendo la `edad` constante*. Sigue siendo altamente significativo (p < 0.001). El cambio respecto al Modelo 1 (donde era 102,895) indica que la edad estaba actuando como una variable confusora/supresora; al controlarla, el efecto "puro" de la escolaridad se hace más evidente y fuerte.
-*   **Coeficiente `edad` (Modelo 2):** Por cada año adicional de edad, el ingreso aumenta en promedio en **10,712 pesos**, *manteniendo la escolaridad constante*. Este efecto también es altamente significativo (p < 0.001), sugiriendo que, a igual nivel educativo, la experiencia (aproximada por la edad) también contribuye positivamente al ingreso.
-*   **Control Estadístico:** El Modelo 2 nos da una imagen más refinada: tanto escolaridad como edad tienen efectos positivos y significativos independientes sobre el ingreso.
+**Interpretación (Tabla 1):** El coeficiente para "No heterosexual" es $`r format(b_os_m1, big.mark=",")`$ pesos (p = `r round(p_os_m1, 2)`): prácticamente nulo y no significativo. Sin controlar por ninguna otra variable, la orientación sexual no predice el ingreso laboral. Esto no significa que no haya brecha —significa que la educación y la edad más altas de las personas no heterosexuales **compensan** su desventaja estructural, haciéndola invisible a nivel descriptivo.
 
-## 4. Incorporando Predictores Categóricos en `svyglm`
+## 4. Regresión Lineal Múltiple: El Control Estadístico Revela la Brecha
 
-### Variable Dicotómica (Sexo)
+### 4.1 Controlando por escolaridad
 
-Añadimos `sexo_factor`. "Hombre" es la referencia.
+Al controlar por años de escolaridad, aislamos el efecto de la orientación sexual sobre el ingreso para personas con el **mismo nivel educativo**.
 
-```{r rlm_sexo_model, results='asis'}
-# Modelo RLM con predictores continuos y dicotómico (sexo)
-modelo_rlm_sexo_svy <- svyglm(ytrabajocor ~ esc + edad + sexo_factor, design = casen_design)
+```{r rlm_esc, results='asis'}
+modelo_m2 <- svyglm(ytrabajocor ~ os_factor + esc, design = casen_design)
 
-# Tabla comparativa
-htmlreg(list(modelo_rlm_cont_svy, modelo_rlm_sexo_svy), 
-        custom.model.names = c("Modelo 2: Esc + Edad", "Modelo 3: Esc + Edad + Sexo"),
-        custom.coef.names = c("Intercepto", "Años de Escolaridad", "Edad", "Sexo: Mujer (ref. Hombre)"),
-        caption = "Tabla 3: RLM Añadiendo Sexo",
+htmlreg(list(modelo_m1, modelo_m2),
+        custom.model.names = c("Modelo 1: Sin controles", "Modelo 2: + Escolaridad"),
+        custom.coef.names  = c("Intercepto", "No heterosexual (ref. Het.)", "Años de escolaridad"),
+        caption = "Tabla 2: Efecto de la orientación sexual antes y después de controlar por escolaridad",
         caption.above = TRUE)
-
-# --- Para visualización directa en consola (opcional) ---
-# screenreg(list(modelo_rlm_cont_svy, modelo_rlm_sexo_svy), 
-#         custom.model.names = c("Modelo 2: Esc + Edad", "Modelo 3: Esc + Edad + Sexo"),
-#         custom.coef.names = c("Intercepto", "Años de Escolaridad", "Edad", "Sexo: Mujer (ref. Hombre)"),
-#         caption = "Tabla 3: RLM Añadiendo Sexo",
-#         caption.above = TRUE)
 ```
 
-**Interpretación (Tabla 3 - Modelo 3):**
-*   **Coeficientes `esc` y `edad`:** Los efectos de escolaridad (118,139) y edad (10,504) se mantienen positivos y altamente significativos (p < 0.001), ahora controlando también por sexo. Sus magnitudes cambian ligeramente respecto al Modelo 2, lo que indica que el sexo está algo correlacionado con estas variables o sus efectos.
-*   **Coeficiente `sexo_factorMujer`:** El coeficiente es **-270,921** (p < 0.001). Esto significa que, en promedio, las mujeres tienen un ingreso del trabajo estimado **270,921 pesos menor** que los hombres, *incluso cuando tienen la misma cantidad de años de escolaridad y la misma edad*. Esta diferencia es estadísticamente muy significativa y representa una brecha de género considerable en los ingresos laborales, independiente de la educación y la edad incluidas en el modelo.
+```{r m2_inline, echo=FALSE}
+b_os_m2  <- round(coef(modelo_m2)["os_factorNo heterosexual"], 0)
+b_esc_m2 <- round(coef(modelo_m2)["esc"], 0)
+p_os_m2  <- summary(modelo_m2)$coefficients["os_factorNo heterosexual", "Pr(>|t|)"]
+```
 
-### Variable Politómica (Macrozona)
+**Interpretación (Tabla 2):** Una vez controlada la escolaridad, el coeficiente para "No heterosexual" pasa a ser $`r format(b_os_m2, big.mark=",")`$ pesos (p < 0.001). La brecha, que en el Modelo 1 era invisible, emerge con claridad: personas no heterosexuales con el **mismo número de años de estudio** que sus pares heterosexuales ganan significativamente menos. El efecto de la escolaridad es $`r format(b_esc_m2, big.mark=",")`$ pesos por año adicional.
 
-Incluimos `macrozona`, con "Metropolitana" como referencia.
+Este resultado ilustra un caso clásico de **confusión por covariable**: la ventaja educativa de las personas no heterosexuales enmascaraba su desventaja de ingresos.
 
-```{r rlm_macro_model, results='asis'}
-# Modelo RLM con predictores continuos y politómico (macrozona)
-modelo_rlm_macro_svy <- svyglm(ytrabajocor ~ esc + edad + macrozona, design = casen_design)
+### 4.2 Añadiendo la edad
 
-# Tabla del modelo
-htmlreg(modelo_rlm_macro_svy,
-        custom.coef.names = c("Intercepto", "Años de Escolaridad", "Edad", 
-                              "Macrozona: Norte (ref. Metro)", 
-                              "Macrozona: Centro (ref. Metro)",
-                              "Macrozona: Sur (ref. Metro)"),
-        caption = "Tabla 4: RLM con Macrozona",
+```{r rlm_edad, results='asis'}
+modelo_m3 <- svyglm(ytrabajocor ~ os_factor + esc + edad, design = casen_design)
+
+htmlreg(list(modelo_m2, modelo_m3),
+        custom.model.names = c("Modelo 2: + Esc", "Modelo 3: + Esc + Edad"),
+        custom.coef.names  = c("Intercepto", "No heterosexual (ref. Het.)",
+                               "Años de escolaridad", "Edad"),
+        caption = "Tabla 3: Incorporando edad como control adicional",
         caption.above = TRUE)
+```
 
-# --- Para visualización directa en consola (opcional) ---
-# screenreg(modelo_rlm_macro_svy,
-#         custom.coef.names = c("Intercepto", "Años de Escolaridad", "Edad", 
-#                               "Macrozona: Norte (ref. Metro)", 
-#                               "Macrozona: Centro (ref. Metro)",
-#                               "Macrozona: Sur (ref. Metro)"),
-#         caption = "Tabla 4: RLM con Macrozona",
-#         caption.above = TRUE)
+```{r m3_inline, echo=FALSE}
+b_os_m3   <- round(coef(modelo_m3)["os_factorNo heterosexual"], 0)
+b_edad_m3 <- round(coef(modelo_m3)["edad"], 0)
+```
+
+**Interpretación (Tabla 3):** Al agregar la edad, el coeficiente de orientación sexual se reduce a $`r format(b_os_m3, big.mark=",")`$ pesos, pero sigue siendo altamente significativo. Parte de la brecha del Modelo 2 se explicaba por la mayor juventud de las personas no heterosexuales (que aún no han acumulado el premio de experiencia laboral). Por cada año adicional de edad, el ingreso aumenta en promedio $`r format(b_edad_m3, big.mark=",")`$ pesos, controlando por escolaridad y orientación sexual.
+
+### 4.3 Incorporando sexo y territorio: el modelo completo
+
+```{r rlm_full, results='asis'}
+modelo_m4 <- svyglm(ytrabajocor ~ os_factor + esc + edad + sexo_factor,
+                    design = casen_design)
+
+modelo_m5 <- svyglm(ytrabajocor ~ os_factor + esc + edad + sexo_factor + macrozona,
+                    design = casen_design)
+
+htmlreg(list(modelo_m3, modelo_m4, modelo_m5),
+        custom.model.names = c("M3: + Edad", "M4: + Sexo", "M5: Completo"),
+        custom.coef.names  = c("Intercepto",
+                               "No heterosexual (ref. Het.)",
+                               "Años de escolaridad",
+                               "Edad",
+                               "Mujer (ref. Hombre)",
+                               "Norte (ref. Metro)",
+                               "Centro (ref. Metro)",
+                               "Sur (ref. Metro)"),
+        caption = "Tabla 4: Modelos con controles completos",
+        caption.above = TRUE)
+```
+
+```{r m5_inline, echo=FALSE}
+b_os_m4    <- round(coef(modelo_m4)["os_factorNo heterosexual"], 0)
+b_mujer_m4 <- round(coef(modelo_m4)["sexo_factorMujer"], 0)
+b_os_m5    <- round(coef(modelo_m5)["os_factorNo heterosexual"], 0)
+b_mujer_m5 <- round(coef(modelo_m5)["sexo_factorMujer"], 0)
+b_norte_m5 <- round(coef(modelo_m5)["macrozonaNorte"], 0)
+b_sur_m5   <- round(coef(modelo_m5)["macrozonaSur"], 0)
 ```
 
 **Interpretación (Tabla 4):**
-*   **Coeficientes `esc` y `edad`:** Los efectos de escolaridad (111,943) y edad (10,717) siguen siendo positivos y significativos (p < 0.001), ahora controlando por macrozona geográfica.
-*   **Macrozona Norte:** El coeficiente es **-72,810** (p < 0.001). En promedio, las personas en la Macrozona Norte tienen ingresos estimados **72,810 pesos menores** que las de la Región Metropolitana, controlando por escolaridad y edad. La diferencia es significativa.
-*   **Macrozona Centro:** Coeficiente **-183,479** (p < 0.001). Las personas en la Macrozona Centro tienen ingresos estimados **183,479 pesos menores** que en la RM, controlando por esc y edad. Diferencia significativa.
-*   **Macrozona Sur:** Coeficiente **-156,936** (p < 0.001). Las personas en la Macrozona Sur tienen ingresos estimados **156,936 pesos menores** que en la RM, controlando por esc y edad. Diferencia significativa.
-*   **Conclusión:** Existen diferencias regionales significativas en los ingresos laborales, incluso después de controlar por diferencias individuales en escolaridad y edad. La Región Metropolitana (referencia) presenta los ingresos estimados más altos.
 
-## 5. Interpretación Avanzada: Coeficientes Estandarizados (Betas)
+-   **Orientación sexual:** La brecha se mantiene robusta a través de los modelos. En el modelo completo (M5), las personas no heterosexuales ganan en promedio $`r format(b_os_m5, big.mark=",")`$ pesos menos que las heterosexuales, **controlando por escolaridad, edad, sexo y macrozona** (p < 0.001). Esta persistencia refuerza la hipótesis de una desventaja estructural.
 
-Comparamos la "fuerza" relativa de `esc` y `edad` en el `modelo_rlm_cont_svy` (Modelo 2) estandarizando las variables manualmente.
+-   **Sexo:** Las mujeres ganan en promedio $`r format(abs(b_mujer_m5), big.mark=",")`$ pesos menos que los hombres, controlando por los demás factores. La brecha de género coexiste con la brecha por orientación sexual.
 
-**Paso 1: Estandarizar las variables.**
+-   **Macrozona:** La Región Metropolitana presenta los ingresos estimados más altos. Las diferencias regionales son significativas y persistentes (Norte: $`r format(b_norte_m5, big.mark=",")`; Sur: $`r format(b_sur_m5, big.mark=",")`$ respecto a la RM).
 
-```{r standardize_vars}
+## 5. Comparando Efectos: Coeficientes Estandarizados (Betas)
+
+Para comparar la magnitud relativa de los predictores continuos, estandarizamos la variable dependiente y los predictores numéricos antes de ajustar el modelo.
+
+```{r estandarizacion}
 casen_model_data_z <- casen_model_data %>%
   mutate(
-    # Estandarizar VD y VIs continuas (media 0, DE 1)
-    ytrab_z = scale(ytrabajocor)[,1], # scale devuelve una matriz, tomamos la 1ra col
-    esc_z = scale(esc)[,1],
-    edad_z = scale(edad)[,1]
+    ytrab_z = scale(ytrabajocor)[, 1],
+    esc_z   = scale(esc)[, 1],
+    edad_z  = scale(edad)[, 1]
   )
 
-# Verificar medias y DE
-# summary(casen_model_data_z[, c("ytrab_z", "esc_z", "edad_z")]) # Comentado
-```
-
-**Paso 2: Re-declarar el diseño y correr `svyglm` con variables Z.**
-
-```{r beta_model, results='asis'}
-# RE-Declarar diseño con datos que incluyen variables Z
 casen_design_z <- svydesign(
-  ids = ~varunit, strata = ~varstrat, weights = ~expr, 
-  data = casen_model_data_z, nest = TRUE) # ¡Ojo! Usar la data con Z
-
-# Modelo con variables estandarizadas
-modelo_beta_svy <- svyglm(ytrab_z ~ esc_z + edad_z, design = casen_design_z)
-
-# Ver los coeficientes BETA
-htmlreg(modelo_beta_svy,
-        custom.coef.names = c("Intercepto (Z)", "Beta Escolaridad (Z)", "Beta Edad (Z)"),
-        caption = "Tabla 5: RLM con Variables Estandarizadas (Betas)",
-        caption.above = TRUE)
-
-# --- Para visualización directa en consola (opcional) ---
-# screenreg(modelo_beta_svy,
-#         custom.coef.names = c("Intercepto (Z)", "Beta Escolaridad (Z)", "Beta Edad (Z)"),
-#         caption = "Tabla 5: RLM con Variables Estandarizadas (Betas)",
-#         caption.above = TRUE)
+  ids     = ~varunit,
+  strata  = ~varstrat,
+  weights = ~expr_osig,
+  data    = casen_model_data_z
+)
 ```
 
-**Interpretación (Tabla 5):**
-*   **Beta Escolaridad (Z):** El coeficiente estandarizado para `esc_z` es **0.55** (p < 0.001). Por cada aumento de 1 desviación estándar en escolaridad, el ingreso del trabajo (también en desviaciones estándar) aumenta en promedio 0.55 DE, controlando por edad (en DE).
-*   **Beta Edad (Z):** El coeficiente estandarizado para `edad_z` es **0.19** (p < 0.001). Por cada aumento de 1 desviación estándar en edad, el ingreso del trabajo aumenta en promedio 0.19 DE, controlando por escolaridad (en DE).
-*   **Comparación:** El valor absoluto del Beta para escolaridad (0.55) es considerablemente mayor que el de edad (0.19). **Conclusión:** En este modelo, la **escolaridad** tiene un impacto relativo **más fuerte** sobre los ingresos del trabajo que la **edad**, una vez que se controla por la otra variable.
+```{r betas, results='asis'}
+modelo_beta <- svyglm(ytrab_z ~ os_factor + esc_z + edad_z + sexo_factor,
+                      design = casen_design_z)
 
-## 6. Evaluación del Ajuste y Diagnósticos (Material Complementario)
+htmlreg(modelo_beta,
+        custom.coef.names = c("Intercepto",
+                              "No heterosexual (ref. Het.)",
+                              "Beta Escolaridad (Z)",
+                              "Beta Edad (Z)",
+                              "Mujer (ref. Hombre)"),
+        caption = "Tabla 5: Coeficientes estandarizados (VD y predictores continuos en Z)",
+        caption.above = TRUE)
+```
 
-Revisemos visualmente los supuestos del modelo `modelo_rlm_sexo_svy` (Modelo 3).
+```{r betas_inline, echo=FALSE}
+beta_esc  <- round(coef(modelo_beta)["esc_z"], 2)
+beta_edad <- round(coef(modelo_beta)["edad_z"], 2)
+b_os_beta <- round(coef(modelo_beta)["os_factorNo heterosexual"], 3)
+```
+
+**Interpretación (Tabla 5):** En unidades comparables:
+
+-   **Escolaridad** (β = `r beta_esc`): es el predictor con mayor impacto relativo sobre los ingresos. Por cada DE de aumento en escolaridad, el ingreso aumenta `r beta_esc` DE.
+-   **Edad** (β = `r beta_edad`): efecto sustantivo pero claramente menor que el de la escolaridad.
+-   **Orientación sexual** (b = `r b_os_beta` DE): el coeficiente, aunque estadísticamente significativo, es menor en magnitud estandarizada que los de escolaridad y edad, lo que es coherente con una desventaja estructural real pero contenida.
+
+## 6. Diagnósticos del Modelo (Material Complementario)
+
+Evaluamos los supuestos del modelo completo (`modelo_m5`).
 
 ### Linealidad (Residuos vs. Ajustados)
 
-```{r diag_linearity}
-plot(modelo_rlm_sexo_svy, which = 1)
+```{r diag_lin}
+plot(modelo_m5, which = 1)
 ```
 
-**Interpretación:** El gráfico de residuos versus valores ajustados muestra una nube de puntos bastante dispersa alrededor de la línea horizontal cero. La línea roja suavizada (LOESS) es relativamente plana, aunque quizás con una ligera tendencia ascendente al final. No se observan patrones curvos fuertes, lo que sugiere que el supuesto de **linealidad es razonablemente cumplido**, aunque podría haber alguna no linealidad leve no capturada.
+La línea LOESS es relativamente plana alrededor de cero. No se observan patrones curvos marcados; el supuesto de linealidad es razonablemente satisfecho.
 
 ### Homocedasticidad (Scale-Location)
 
-```{r diag_homoscedasticity}
-plot(modelo_rlm_sexo_svy, which = 3) 
+```{r diag_homo}
+plot(modelo_m5, which = 3)
 ```
 
-**Interpretación:** Este gráfico (raíz cuadrada de residuos estandarizados vs. ajustados) muestra una tendencia clara: la línea roja sube y la dispersión de los puntos aumenta a medida que los valores ajustados son mayores. Esto indica **heterocedasticidad**, es decir, la varianza de los errores no es constante. Los errores son más grandes para predicciones de ingresos más altos. Esto **afecta la eficiencia** de las estimaciones OLS y la **validez de los errores estándar y p-valores** calculados por defecto (aunque `svyglm` ya usa métodos que son algo robustos). En un análisis más avanzado, se podrían usar errores estándar robustos a la heterocedasticidad.
+La dispersión de los residuos aumenta con los valores ajustados, indicando **heterocedasticidad**. Esto es esperable con datos de ingresos: la variabilidad es mayor para ingresos altos. `svyglm` es más robusto que `lm()` en este sentido, aunque en análisis más avanzados se recomendaría explorar una transformación logarítmica de los ingresos.
 
 ### Normalidad de Residuos (Q-Q Plot)
 
-```{r diag_normality}
-plot(modelo_rlm_sexo_svy, which = 2)
+```{r diag_norm}
+plot(modelo_m5, which = 2)
 ```
 
-**Interpretación:** Los puntos se desvían marcadamente de la línea diagonal, especialmente en la cola superior. La distribución de los residuos tiene una **cola derecha mucho más larga** que una distribución normal (hay residuos positivos mucho más grandes de lo esperado). Esto indica que los **residuos no son normales**. Dado el gran tamaño muestral (N=88391), la inferencia sobre los coeficientes tiende a ser robusta a esta violación, pero sugiere que el modelo podría mejorarse (quizás transformando la VD, como usando log(ingreso)).
+Los residuos se desvían de la normal en la cola superior, lo que refleja la distribución asimétrica del ingreso. Con el tamaño muestral de este análisis, la inferencia sobre los coeficientes es robusta a esta violación.
 
 ### Multicolinealidad (VIF)
 
-Evaluamos si los predictores están demasiado correlacionados entre sí en el Modelo 3.
-
 ```{r diag_vif}
-# Calcular VIF para el modelo con sexo
-vif_values_sexo <- car::vif(modelo_rlm_sexo_svy) 
-print("VIFs para modelo con Esc, Edad, Sexo:")
-print(vif_values_sexo)
+car::vif(modelo_m5)
 ```
 
-**Interpretación:** Los valores VIF para `esc` (3.72), `edad` (3.20) y `sexo_factor` (1.40) están **todos por debajo del umbral problemático** (usualmente 5 o 10). Esto indica que la multicolinealidad **no es un problema serio** en este modelo específico. Podemos interpretar los efectos parciales de cada predictor con relativa confianza.
-
-### Casos Influyentes (Residuos vs. Leverage - Mención)
-
-```{r diag_influence}
-plot(modelo_rlm_sexo_svy, which = 5)
+```{r vif_inline, echo=FALSE}
+vifs <- car::vif(modelo_m5)
+max_vif <- round(max(vifs), 2)
 ```
 
-**Interpretación:** El gráfico muestra varios puntos con residuos estandarizados altos (lejanos a cero en el eje Y), y algunos con leverage moderado (eje X). Los puntos etiquetados (como 48766, 48765) y otros en la esquina superior derecha podrían ser **potencialmente influyentes**, ya que combinan residuos grandes con cierto leverage. No hay puntos extremadamente alejados en ambas dimensiones simultáneamente, pero valdría la pena investigar los casos con residuos muy grandes en un análisis más profundo.
+El VIF máximo es `r max_vif`. Todos los valores están por debajo del umbral problemático (≥ 5). La multicolinealidad no representa un problema en este modelo.
+
+### Casos Influyentes
+
+```{r diag_infl}
+plot(modelo_m5, which = 5)
+```
+
+Algunos puntos presentan residuos estandarizados elevados, pero no hay casos que combinen alto leverage con residuos extremos de manera simultánea. Los coeficientes son estables.
 
 ## 7. Conclusión
 
-¡Muy bien! En este práctico has avanzado significativamente:
+En este práctico aplicamos **Regresión Lineal Múltiple con diseño muestral complejo** para responder una pregunta de investigación con relevancia social directa:
 
-*   Ajustaste modelos **RLS y RLM** usando `svyglm`, asegurando que la **inferencia estadística respeta el diseño muestral complejo** de CASEN.
-*   Practicaste la **interpretación de coeficientes parciales** para variables continuas y categóricas, entendiendo el **control estadístico**.
-*   Aprendiste a **calcular e interpretar coeficientes estandarizados** (manualmente) para evaluar la importancia relativa de los predictores.
-*   Realizaste **diagnósticos visuales básicos** e interpretaste VIFs, identificando **heterocedasticidad** y **no normalidad de residuos** como posibles problemas en estos modelos, y confirmando **baja multicolinealidad** en el modelo con sexo.
+-   Sin controles, la orientación sexual **no predice** el ingreso laboral: las personas no heterosexuales tienen educación y edad que compensan su desventaja.
+-   Al controlar por escolaridad, la brecha emerge con fuerza: personas no heterosexuales con igual nivel educativo ganan significativamente menos.
+-   La brecha es **robusta** a la incorporación de edad, sexo y territorio, lo que sugiere una desventaja estructural más allá de las diferencias en capital humano.
+-   El **control estadístico** —el aporte central de la RLM— fue la herramienta que permitió ver lo que la estadística descriptiva ocultaba.
 
-Ahora estás mejor equipado para construir, interpretar y evaluar modelos de regresión con datos de encuestas, reconociendo tanto el poder del control estadístico como la importancia de verificar los supuestos y usar las herramientas adecuadas (`svyglm`) para la inferencia correcta.
+Usamos además un diseño muestral específico (`expr_osig`), apropiado para la submuestra que respondió la pregunta de orientación sexual, ilustrando que el análisis de encuestas complejas puede requerir diseños distintos según la subpoblación de interés.
 
+## Visualización interactiva de correlación y regresión
 
-## Gráfico interactivo de correlación y regresión
+La siguiente aplicación permite explorar visualmente cómo se ajusta una recta de regresión a una nube de puntos. Puedes acceder también directamente en: <https://gabriel-sotomayor.shinyapps.io/rls_aad/>.
 
-A continuación se presenta una herramienta que podrán usar para visualizar de mejor manera como se calcula una correlación o se ajusta una recta de regresión a partir de una nube de puntos.
-
-Para acceder de mejor manera a la aplicación pueden acceder a este enlace: <https://gabriel-sotomayor.shinyapps.io/rls_aad/>.
-
-<iframe src="https://gabriel-sotomayor.shinyapps.io/rls_aad/" 
-        width="100%" 
-        height="600px" 
+<iframe src="https://gabriel-sotomayor.shinyapps.io/rls_aad/"
+        width="100%"
+        height="600px"
         frameborder="0">
-
 </iframe>
