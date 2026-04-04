@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ## 0. Objetivos del Práctico
 
-La encuesta CASEN 2024 incorpora por primera vez a escala nacional una pregunta sobre orientación sexual. Esto nos permite explorar si las personas no heterosexuales enfrentan una brecha de ingresos respecto a las personas heterosexuales en el mercado laboral chileno.
+La encuesta CASEN 2024 incorpora a escala nacional una pregunta sobre orientación sexual. Esto nos permite explorar si las personas no heterosexuales enfrentan una brecha de ingresos respecto a las personas heterosexuales en el mercado laboral chileno.
 
 La pregunta de investigación parece simple, pero su respuesta no lo es: sin controles estadísticos, la brecha no es visible —e incluso podría parecer invertida—. Solo al aplicar **Regresión Lineal Múltiple** con **`svyglm()`** y controlar por educación, edad, sexo y territorio emerge la brecha real. Esto ilustra de manera directa el valor del control estadístico en ciencias sociales.
 
@@ -308,7 +308,7 @@ Evaluamos los supuestos del modelo completo (`modelo_m5`).
 plot(modelo_m5, which = 1)
 ```
 
-La línea LOESS es relativamente plana alrededor de cero. No se observan patrones curvos marcados; el supuesto de linealidad es razonablemente satisfecho.
+La línea LOESS es relativamente plana alrededor de cero, aunque quizás con una ligera tendencia al final. No se observan patrones curvos marcados; el supuesto de linealidad es razonablemente satisfecho, aunque podría existir alguna no linealidad leve no capturada por el modelo.
 
 ### Homocedasticidad (Scale-Location)
 
@@ -316,7 +316,7 @@ La línea LOESS es relativamente plana alrededor de cero. No se observan patrone
 plot(modelo_m5, which = 3)
 ```
 
-La dispersión de los residuos aumenta con los valores ajustados, indicando **heterocedasticidad**. Esto es esperable con datos de ingresos: la variabilidad es mayor para ingresos altos. `svyglm` es más robusto que `lm()` en este sentido, aunque en análisis más avanzados se recomendaría explorar una transformación logarítmica de los ingresos.
+La dispersión de los residuos aumenta con los valores ajustados, indicando **heterocedasticidad**: la varianza de los errores no es constante, sino que crece a medida que los ingresos predichos son más altos. Esto es esperable con datos de ingresos en Chile, donde la distribución salarial es muy asimétrica. La heterocedasticidad afecta la eficiencia de las estimaciones y la validez estricta de los errores estándar y p-valores calculados por defecto. `svyglm()` ya incorpora correcciones basadas en el diseño muestral que lo hacen más robusto que `lm()` en este sentido; sin embargo, en un análisis más avanzado se podría explorar una transformación logarítmica de los ingresos o el uso explícito de errores estándar robustos a la heterocedasticidad.
 
 ### Normalidad de Residuos (Q-Q Plot)
 
@@ -324,7 +324,7 @@ La dispersión de los residuos aumenta con los valores ajustados, indicando **he
 plot(modelo_m5, which = 2)
 ```
 
-Los residuos se desvían de la normal en la cola superior, lo que refleja la distribución asimétrica del ingreso. Con el tamaño muestral de este análisis, la inferencia sobre los coeficientes es robusta a esta violación.
+Los puntos se desvían marcadamente de la línea diagonal, en particular en la cola superior: la distribución de los residuos tiene una cola derecha mucho más larga de lo que esperaría una distribución normal (hay residuos positivos muy grandes, correspondientes a ingresos altos no bien predichos por el modelo). Esto refleja la distribución fuertemente asimétrica del ingreso laboral en Chile. Dado el gran tamaño muestral de este análisis, la inferencia sobre los coeficientes tiende a ser robusta a esta violación por el Teorema Central del Límite, aunque el hallazgo sugiere que el modelo podría mejorar con una transformación de la variable dependiente (por ejemplo, usando el logaritmo del ingreso).
 
 ### Multicolinealidad (VIF)
 
@@ -337,7 +337,7 @@ vifs <- car::vif(modelo_m5)
 max_vif <- round(max(vifs), 2)
 ```
 
-El VIF máximo es `r max_vif`. Todos los valores están por debajo del umbral problemático (≥ 5). La multicolinealidad no representa un problema en este modelo.
+El VIF máximo es `r max_vif`. Todos los valores están por debajo del umbral problemático (comúnmente fijado en 5 o 10), lo que indica que los predictores no están excesivamente correlacionados entre sí. La multicolinealidad no representa un problema en este modelo y podemos interpretar los efectos parciales de cada predictor con relativa confianza.
 
 ### Casos Influyentes
 
@@ -345,7 +345,7 @@ El VIF máximo es `r max_vif`. Todos los valores están por debajo del umbral pr
 plot(modelo_m5, which = 5)
 ```
 
-Algunos puntos presentan residuos estandarizados elevados, pero no hay casos que combinen alto leverage con residuos extremos de manera simultánea. Los coeficientes son estables.
+El gráfico muestra varios puntos con residuos estandarizados altos (lejanos a cero en el eje Y) y algunos con leverage moderado (eje X). Los puntos que combinan ambas características simultáneamente serían potencialmente influyentes. En este modelo no se observan casos que concentren residuos extremos y alto leverage al mismo tiempo, lo que sugiere que los coeficientes son estables. En un análisis más profundo, valdría la pena investigar los casos con residuos muy grandes para determinar si corresponden a valores atípicos genuinos o a errores en los datos.
 
 ## 7. Conclusión
 
