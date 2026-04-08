@@ -1,0 +1,31 @@
+---
+title: "🗓️ Semana 07: Análisis Factorial Exploratorio II — Extracción, Rotación e Interpretación"
+---
+
+En esta semana completamos el proceso del **Análisis Factorial Exploratorio (AFE)**, avanzando desde la preparación de datos hacia la extracción e interpretación de factores. Revisamos los criterios para **determinar el número de factores** a retener: el criterio de Kaiser (autovalores > 1), el gráfico de sedimentación (Scree Plot) y, con mayor rigor, el **Análisis Paralelo**, que compara los autovalores reales con los generados por datos aleatorios.
+
+Presentamos los principales **métodos de extracción** (Ejes Principales/PAF, Mínimos Cuadrados, Máxima Verosimilitud) y la necesidad de la **rotación factorial** para lograr una estructura simple e interpretable. Distinguimos entre rotación **ortogonal (Varimax)**, que asume factores independientes, y rotación **oblicua (Promax/Oblimin)**, que permite factores correlacionados y es más realista en ciencias sociales. Cerramos con la interpretación de la matriz de cargas factoriales, la evaluación de la bondad de ajuste del modelo y el cálculo de **puntuaciones factoriales** para su uso en análisis posteriores.
+
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## 💻 Taller Aplicado (Práctico 7)
+
+En este laboratorio completaremos el AFE sobre los datos de la Encuesta de Desarrollo Humano (EDH) del PNUD. Determinaremos el número óptimo de factores con el Scree Plot y el Análisis Paralelo (`fa.parallel()`), extraeremos factores con correlaciones policóricas y método minres, compararemos rotaciones Varimax y Promax, interpretaremos la matriz de patrón resultante, visualizaremos la estructura con `fa.diagram()` y calcularemos puntuaciones factoriales para explorar diferencias por nivel socioeconómico.
+
+👉 **[Ir al Práctico 7: Análisis Factorial Exploratorio II — Extracción, Rotación e Interpretación](lab.qmd)**
+
+## 📚 Lecturas Obligatorias
+
+- **Fabrigar, L. R., Wegener, D. T., MacCallum, R. C., & Strahan, E. J. (1999).** Evaluating the use of exploratory factor analysis in psychological research. *Psychological Methods, 4*(3), 272–299.
+
+- **Hair, J. F., Black, W. C., Babin, B. J., & Anderson, R. E. (2019).** *Multivariate Data Analysis* (8.ª ed.). Cengage Learning. Capítulos 3 y 4.
+
+## 📟 Dudas y Comunicación
+
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dificultades con la base de datos EDH o cualquier otra duda sobre el curso.

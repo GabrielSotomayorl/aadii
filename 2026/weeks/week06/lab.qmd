@@ -1,0 +1,252 @@
+---
+title: "Práctico 6: Análisis Factorial Exploratorio I"
+subtitle: "Preparación y Supuestos"
+date: "2026-04-13"
+lang: es
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-tools: true
+    df-print: paged
+    body-classes: lab-content
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## 0. Objetivo del Práctico
+
+El objetivo de este práctico es aprender a realizar los **pasos preparatorios cruciales** antes de ejecutar un Análisis Factorial Exploratorio (AFE). Nos centraremos en:
+
+1.  **Cargar y gestionar** los datos de la encuesta.
+2.  Realizar un **análisis descriptivo** inicial de las variables.
+3.  **Evaluar la adecuación de los datos** para el AFE, incluyendo:
+    *   Tratamiento de casos perdidos.
+    *   Identificación y manejo de casos atípicos multivariantes.
+    *   Evaluación de la normalidad univariante y multivariante.
+    *   Análisis de la colinealidad (matriz de correlaciones) y pruebas de factorabilidad (Bartlett y KMO).
+
+## 1. Carga y Gestión de Datos
+
+Trabajaremos con un extracto de la Encuesta de Desarrollo Humano (EDH) del PNUD, enfocándonos en ítems que miden la percepción sobre las oportunidades que Chile ofrece en diversas áreas.
+
+![alt text](https://raw.githubusercontent.com/Clases-GabrielSotomayor/pruebapagina/master/static/slides/img/05/Practico.png)
+
+Estos ítems se miden en una escala de 1 (Ninguna oportunidad) a 7 (Muchas oportunidades).
+
+Primero, cargamos los paquetes necesarios y los datos.
+
+```{r load_packages_data, warning=FALSE, message=FALSE}
+# Cargar paquetes
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(
+              tidyverse, # Para manipulación de datos con dplyr
+              summarytools, # Para resúmenes descriptivos detallados
+              psych) # Para KMO, Bartlett, Mardia y funciones de AFE
+# Cargamos los datos desde la URL
+datos <- read.csv("../../data/EDH_2013_csv.csv") %>% 
+  select(salud = P25a, ingr = P25b, trab = P25c,  educ = P25d, 
+         vivi = P25e,  segur = P25f, medio = P25g, liber = P25h, 
+         proye = P25i) 
+
+glimpse(datos)
+```
+
+### Tratamiento de Valores Perdidos
+
+Las variables originales pueden tener códigos para "No sabe" (8) o "No responde" (9). Debemos convertirlos a `NA` para que R los reconozca como valores perdidos.
+
+```{r define_missing}
+# Resumen inicial para ver los valores antes de recodificar
+summary(datos)
+
+# Recodificar 8 y 9 como NA para todas las variables
+datos <- datos %>%
+  mutate(across(everything(), ~na_if(.x, 9))) %>%
+  mutate(across(everything(), ~na_if(.x, 8)))
+
+# Verificar que los NAs se hayan asignado (comparar con el summary anterior)
+summary(datos)
+```
+
+### Análisis Descriptivo Inicial
+
+Exploramos las distribuciones, medias y variabilidad de nuestros ítems.
+
+```{r descriptive_stats, warning=FALSE, results='asis'}
+# Usamos dfSummary para un resumen completo
+print(dfSummary(datos, headings = FALSE, method = "render", graph.magnif = 0.8))
+```
+**Interpretación:** La tabla de `dfSummary` nos muestra:
+*   **Niveles de Medición:** Todas nuestras variables son `integer` (números enteros).
+*   **Valores:** Todas van de 1 a 7, como se esperaba.
+*   **Medias y Desviaciones Estándar (sd):**
+    *   `salud`: Media 4.1 (DE 1.8)
+    *   `ingr`: Media 3.4 (DE 1.7)
+    *   `trab`: Media 4.0 (DE 1.7)
+    *   `educ`: Media 3.8 (DE 1.7)
+    *   `vivi`: Media 4.0 (DE 1.7)
+    *   `segur`: Media 3.2 (DE 1.8) - La más baja, junto con ingresos.
+    *   `medio`: Media 4.1 (DE 1.7)
+    *   `liber`: Media 4.5 (DE 1.6)
+    *   `proye`: Media 4.5 (DE 1.6) - Las más altas.
+*   **Missing:** Vemos la cantidad y porcentaje de valores perdidos por variable. `educ` es la que tiene más (3.8%).
+
+En general, las variables no muestran varianzas excesivamente dispares, aunque `segur` y `ingr` tienden a tener percepciones más bajas, mientras `liber` y `proye` más altas.
+
+## 2. Comprobación de Supuestos para AFE
+
+### Manejo de Casos Perdidos y Creación de Base `listwise`
+
+Para algunos tests (como el de Mardia para normalidad multivariante) y para simplificar el análisis inicial, crearemos una base de datos eliminando todos los casos que tengan *algún* valor perdido en *cualquiera* de los ítems (`listwise deletion`).
+
+```{r listwise_deletion}
+# Guardamos el número de casos originales
+n_original <- nrow(datos)
+
+# Creamos la base de datos listwise
+datosLW <- na.omit(datos) # na.omit() elimina filas con cualquier NA
+
+# Verificamos las nuevas dimensiones
+print(paste("Casos originales:", n_original))
+print(paste("Casos después de listwise deletion (datosLW):", nrow(datosLW)))
+print(paste("Casos perdidos por listwise deletion:", n_original - nrow(datosLW)))
+```
+**Interpretación:** Partimos de 1805 casos. Después de eliminar los casos con algún valor perdido en las 9 variables, nos quedamos con 1654 casos. Perdimos 151 casos (aproximadamente 8.4%), lo cual es una cantidad considerable. En un análisis real, investigaríamos si estos casos perdidos tienen algún patrón (no aleatorio) y consideraríamos métodos más sofisticados como la imputación múltiple si la pérdida fuera mayor o sistemática. Para este práctico, continuaremos con `datosLW`.
+
+### Casos Atípicos Multivariantes (Distancia de Mahalanobis)
+
+Identificamos observaciones que son inusuales considerando *todas las variables simultáneamente*.
+
+```{r mahalanobis_distance}
+# Calcular medias de columnas y matriz de covarianza para datosLW
+mean_vars <- colMeans(datosLW) # Usamos datosLW que no tiene NAs
+Sx_cov <- cov(datosLW)
+n_vars <- ncol(datosLW) # Guardamos número de variables ANTES de agregar columnas auxiliares
+
+# Calcular Distancia de Mahalanobis D^2
+D2 <- mahalanobis(datosLW, center = mean_vars, cov = Sx_cov)
+
+# Calcular el p-valor: D^2 sigue distribución chi-cuadrado con df = número de variables (9)
+datosLW$p_mahalanobis <- (1 - pchisq(D2, df = n_vars))
+
+# Resumen de los p-valores para ver cuántos son atípicos (ej. < 0.001)
+summary(datosLW$p_mahalanobis)
+print(paste("Número de casos con p_mahalanobis < 0.001:", sum(datosLW$p_mahalanobis < 0.001)))
+
+# Eliminar casos atípicos multivariantes (aquellos con p < 0.001)
+n_antes_atipicos <- nrow(datosLW)
+datosLW_sin_atipicos <- datosLW %>%
+  filter(p_mahalanobis > 0.001) %>%
+  select(-p_mahalanobis) # Quitamos la columna del p-valor
+
+print(paste("Casos antes de eliminar atípicos:", n_antes_atipicos))
+print(paste("Casos después de eliminar atípicos (p<0.001):", nrow(datosLW_sin_atipicos)))
+print(paste("Casos atípicos multivariantes eliminados:", n_antes_atipicos - nrow(datosLW_sin_atipicos)))
+
+# Para el resto del práctico, usaremos datosLW_sin_atipicos renombrado a datosLW
+datosLW <- datosLW_sin_atipicos
+```
+**Interpretación:**
+Se identificaron 63 casos como atípicos multivariantes usando un umbral de p < 0.001 para la distancia de Mahalanobis. Estos casos fueron eliminados, resultando en una base de datos final de `r nrow(datosLW)` observaciones para los análisis subsecuentes.
+
+### Normalidad Multivariante (Test de Mardia)
+
+Evaluamos si los datos siguen una distribución normal multivariada.
+
+```{r mardia_test, fig.height=6, fig.width=6}
+# Test de Mardia usando el paquete psych (ya cargado)
+# Usaremos datosLW (que ya no tiene NAs ni atípicos multivariantes)
+resultados_mardia <- psych::mardia(datosLW, plot = TRUE)
+print(resultados_mardia)
+
+# Normalidad univariante con Shapiro-Wilk por variable
+cat("\n--- Test de Shapiro-Wilk por variable ---\n")
+normalidad_uni <- sapply(datosLW, function(x) {
+  t <- shapiro.test(x)
+  c(W = round(t$statistic, 4), p.value = round(t$p.value, 6))
+})
+print(t(normalidad_uni))
+```
+**Interpretación:**
+*   **Normalidad Multivariante (Test de Mardia):**
+    *   `b1p` (Asimetría de Mardia): p-valor ≈ 0. Resultado: **NO** normal.
+    *   `b2p` (Curtosis de Mardia): p-valor ≈ 0. Resultado: **NO** normal.
+    *   **Conclusión:** Los tests de Mardia indican claramente que los datos **no cumplen con el supuesto de normalidad multivariante**. El gráfico Q-Q chi-cuadrado también muestra desviación de la línea diagonal.
+*   **Normalidad Univariante (Test de Shapiro-Wilk):**
+    *   Para **todas y cada una de las 9 variables**, el p-valor < 0.001, indicando que **ninguna de las variables individuales sigue una distribución normal**.
+*   **Descriptivos (Asimetría - Skew):**
+    *   Los valores de asimetría para todas las variables están entre -0.49 (`proye`) y 0.31 (`segur`). Todos estos valores se encuentran **dentro del rango aceptable de $\pm 2$ (e incluso $\pm 1$)**, lo que sugiere que, aunque no son normales, las distribuciones univariadas no son *extremadamente* asimétricas. Esto es una buena señal.
+
+**Implicancias:** La falta de normalidad multivariante significa que:
+1.  El Test de Esfericidad de Bartlett (que veremos luego) no será interpretable de forma fiable.
+2.  Si usáramos métodos de extracción factorial que asumen normalidad (como Máxima Verosimilitud - ML), los resultados podrían ser menos precisos. Para este práctico, consideraremos métodos menos sensibles a este supuesto si es necesario más adelante. Por ahora, la moderada asimetría univariada nos permite continuar con cautela.
+
+### Colinealidad: Matriz de Correlaciones
+
+El AFE requiere que las variables estén correlacionadas (colinealidad).
+
+```{r correlation_matrix}
+# Matriz de Correlaciones de Pearson (dado que las variables son ordinales con 7 categorías
+# y la asimetría univariada es moderada, Pearson puede ser una aproximación razonable.
+# En un caso más estricto con pocas categorías, se preferirían policóricas).
+cor_datos <- cor(datosLW)
+print(round(cor_datos, 2)) # Redondeamos para mejor visualización
+
+# Determinante de la matriz de correlaciones
+# Un valor cercano a 0 indica multicolinealidad (variables muy relacionadas), lo cual es bueno para AFE.
+# Un valor cercano a 1 indicaría variables no correlacionadas.
+print(paste("Determinante de la matriz de correlaciones:", det(cor_datos)))
+```
+**Interpretación:**
+*   La matriz muestra **correlaciones positivas y generalmente moderadas a altas** entre la mayoría de los ítems. Por ejemplo, `educ` y `vivi` tienen una correlación de 0.80, `trab` y `educ` de 0.76. La correlación más baja es entre `proye` y `segur` (0.47). Todas las correlaciones son sustancialmente mayores a 0.30, lo que indica que hay suficiente varianza compartida para un AFE.
+*   El **determinante de la matriz de correlaciones es 0.000715**, un valor muy cercano a cero. Esto confirma la existencia de **alta colinealidad** (o multicolinealidad) entre las variables, lo cual es **deseable y necesario** para el AFE, ya que significa que las variables comparten varianza común que puede ser explicada por factores latentes.
+
+### Opcional: Matriz de Correlaciones Policóricas
+
+Dado que las variables son ordinales, una matriz policórica sería teóricamente más adecuada.
+
+```{r polychoric_matrix, eval=TRUE}
+# Calcular matriz de correlaciones policóricas
+# Nota: puede tardar un poco con muchas variables/casos
+matriz_policorica <- polychoric(datosLW)
+print(round(matriz_policorica$rho, 2)) # $rho contiene la matriz de correlaciones
+```
+**Interpretación:** Las correlaciones policóricas suelen ser ligeramente más altas que las de Pearson cuando se aplican a datos ordinales, ya que intentan estimar la correlación entre las variables latentes continuas subyacentes. Para nuestros datos, las policóricas confirman el patrón de altas intercorrelaciones. Por ejemplo, `educ` y `vivi` es 0.83 (vs 0.80 Pearson).
+
+### Factorabilidad de los Datos: Tests de Bartlett y KMO
+
+*   **Test de Esfericidad de Bartlett:**
+    *   $H_0$: La matriz de correlaciones es una matriz identidad (no hay correlación).
+    *   **Advertencia:** Este test asume normalidad multivariante. Dado que nuestros datos no la cumplen, interpretaremos sus resultados con extrema cautela y daremos más peso al KMO.
+
+```{r bartlett_test}
+# Usamos la matriz de correlaciones de Pearson y el N de datosLW
+print(cortest.bartlett(cor_datos, n = nrow(datosLW)))
+```
+**Interpretación:**
+El Test de Bartlett arroja un Chi-cuadrado de **11488.26** con 36 grados de libertad, y un **p-valor de 0** (muy cercano a cero). Si asumiéramos normalidad, rechazaríamos la hipótesis nula, concluyendo que la matriz de correlaciones es significativamente diferente de una matriz identidad (es decir, hay correlaciones). Dada la falta de normalidad, este resultado es solo indicativo.
+
+*   **Medida de Adecuación Muestral de Kaiser-Meyer-Olkin (KMO):**
+    *   Evalúa si las variables comparten factores comunes. Más robusto a la no normalidad.
+
+```{r kmo_test}
+# KMO test
+KMO(datosLW)
+```
+**Interpretación:**
+*   **Overall MSA (KMO global): 0.93**. Este valor se considera **"meritorio" o "excelente"** (según diferentes guías, >0.8 o >0.9). Indica que los datos son **muy adecuados** para el análisis factorial. Las variables comparten una cantidad sustancial de varianza común.
+*   **MSA for each item (KMOs individuales):** Todos los valores de MSA para los ítems individuales son altos, variando desde 0.88 (`liber`) hasta 0.95 (`salud` y `trab`). Todos están muy por encima del umbral mínimo aceptable de 0.50 (e incluso del deseable 0.70). Esto significa que cada variable contribuye bien a la estructura factorial común y ninguna necesitaría ser eliminada por baja adecuación muestral.
+
+**Conclusión de Supuestos:** A pesar de la falta de normalidad multivariante, la moderada asimetría univariada, las altas intercorrelaciones, un determinante cercano a cero y, fundamentalmente, un excelente KMO global e individual, sugieren que **los datos son adecuados para proceder con un Análisis Factorial Exploratorio.**
+
+## 3. Siguientes Pasos
+
+Con los datos preparados y los supuestos evaluados favorablemente, los siguientes pasos en un AFE (que se verán en la próxima sesión/práctico) serían:
+
+1.  Elegir un método de extracción de factores.
+2.  Determinar el número de factores a retener.
+3.  Rotar la solución factorial para mejorar la interpretabilidad.
+4.  Interpretar los factores.

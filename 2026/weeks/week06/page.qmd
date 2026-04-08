@@ -1,0 +1,31 @@
+---
+title: "🗓️ Semana 06: Análisis Factorial Exploratorio I — Preparación y Supuestos"
+---
+
+En esta semana iniciamos el estudio del **Análisis Factorial Exploratorio (AFE)**, una de las técnicas multivariadas más utilizadas en la investigación social para operacionalizar constructos teóricos no directamente observables. Discutimos la lógica de las **variables latentes** como variables que se infieren a partir de indicadores observados, y presentamos el modelo matemático del AFE (cargas factoriales, factores comunes y únicos).
+
+Comparamos el AFE con el Análisis de Componentes Principales (ACP), diferenciando su objetivo: mientras el ACP maximiza la varianza total explicada, el AFE modela la **varianza común** asumiendo la existencia de factores causales subyacentes. A continuación, detallamos las etapas del proceso y profundizamos en los **requisitos y supuestos** previos al análisis: nivel de medición, tamaño muestral, colinealidad necesaria (tests de Bartlett y KMO), normalidad multivariante (test de Mardia), y tratamiento de casos perdidos y atípicos multivariantes (distancia de Mahalanobis).
+
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## 💻 Taller Aplicado (Práctico 6)
+
+En este laboratorio aplicaremos los pasos preparatorios del AFE usando datos de la Encuesta de Desarrollo Humano (EDH) del PNUD. Trabajaremos con ítems de percepción de oportunidades en Chile, realizaremos un análisis descriptivo inicial con `summarytools`, aplicaremos eliminación listwise y detección de atípicos multivariantes con la distancia de Mahalanobis, evaluaremos la normalidad multivariante con el test de Mardia (`psych`), y verificaremos la factorabilidad mediante la matriz de correlaciones, el test de Bartlett y el índice KMO.
+
+👉 **[Ir al Práctico 6: Análisis Factorial Exploratorio I — Preparación y Supuestos](lab.qmd)**
+
+## 📚 Lecturas Obligatorias
+
+- **Fabrigar, L. R., Wegener, D. T., MacCallum, R. C., & Strahan, E. J. (1999).** Evaluating the use of exploratory factor analysis in psychological research. *Psychological Methods, 4*(3), 272–299.
+
+- **Hair, J. F., Black, W. C., Babin, B. J., & Anderson, R. E. (2019).** *Multivariate Data Analysis* (8.ª ed.). Cengage Learning. Capítulos 3 y 4.
+
+## 📟 Dudas y Comunicación
+
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dificultades con la base de datos EDH o cualquier otra duda sobre el curso.

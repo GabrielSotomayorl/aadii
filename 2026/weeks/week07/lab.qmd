@@ -1,0 +1,250 @@
+---
+title: "Práctico 7: Análisis Factorial Exploratorio II"
+subtitle: "Extracción, Rotación e Interpretación de Factores"
+date: "2026-04-20"
+lang: es
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-tools: true
+    df-print: paged
+    body-classes: lab-content
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## 0. Objetivos del Práctico
+
+Este práctico es la continuación del anterior sobre Análisis Factorial Exploratorio (AFE). Nos centraremos en:
+
+1.  **Determinar el número de factores** a extraer utilizando el gráfico de sedimentación (scree plot) y el análisis paralelo.
+2.  **Realizar el AFE** con diferentes configuraciones (tipo de correlación, método de rotación), imprimiendo y comparando las soluciones.
+3.  **Interpretar la matriz factorial** resultante (sin rotar y rotada), incluyendo la identificación de cargas factoriales significativas.
+4.  **Visualizar la estructura factorial** con un diagrama.
+5.  **Calcular y explorar las puntuaciones factoriales** para su uso en análisis posteriores.
+
+## 1. Carga y Preparación de Datos (Recap)
+
+Cargamos los paquetes necesarios y preparamos la base de datos PNUD, aplicando los mismos pasos de limpieza (valores perdidos y atípicos) que en el práctico anterior.
+
+```{r load_packages_data, warning=FALSE,message=FALSE}
+# Cargar paquetes
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(psych,        # Para AFE (fa, scree, fa.parallel, KMO, etc.)
+               GPArotation,  # Para rotaciones, complementa psych
+               dplyr)        # Para manipulación de datos
+
+# Cargar datos originales
+datosog <- read.csv("../../data/EDH_2013_csv.csv")
+
+# Seleccionar variables, recodificar NAs y omitir filas con algún NA
+datoslw <- datosog %>%
+  select(cor, salud = P25a, ingr = P25b, trab = P25c,  educ = P25d, 
+         vivi = P25e,  segur = P25f, medio = P25g, liber = P25h, 
+         proye = P25i) %>%
+  mutate(across(everything(), ~na_if(.x, 9))) %>% # NA si es 9
+  mutate(across(everything(), ~na_if(.x, 8))) %>% # NA si es 8
+  na.omit() # Eliminar filas con NAs
+
+# Tratamiento de casos atípicos multivariantes (del práctico anterior)
+mean_vars <- colMeans(datoslw[, -1], na.rm = TRUE) # Excluimos 'cor' (ID)
+Sx_cov <- cov(datoslw[, -1], use = "complete.obs") 
+D2 <- mahalanobis(datoslw[, -1], center = mean_vars, cov = Sx_cov)
+datoslw$p_mahalanobis <- (1 - pchisq(D2, df = (ncol(datoslw)-1) ))
+
+datoslw <- datoslw %>%
+  filter(p_mahalanobis > 0.001) %>%
+  select(-p_mahalanobis)
+
+# Guardar ID para posible merge posterior y luego eliminarlo de la base para AFE
+id_casos <- datoslw$cor # Guardamos el ID
+datoslw$cor <- NULL # Eliminamos la columna 'cor' para el AFE
+
+print(paste("Dimensiones de la base de datos final para AFE (datoslw):", 
+            nrow(datoslw), "casos y", ncol(datoslw), "variables."))
+```
+**Nota:** Después de la limpieza, nos quedamos con 1591 casos para el análisis.
+
+## 2. Determinando el Número de Factores
+
+### Gráfico de Sedimentación (Scree Plot)
+
+```{r scree_plot}
+scree(datoslw, factors = TRUE, pc = TRUE)
+```
+**Interpretación del Scree Plot:**
+La línea continua (PC - Componentes Principales) muestra una caída muy pronunciada después del primer componente (autovalor cercano a 6), seguido de un "codo" y luego una estabilización con autovalores por debajo de 1. Esto sugeriría un solo componente principal dominante.
+La línea punteada (FA - Análisis Factorial, basada en la matriz de correlación reducida) también muestra una caída fuerte después del primer factor, aunque los autovalores son menores. El "codo" aquí también es evidente después del primer factor, con los subsiguientes muy cerca del eje.
+Si nos guiamos *solo* por el criterio del codo, especialmente para FA, podría sugerirse una solución de 1 o quizás 2 factores. El Criterio de Kaiser (autovalor > 1 para PCA) apuntaría a 1 solo componente.
+
+### Análisis Paralelo
+
+```{r parallel_analysis}
+set.seed(231) # Para reproducibilidad
+analisis_paralelo <- fa.parallel(datoslw, fa = "fa") 
+#print(analisis_paralelo$fa.values) # Comentado, ya que el gráfico es más informativo y el texto lo resume
+```
+**Interpretación del Análisis Paralelo:**
+El output textual clave es: `Parallel analysis suggests that the number of factors =  4`.
+Observando el gráfico:
+*   El primer autovalor de los datos reales (línea azul `FA Actual Data`) es muy alto (5.75).
+*   Los autovalores segundo, tercero y cuarto de los datos reales (0.34, 0.13, 0.06 respectivamente) se mantienen por encima de las líneas rojas punteada (`FA Simulated Data` - promedio de datos aleatorios) y discontinua (`FA Resampled Data`).
+*   A partir del quinto factor, los autovalores de los datos reales caen por debajo de los esperados por azar.
+**Conclusión:** El análisis paralelo, un criterio más robusto, sugiere retener **4 factores**. Procederemos con esta recomendación.
+
+## 3. Análisis Factorial Exploratorio (AFE)
+
+Con 4 factores a extraer y sabiendo que nuestras variables son ordinales, exploraremos soluciones.
+
+### AFE con Correlaciones Policóricas (Sin Rotar)
+
+Usaremos `cor = "poly"` y `fm="minres"` (mínimos cuadrados residuales, no asume normalidad). La opción `rotate="none"` nos muestra la solución inicial, útil para ver la estructura antes de simplificarla.
+
+```{r af_poly_no_rotate}
+fa(datoslw, nfactors = 4, fm = "minres", rotate = "none", cor = "poly")
+```
+**Interpretación (AFE Policórica, Sin Rotar):**
+*   **Cargas Factoriales (Standardized loadings - pattern matrix):** El primer factor (MR1) es un factor general muy fuerte, con cargas altas y positivas en todas las variables (ej. `educ` 0.89, `vivi` 0.88, `liber` 0.85, etc.). Los factores MR2, MR3 y MR4 tienen cargas mucho más bajas y un patrón mixto (algunas positivas, otras negativas como -0.48 de `liber` en MR2), lo que dificulta su interpretación individual. **Esta solución no es simple ni fácilmente interpretable.**
+*   **Varianza Explicada (SS loadings):** MR1 explica el 69% de la varianza (`Proportion Var`). Los 4 factores juntos explican el **80%** (`Cumulative Var`).
+*   **Índices de Ajuste:** El TLI es 0.983 y el RMSEA es 0.062 (IC 90%: 0.045, 0.080). Estos valores sugieren un ajuste de bueno a aceptable del modelo de 4 factores a los datos. El RMSR de 0.01 es muy bueno.
+
+### Explorando Rotaciones
+
+Para mejorar la interpretabilidad, aplicaremos rotaciones.
+
+#### Rotación Ortogonal (Varimax)
+
+Asume que los factores son independientes (no correlacionados).
+
+```{r af_varimax}
+fa(datoslw, nfactors = 4, fm = "minres", rotate = "varimax", cor = "poly")
+```
+**Interpretación (Rotación Varimax):**
+*   **Cargas Factoriales:** La estructura es más clara que sin rotación.
+    *   **MR2** (ahora el más fuerte tras la rotación) agrupa `liber` (0.91), `proye` (0.71) y `medio` (0.57).
+    *   **MR4** agrupa `ingr` (0.75) y `salud` (0.63).
+    *   **MR3** está definido principalmente por `segur` (0.81).
+    *   **MR1** agrupa `educ` (0.60), `vivi` (0.57) y `trab` (0.51).
+    *   Aún existen algunas **cargas cruzadas** (ej. `trab` carga 0.47 en MR2 y 0.51 en MR1; `salud` 0.35 en MR2 y 0.63 en MR4), lo que significa que estos ítems no se asignan limpiamente a un solo factor. La `Mean item complexity` de 2.6 indica que, en promedio, los ítems cargan en más de dos factores, lo cual no es ideal para una estructura simple.
+*   **Varianza Explicada (SS loadings):** La varianza total explicada (80%) se ha redistribuido: MR2 (27%), MR4 (22%), MR3 (16%), MR1 (16%).
+*   Los **índices de ajuste** (TLI, RMSEA, etc.) son los mismos que en la solución sin rotar, ya que la rotación no cambia el ajuste global del modelo.
+
+#### Rotación Oblicua (Promax)
+
+Permite que los factores estén correlacionados, lo cual suele ser más realista en ciencias sociales.
+
+```{r af_promax}
+# Ejecutamos el AFE con Promax y lo guardamos como 'modelofinal'
+modelofinal <- fa(datoslw, nfactors = 4, fm = "minres", rotate = "promax", cor = "poly")
+print(modelofinal) # Imprimimos el resultado completo
+```
+**Interpretación (Rotación Promax - `modelofinal`):**
+*   **Cargas Factoriales (Matriz de Patrón - Standardized loadings):** Esta es la matriz clave.
+    *   **MR2:** Cargas principales y muy altas en `liber` (1.11), `proye` (0.67) y `medio` (0.51). **Interpretación tentativa:** "Oportunidades de Desarrollo Individual y Entorno". (La carga >1 en `liber` es una característica de Promax, indica una fuerte asociación).
+    *   **MR1:** Cargas principales en `educ` (0.76), `vivi` (0.71) y `trab` (0.58). `proye` tiene una carga secundaria aquí (0.32). **Interpretación tentativa:** "Oportunidades Socioeconómicas Estructurales".
+    *   **MR4:** Cargas principales en `ingr` (0.89) y `salud` (0.67). **Interpretación tentativa:** "Oportunidades de Bienestar Material Básico".
+    *   **MR3:** Carga principal y muy clara en `segur` (0.89). **Interpretación tentativa:** Factor de "Seguridad Ciudadana".
+    *   La `Mean item complexity` es 1.2, mucho mejor que con Varimax (2.6), indicando una estructura más simple (ítems cargan predominantemente en un solo factor).
+*   **Correlación entre Factores (`With factor correlations of`):**
+    *   MR2 está altamente correlacionado con MR1 (0.79) y MR4 (0.69).
+    *   MR1 está muy correlacionado con MR4 (0.83).
+    *   MR3 (Seguridad) está moderadamente correlacionado con los otros (0.61 a 0.70).
+    *   Estas **correlaciones sustanciales (>0.3) entre los factores justifican el uso de una rotación oblicua**.
+*   **Varianza Explicada (Proportion Var):** MR2 (25%), MR1 (24%), MR4 (20%), MR3 (12%). La varianza total explicada sigue siendo **80%**.
+*   **Índices de Ajuste:** Siguen siendo buenos (TLI=0.983, RMSEA=0.062).
+
+**Decisión:** El modelo con **4 factores, correlaciones policóricas y rotación Promax** (`modelofinal`) ofrece la solución más interpretable y teóricamente coherente, con buena estructura simple y ajuste.
+
+## 4. Visualización de la Estructura Factorial
+
+```{r fa_diagram, fig.height=7, fig.width=9}
+fa.diagram(modelofinal, main = "Diagrama Factorial (4 Factores, Promax, Policórica)")
+```
+**Interpretación del Diagrama:**
+El diagrama visualiza las cargas de la matriz de patrón. Las flechas indican la fuerza y dirección de la relación entre cada ítem (rectángulos) y su factor principal (óvalos). Las líneas curvas entre los óvalos representan las correlaciones entre los factores.
+*   Se observa que `liber`, `proye`, `medio` se agrupan claramente en MR2.
+*   `educ`, `vivi`, `trab` se agrupan en MR1.
+*   `ingr`, `salud` se agrupan en MR4.
+*   `segur` define MR3.
+Las correlaciones (ej. 0.79 entre MR2 y MR1; 0.83 entre MR1 y MR4) son evidentes.
+
+## 5. Cálculo y Exploración de Puntuaciones Factoriales
+
+Calculamos una puntuación para cada individuo en cada uno de los 4 factores.
+
+```{r factor_scores}
+# Extraer las puntuaciones factoriales del objeto 'modelofinal'
+puntuaciones_factoriales <- factor.scores(datoslw, modelofinal, method = "Thurstone") 
+# $scores contiene las puntuaciones. Es mejor usar factor.scores() para más control y consistencia
+
+# Resumen de las puntuaciones factoriales (deberían tener media ~0, DE ~1)
+summary(puntuaciones_factoriales$scores)
+
+# Unir las puntuaciones factoriales a la base de datos original (que tiene el ID)
+# para análisis posteriores, como comparar por GSE.
+
+# Añadir scores a 'datoslw' (que ya no tiene 'cor')
+datoslw_con_scores <- bind_cols(datoslw, as.data.frame(puntuaciones_factoriales$scores))
+
+# Añadir la variable 'cor' (ID) que guardamos antes en 'id_casos'
+# Esto asegura que cada fila en datoslw_con_scores tenga su ID original
+datoslw_con_scores <- datoslw_con_scores %>%
+  mutate(cor = id_casos)
+
+# Seleccionar 'cor' y 'GSEo' de la base original 'datosog'
+datosog_gse <- datosog %>%
+  select(cor, GSEo)
+
+# Unir las puntuaciones y datoslw con la información de GSEo de datosog, usando 'cor' como llave
+basefinal <- left_join(datoslw_con_scores, datosog_gse, by = "cor")
+
+# Crear factor para GSE con etiquetas
+basefinal <- basefinal %>%
+  mutate(gse = factor(GSEo, 
+                      levels = 1:4, 
+                      labels = c("ABC1", "C2", "C3", "D"),
+                      ordered = TRUE)) # Indicamos que es ordinal
+
+# Explorar las medias de las puntuaciones factoriales por Grupo Socioeconómico (GSE)
+# usando dplyr para un output más "tidy" y claro
+medias_por_gse <- basefinal %>%
+  group_by(gse) %>%
+  summarise(
+    Mean_MR1_Estruc = mean(MR1, na.rm = TRUE),
+    Mean_MR2_DesInd = mean(MR2, na.rm = TRUE),
+    Mean_MR3_Seg = mean(MR3, na.rm = TRUE),
+    Mean_MR4_Bienestar = mean(MR4, na.rm = TRUE)
+  )
+
+print(medias_por_gse)
+```
+**Interpretación de Puntuaciones Factoriales por GSE:**
+Dando los nombres tentativos a los factores:
+*   MR1: Oportunidades Socioeconómicas Estructurales
+*   MR2: Oportunidades de Desarrollo Individual y Entorno
+*   MR3: Seguridad
+*   MR4: Oportunidades de Bienestar Básico
+
+Los resultados muestran:
+*   **Para todos los factores, existe una clara gradiente socioeconómica.** El grupo **ABC1** consistentemente presenta las medias más altas (positivas) de percepción de oportunidades.
+*   Los grupos **C3** y **D** muestran las medias más bajas (negativas), indicando una percepción menos favorable.
+*   El grupo **C2** se encuentra en una posición intermedia.
+*   Por ejemplo, para **MR1 (Estruc.)**: ABC1 (0.70), C2 (0.11), C3 (-0.10), D (-0.14).
+*   Para **MR2 (Des. Ind.)**: ABC1 (0.67), C2 (0.18), C3 (-0.11), D (-0.16).
+*   La fila con `<NA>` en `gse` (si aparece) corresponde a casos que no pudieron ser mapeados de vuelta, probablemente debido al `na.omit()` inicial sobre `datosog` si `GSEo` tenía NAs. Se filtra para el análisis de medias por GSE.
+
+**Conclusión General de Puntuaciones:** La estructura factorial encontrada es coherente con la estratificación socioeconómica, validando la relevancia de las dimensiones.
+
+## 6. Conclusión del Práctico
+
+En este práctico, hemos completado un Análisis Factorial Exploratorio:
+
+1.  Determinamos que **4 factores** era el número óptimo a extraer (Análisis Paralelo).
+2.  Optamos por **correlaciones policóricas** y rotación oblicua **Promax**.
+3.  Interpretamos la matriz factorial, identificando 4 factores que explicaron el **80% de la varianza** con buen ajuste (TLI=0.983, RMSEA=0.062).
+4.  Visualizamos la estructura y calculamos puntuaciones factoriales, observando su asociación con el GSE.
+
+Este proceso permite reducir 9 ítems a 4 dimensiones latentes interpretables.
