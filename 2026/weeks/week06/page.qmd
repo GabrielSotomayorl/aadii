@@ -16,16 +16,14 @@ Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer
 
 ## 💻 Taller Aplicado (Práctico 6)
 
-En este laboratorio aplicaremos los pasos preparatorios del AFE usando datos de la Encuesta de Desarrollo Humano (EDH) del PNUD. Trabajaremos con ítems de percepción de oportunidades en Chile, realizaremos un análisis descriptivo inicial con `summarytools`, aplicaremos eliminación listwise y detección de atípicos multivariantes con la distancia de Mahalanobis, evaluaremos la normalidad multivariante con el test de Mardia (`psych`), y verificaremos la factorabilidad mediante la matriz de correlaciones, el test de Bartlett y el índice KMO.
+En este laboratorio aplicaremos los pasos preparatorios del AFE usando datos del **Estudio Longitudinal Social de Chile (ELSOC-COES)**, ola 7 (2023). Trabajaremos con ítems de arraigo barrial e integración vecinal, realizaremos un análisis descriptivo inicial con `summarytools`, aplicaremos eliminación listwise y detección de atípicos multivariantes con la distancia de Mahalanobis, evaluaremos la normalidad multivariante con el test de Mardia (`psych`), y verificaremos la factorabilidad mediante correlaciones Pearson y policóricas, el test de Bartlett y el índice KMO.
 
 👉 **[Ir al Práctico 6: Análisis Factorial Exploratorio I — Preparación y Supuestos](lab.qmd)**
 
 ## 📚 Lecturas Obligatorias
 
-- **Fabrigar, L. R., Wegener, D. T., MacCallum, R. C., & Strahan, E. J. (1999).** Evaluating the use of exploratory factor analysis in psychological research. *Psychological Methods, 4*(3), 272–299.
-
-- **Hair, J. F., Black, W. C., Babin, B. J., & Anderson, R. E. (2019).** *Multivariate Data Analysis* (8.ª ed.). Cengage Learning. Capítulos 3 y 4.
+- **Cea D'Ancona, M. A. (2002).** *Análisis multivariable: teoría y práctica de la investigación social.* Síntesis.
 
 ## 📟 Dudas y Comunicación
 
-Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dificultades con la base de datos EDH o cualquier otra duda sobre el curso.
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dificultades con los datos ELSOC o cualquier otra duda sobre el curso.

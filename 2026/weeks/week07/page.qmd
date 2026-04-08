@@ -16,15 +16,13 @@ Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer
 
 ## 💻 Taller Aplicado (Práctico 7)
 
-En este laboratorio completaremos el AFE sobre los datos de la Encuesta de Desarrollo Humano (EDH) del PNUD. Determinaremos el número óptimo de factores con el Scree Plot y el Análisis Paralelo (`fa.parallel()`), extraeremos factores con correlaciones policóricas y método minres, compararemos rotaciones Varimax y Promax, interpretaremos la matriz de patrón resultante, visualizaremos la estructura con `fa.diagram()` y calcularemos puntuaciones factoriales para explorar diferencias por nivel socioeconómico.
+En este laboratorio completaremos el AFE sobre los datos del **Estudio Longitudinal Social de Chile (ELSOC-COES)**, ola 7 (2023), continuando desde el Práctico 6. Determinaremos el número óptimo de factores con el Scree Plot y el Análisis Paralelo (`fa.parallel()`), extraeremos factores con correlaciones policóricas y método `minres`, compararemos rotaciones Varimax y Promax, interpretaremos la matriz de patrón resultante (arraigo vs. cohesión barrial percibida), visualizaremos la estructura con `fa.diagram()` y calcularemos puntuaciones factoriales para explorar diferencias por nivel educativo y sexo.
 
 👉 **[Ir al Práctico 7: Análisis Factorial Exploratorio II — Extracción, Rotación e Interpretación](lab.qmd)**
 
 ## 📚 Lecturas Obligatorias
 
-- **Fabrigar, L. R., Wegener, D. T., MacCallum, R. C., & Strahan, E. J. (1999).** Evaluating the use of exploratory factor analysis in psychological research. *Psychological Methods, 4*(3), 272–299.
-
-- **Hair, J. F., Black, W. C., Babin, B. J., & Anderson, R. E. (2019).** *Multivariate Data Analysis* (8.ª ed.). Cengage Learning. Capítulos 3 y 4.
+- **Cea D'Ancona, M. A. (2002).** *Análisis multivariable: teoría y práctica de la investigación social.* Síntesis.
 
 ## 📟 Dudas y Comunicación
 

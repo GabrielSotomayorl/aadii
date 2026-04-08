@@ -22,231 +22,222 @@ El objetivo de este práctico es aprender a realizar los **pasos preparatorios c
 
 1.  **Cargar y gestionar** los datos de la encuesta.
 2.  Realizar un **análisis descriptivo** inicial de las variables.
-3.  **Evaluar la adecuación de los datos** para el AFE, incluyendo:
+3.  **Evaluar la adecuación de los datos** para el AFE:
     *   Tratamiento de casos perdidos.
     *   Identificación y manejo de casos atípicos multivariantes.
     *   Evaluación de la normalidad univariante y multivariante.
-    *   Análisis de la colinealidad (matriz de correlaciones) y pruebas de factorabilidad (Bartlett y KMO).
+    *   Análisis de colinealidad y pruebas de factorabilidad (Bartlett y KMO).
 
-## 1. Carga y Gestión de Datos
+## 1. Contexto: Arraigo e Integración Barrial
 
-Trabajaremos con un extracto de la Encuesta de Desarrollo Humano (EDH) del PNUD, enfocándonos en ítems que miden la percepción sobre las oportunidades que Chile ofrece en diversas áreas.
+Trabajaremos con datos del **Estudio Longitudinal Social de Chile (ELSOC)**, producido por el Centro de Estudios de Conflicto y Cohesión Social (COES). ELSOC hace seguimiento anual a una muestra representativa de la población chilena desde 2016, orientado al estudio del conflicto y la cohesión social.
 
-![alt text](https://raw.githubusercontent.com/Clases-GabrielSotomayor/pruebapagina/master/static/slides/img/05/Practico.png)
+Nos enfocaremos en el módulo de **territorio y vecindario**, que mide dos dimensiones teóricamente distintas del vínculo residencial:
 
-Estos ítems se miden en una escala de 1 (Ninguna oportunidad) a 7 (Muchas oportunidades).
+-   **Arraigo barrial** (*t02*): grado en que una persona siente que el barrio le pertenece y constituye parte de su identidad. La literatura anglosajona lo vincula al concepto de *sense of place* o apego al lugar (Lewicka, 2011).
 
-Primero, cargamos los paquetes necesarios y los datos.
+-   **Cohesión barrial percibida** (*t03*): evaluación de la sociabilidad, cordialidad y disposición colaborativa de los vecinos. Refleja el capital social informal del vecindario (Sampson, Raudenbush & Earls, 1997; Putnam, 2000).
+
+Ambas dimensiones son conceptualmente distinguibles: el arraigo refiere a la relación del individuo con el lugar, mientras que la cohesión refiere a la percepción de las relaciones entre vecinos. El AFE nos permitirá examinar empíricamente si los ítems que corresponden a cada dimensión conforman factores diferenciados en los datos.
+
+| Variable | Dimensión | Ítem |
+|----------|-----------|------|
+| `t02_01` | Arraigo | Este es el barrio ideal para mí |
+| `t02_02` | Arraigo | Me siento integrado/a en este barrio |
+| `t02_03` | Arraigo | Me identifico con la gente de este barrio |
+| `t02_04` | Arraigo | Este barrio es parte de mí |
+| `t03_01` | Cohesión | En este barrio es fácil hacer amigos |
+| `t03_02` | Cohesión | La gente en este barrio es sociable |
+| `t03_03` | Cohesión | La gente en este barrio es cordial |
+| `t03_04` | Cohesión | La gente en este barrio es colaboradora |
+
+Todos los ítems se responden en una escala de 1 (Totalmente en desacuerdo) a 5 (Totalmente de acuerdo).
+
+## 2. Configuración del Proyecto y Datos
+
+### Proyecto de R
+
+Para mantener el trabajo ordenado, crea un **Proyecto de R** (`.Rproj`) en la carpeta de este práctico: `Archivo → Nuevo Proyecto → Directorio Existente`. Esto garantiza que las rutas relativas funcionen correctamente y que el entorno de trabajo sea reproducible.
+
+### Descarga de datos
+
+Los datos de ELSOC están disponibles en el repositorio Dataverse de Harvard:
+
+👉 [Descargar ELSOC\_Long\_2016\_2023.RData](https://dataverse.harvard.edu/file.xhtml?fileId=10797987&version=3.0)
+
+Descarga el archivo `.RData` y guárdalo en la subcarpeta `data/` de tu proyecto (o ajusta la ruta en el código según tu estructura de carpetas).
+
+### Carga de paquetes y datos
 
 ```{r load_packages_data, warning=FALSE, message=FALSE}
-# Cargar paquetes
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
-              tidyverse, # Para manipulación de datos con dplyr
-              summarytools, # Para resúmenes descriptivos detallados
-              psych) # Para KMO, Bartlett, Mardia y funciones de AFE
-# Cargamos los datos desde la URL
-datos <- read.csv("../../data/EDH_2013_csv.csv") %>% 
-  select(salud = P25a, ingr = P25b, trab = P25c,  educ = P25d, 
-         vivi = P25e,  segur = P25f, medio = P25g, liber = P25h, 
-         proye = P25i) 
+  tidyverse,
+  summarytools,
+  psych
+)
+
+load("../../data/ELSOC_Long_2016_2023.RData")
+
+datos <- elsoc_long_2016_2023 %>%
+  filter(ola == 7) %>%
+  select(
+    idencuesta,
+    arraigo1  = t02_01,
+    arraigo2  = t02_02,
+    arraigo3  = t02_03,
+    arraigo4  = t02_04,
+    cohesion1 = t03_01,
+    cohesion2 = t03_02,
+    cohesion3 = t03_03,
+    cohesion4 = t03_04,
+    sexo   = m0_sexo,
+    edad   = m0_edad,
+    educ   = m01,
+    region = region_cod
+  )
 
 glimpse(datos)
 ```
 
 ### Tratamiento de Valores Perdidos
 
-Las variables originales pueden tener códigos para "No sabe" (8) o "No responde" (9). Debemos convertirlos a `NA` para que R los reconozca como valores perdidos.
+ELSOC codifica las no-respuestas con valores especiales: `-888` (No sabe), `-999` (No responde) y `-777` (No aplica). Los convertimos a `NA`.
 
 ```{r define_missing}
-# Resumen inicial para ver los valores antes de recodificar
-summary(datos)
+summary(datos[, 2:9])
 
-# Recodificar 8 y 9 como NA para todas las variables
 datos <- datos %>%
-  mutate(across(everything(), ~na_if(.x, 9))) %>%
-  mutate(across(everything(), ~na_if(.x, 8)))
+  mutate(across(starts_with(c("arraigo", "cohesion")),
+                ~na_if(.x, -888))) %>%
+  mutate(across(starts_with(c("arraigo", "cohesion")),
+                ~na_if(.x, -999))) %>%
+  mutate(across(starts_with(c("arraigo", "cohesion")),
+                ~na_if(.x, -777)))
 
-# Verificar que los NAs se hayan asignado (comparar con el summary anterior)
-summary(datos)
+summary(datos[, 2:9])
 ```
 
 ### Análisis Descriptivo Inicial
 
-Exploramos las distribuciones, medias y variabilidad de nuestros ítems.
-
 ```{r descriptive_stats, warning=FALSE, results='asis'}
-# Usamos dfSummary para un resumen completo
-print(dfSummary(datos, headings = FALSE, method = "render", graph.magnif = 0.8))
+print(dfSummary(datos[, 2:9], headings = FALSE, method = "render",
+                graph.magnif = 0.8))
 ```
-**Interpretación:** La tabla de `dfSummary` nos muestra:
-*   **Niveles de Medición:** Todas nuestras variables son `integer` (números enteros).
-*   **Valores:** Todas van de 1 a 7, como se esperaba.
-*   **Medias y Desviaciones Estándar (sd):**
-    *   `salud`: Media 4.1 (DE 1.8)
-    *   `ingr`: Media 3.4 (DE 1.7)
-    *   `trab`: Media 4.0 (DE 1.7)
-    *   `educ`: Media 3.8 (DE 1.7)
-    *   `vivi`: Media 4.0 (DE 1.7)
-    *   `segur`: Media 3.2 (DE 1.8) - La más baja, junto con ingresos.
-    *   `medio`: Media 4.1 (DE 1.7)
-    *   `liber`: Media 4.5 (DE 1.6)
-    *   `proye`: Media 4.5 (DE 1.6) - Las más altas.
-*   **Missing:** Vemos la cantidad y porcentaje de valores perdidos por variable. `educ` es la que tiene más (3.8%).
 
-En general, las variables no muestran varianzas excesivamente dispares, aunque `segur` y `ingr` tienden a tener percepciones más bajas, mientras `liber` y `proye` más altas.
+**Interpretación:**
 
-## 2. Comprobación de Supuestos para AFE
+*   Todos los ítems varían en el rango esperado (1–5). Las medias se sitúan entre 3.4 y 3.7, con desviaciones estándar de aproximadamente 0.9–1.0 en todos los casos: las distribuciones son similares en forma y dispersión entre dimensiones.
+*   Dentro del bloque de **arraigo**, los ítems `arraigo1`, `arraigo2` y `arraigo4` presentan la media más alta (M=3.7), mientras que `arraigo3` ("Me identifico con la gente") es algo más baja (M=3.6) y muestra mayor porcentaje en las categorías intermedias (18% responde 3).
+*   Dentro del bloque de **cohesión**, `cohesion1` ("En este barrio es fácil hacer amigos") es notablemente más baja (M=3.4): el 20% responde 2 y solo el 9.7% responde 5, lo que indica que la facilidad para hacer amigos es la dimensión de la cohesión percibida menos favorable. Los ítems `cohesion3` ("cordial") y `cohesion2` ("sociable") son algo más altos (M=3.7 y 3.6 respectivamente).
+*   En promedio, ambos bloques presentan medias comparables (~3.6–3.7); no hay una diferencia sistemática entre arraigo y cohesión en nivel.
+*   Los valores perdidos son mínimos: el ítem con más pérdida es `cohesion4` (15 casos, 0.6%), todos los demás están por debajo del 0.3%.
 
-### Manejo de Casos Perdidos y Creación de Base `listwise`
+## 3. Comprobación de Supuestos para AFE
 
-Para algunos tests (como el de Mardia para normalidad multivariante) y para simplificar el análisis inicial, crearemos una base de datos eliminando todos los casos que tengan *algún* valor perdido en *cualquiera* de los ítems (`listwise deletion`).
+### Eliminación Listwise
+
+Creamos una base sin valores perdidos en los 8 ítems para los tests que lo requieren.
 
 ```{r listwise_deletion}
-# Guardamos el número de casos originales
 n_original <- nrow(datos)
 
-# Creamos la base de datos listwise
-datosLW <- na.omit(datos) # na.omit() elimina filas con cualquier NA
+datosLW <- datos %>%
+  select(starts_with(c("arraigo", "cohesion"))) %>%
+  na.omit()
 
-# Verificamos las nuevas dimensiones
-print(paste("Casos originales:", n_original))
-print(paste("Casos después de listwise deletion (datosLW):", nrow(datosLW)))
-print(paste("Casos perdidos por listwise deletion:", n_original - nrow(datosLW)))
+n_original - nrow(datosLW)  # Casos eliminados
+nrow(datosLW)               # Casos para el análisis
 ```
-**Interpretación:** Partimos de 1805 casos. Después de eliminar los casos con algún valor perdido en las 9 variables, nos quedamos con 1654 casos. Perdimos 151 casos (aproximadamente 8.4%), lo cual es una cantidad considerable. En un análisis real, investigaríamos si estos casos perdidos tienen algún patrón (no aleatorio) y consideraríamos métodos más sofisticados como la imputación múltiple si la pérdida fuera mayor o sistemática. Para este práctico, continuaremos con `datosLW`.
+
+**Interpretación:** Se eliminan solo 29 casos (1.1% de los 2,726 de ola 7), quedando 2,697. La pérdida es mínima y no compromete el análisis. Si fuera mayor al 10% o con patrón sistemático (p. ej., más pérdida en grupos específicos), se consideraría imputación múltiple.
 
 ### Casos Atípicos Multivariantes (Distancia de Mahalanobis)
 
-Identificamos observaciones que son inusuales considerando *todas las variables simultáneamente*.
-
 ```{r mahalanobis_distance}
-# Calcular medias de columnas y matriz de covarianza para datosLW
-mean_vars <- colMeans(datosLW) # Usamos datosLW que no tiene NAs
-Sx_cov <- cov(datosLW)
-n_vars <- ncol(datosLW) # Guardamos número de variables ANTES de agregar columnas auxiliares
+n_vars    <- ncol(datosLW)
+mean_vars <- colMeans(datosLW)
+Sx_cov    <- cov(datosLW)
 
-# Calcular Distancia de Mahalanobis D^2
 D2 <- mahalanobis(datosLW, center = mean_vars, cov = Sx_cov)
+datosLW$p_mah <- 1 - pchisq(D2, df = n_vars)
 
-# Calcular el p-valor: D^2 sigue distribución chi-cuadrado con df = número de variables (9)
-datosLW$p_mahalanobis <- (1 - pchisq(D2, df = n_vars))
+sum(datosLW$p_mah < 0.001)  # Número de atípicos identificados
 
-# Resumen de los p-valores para ver cuántos son atípicos (ej. < 0.001)
-summary(datosLW$p_mahalanobis)
-print(paste("Número de casos con p_mahalanobis < 0.001:", sum(datosLW$p_mahalanobis < 0.001)))
+datosLW <- datosLW %>%
+  filter(p_mah > 0.001) %>%
+  select(-p_mah)
 
-# Eliminar casos atípicos multivariantes (aquellos con p < 0.001)
-n_antes_atipicos <- nrow(datosLW)
-datosLW_sin_atipicos <- datosLW %>%
-  filter(p_mahalanobis > 0.001) %>%
-  select(-p_mahalanobis) # Quitamos la columna del p-valor
-
-print(paste("Casos antes de eliminar atípicos:", n_antes_atipicos))
-print(paste("Casos después de eliminar atípicos (p<0.001):", nrow(datosLW_sin_atipicos)))
-print(paste("Casos atípicos multivariantes eliminados:", n_antes_atipicos - nrow(datosLW_sin_atipicos)))
-
-# Para el resto del práctico, usaremos datosLW_sin_atipicos renombrado a datosLW
-datosLW <- datosLW_sin_atipicos
+nrow(datosLW)  # Casos finales
 ```
-**Interpretación:**
-Se identificaron 63 casos como atípicos multivariantes usando un umbral de p < 0.001 para la distancia de Mahalanobis. Estos casos fueron eliminados, resultando en una base de datos final de `r nrow(datosLW)` observaciones para los análisis subsecuentes.
+
+**Interpretación:** Se identifican 86 casos atípicos multivariantes (3.2% de los 2,697 listwise), quedando 2,611 para el AFE. La distancia de Mahalanobis D² mide cuánto se aleja cada caso del perfil de respuesta típico considerando la covarianza entre los 8 ítems; bajo distribución chi-cuadrado con df=8, el umbral p<0.001 es conservador y selecciona solo los perfiles más extremos.
 
 ### Normalidad Multivariante (Test de Mardia)
 
-Evaluamos si los datos siguen una distribución normal multivariada.
-
 ```{r mardia_test, fig.height=6, fig.width=6}
-# Test de Mardia usando el paquete psych (ya cargado)
-# Usaremos datosLW (que ya no tiene NAs ni atípicos multivariantes)
-resultados_mardia <- psych::mardia(datosLW, plot = TRUE)
-print(resultados_mardia)
-
-# Normalidad univariante con Shapiro-Wilk por variable
-cat("\n--- Test de Shapiro-Wilk por variable ---\n")
-normalidad_uni <- sapply(datosLW, function(x) {
-  t <- shapiro.test(x)
-  c(W = round(t$statistic, 4), p.value = round(t$p.value, 6))
-})
-print(t(normalidad_uni))
+psych::mardia(datosLW, plot = TRUE)
 ```
+
+```{r shapiro_univariado}
+# P-valores del test de Shapiro-Wilk por variable
+sapply(datosLW, function(x) shapiro.test(x)$p.value) |> round(4)
+```
+
 **Interpretación:**
-*   **Normalidad Multivariante (Test de Mardia):**
-    *   `b1p` (Asimetría de Mardia): p-valor ≈ 0. Resultado: **NO** normal.
-    *   `b2p` (Curtosis de Mardia): p-valor ≈ 0. Resultado: **NO** normal.
-    *   **Conclusión:** Los tests de Mardia indican claramente que los datos **no cumplen con el supuesto de normalidad multivariante**. El gráfico Q-Q chi-cuadrado también muestra desviación de la línea diagonal.
-*   **Normalidad Univariante (Test de Shapiro-Wilk):**
-    *   Para **todas y cada una de las 9 variables**, el p-valor < 0.001, indicando que **ninguna de las variables individuales sigue una distribución normal**.
-*   **Descriptivos (Asimetría - Skew):**
-    *   Los valores de asimetría para todas las variables están entre -0.49 (`proye`) y 0.31 (`segur`). Todos estos valores se encuentran **dentro del rango aceptable de $\pm 2$ (e incluso $\pm 1$)**, lo que sugiere que, aunque no son normales, las distribuciones univariadas no son *extremadamente* asimétricas. Esto es una buena señal.
 
-**Implicancias:** La falta de normalidad multivariante significa que:
-1.  El Test de Esfericidad de Bartlett (que veremos luego) no será interpretable de forma fiable.
-2.  Si usáramos métodos de extracción factorial que asumen normalidad (como Máxima Verosimilitud - ML), los resultados podrían ser menos precisos. Para este práctico, consideraremos métodos menos sensibles a este supuesto si es necesario más adelante. Por ahora, la moderada asimetría univariada nos permite continuar con cautela.
+*   El test de Mardia rechaza la normalidad multivariante: la asimetría multivariante (b1p=6.09, p≈0) y la curtosis (b2p=110.12, estadístico=60.84, p≈0) son ambas significativas. El gráfico Q-Q chi-cuadrado muestra desviación notable de la línea diagonal, especialmente en las colas.
+*   El test de Shapiro-Wilk rechaza la normalidad en las 8 variables (p<0.001 en todos los casos), lo cual es previsible: los ítems Likert de 5 categorías con distribuciones concentradas en las categorías 3-4 no pueden seguir una distribución normal.
+*   **Implicaciones para el AFE:**
+    1.  Preferiremos `fm = "minres"` (mínimos cuadrados residuales) sobre Máxima Verosimilitud, que supone normalidad.
+    2.  Usaremos **correlaciones policóricas** en lugar de Pearson, más adecuadas para variables ordinales.
+    3.  El test de Bartlett debe interpretarse solo de forma orientativa.
 
-### Colinealidad: Matriz de Correlaciones
-
-El AFE requiere que las variables estén correlacionadas (colinealidad).
+### Matriz de Correlaciones de Pearson
 
 ```{r correlation_matrix}
-# Matriz de Correlaciones de Pearson (dado que las variables son ordinales con 7 categorías
-# y la asimetría univariada es moderada, Pearson puede ser una aproximación razonable.
-# En un caso más estricto con pocas categorías, se preferirían policóricas).
 cor_datos <- cor(datosLW)
-print(round(cor_datos, 2)) # Redondeamos para mejor visualización
+round(cor_datos, 2)
 
-# Determinante de la matriz de correlaciones
-# Un valor cercano a 0 indica multicolinealidad (variables muy relacionadas), lo cual es bueno para AFE.
-# Un valor cercano a 1 indicaría variables no correlacionadas.
-print(paste("Determinante de la matriz de correlaciones:", det(cor_datos)))
+det(cor_datos)  # Determinante: cercano a 0 = alta colinealidad (deseable)
 ```
+
 **Interpretación:**
-*   La matriz muestra **correlaciones positivas y generalmente moderadas a altas** entre la mayoría de los ítems. Por ejemplo, `educ` y `vivi` tienen una correlación de 0.80, `trab` y `educ` de 0.76. La correlación más baja es entre `proye` y `segur` (0.47). Todas las correlaciones son sustancialmente mayores a 0.30, lo que indica que hay suficiente varianza compartida para un AFE.
-*   El **determinante de la matriz de correlaciones es 0.000715**, un valor muy cercano a cero. Esto confirma la existencia de **alta colinealidad** (o multicolinealidad) entre las variables, lo cual es **deseable y necesario** para el AFE, ya que significa que las variables comparten varianza común que puede ser explicada por factores latentes.
 
-### Opcional: Matriz de Correlaciones Policóricas
+*   Todas las correlaciones son positivas y sustanciales. Las correlaciones **dentro del bloque de arraigo** oscilan entre 0.63 y 0.73 (la más alta: `arraigo2`–`arraigo3` = 0.73). Las correlaciones **dentro del bloque de cohesión** oscilan entre 0.51 y 0.70 (la más alta: `cohesion2`–`cohesion3` = 0.70). Las correlaciones **entre bloques** son menores, situándose entre 0.37 y 0.55: el par con mayor correlación cruzada es `arraigo2`–`cohesion3` (0.55).
+*   Este patrón — correlaciones intra-bloque mayores que inter-bloque — anticipa la existencia de dos factores diferenciados que corresponden a las dos dimensiones teóricas.
+*   El determinante de la matriz es 0.0075, muy cercano a cero, confirmando la alta colinealidad necesaria para el AFE.
 
-Dado que las variables son ordinales, una matriz policórica sería teóricamente más adecuada.
+### Matriz de Correlaciones Policóricas
 
-```{r polychoric_matrix, eval=TRUE}
-# Calcular matriz de correlaciones policóricas
-# Nota: puede tardar un poco con muchas variables/casos
+```{r polychoric_matrix}
 matriz_policorica <- polychoric(datosLW)
-print(round(matriz_policorica$rho, 2)) # $rho contiene la matriz de correlaciones
+round(matriz_policorica$rho, 2)
 ```
-**Interpretación:** Las correlaciones policóricas suelen ser ligeramente más altas que las de Pearson cuando se aplican a datos ordinales, ya que intentan estimar la correlación entre las variables latentes continuas subyacentes. Para nuestros datos, las policóricas confirman el patrón de altas intercorrelaciones. Por ejemplo, `educ` y `vivi` es 0.83 (vs 0.80 Pearson).
 
-### Factorabilidad de los Datos: Tests de Bartlett y KMO
+**Interpretación:** Las correlaciones policóricas son sistemáticamente más altas que las de Pearson: las intra-bloque de arraigo pasan a un rango de 0.71–0.82 (vs. 0.63–0.73 en Pearson) y las de cohesión a 0.59–0.80 (vs. 0.51–0.70). Las correlaciones entre bloques también suben, pero menos (rango 0.45–0.63), de modo que la diferenciación entre bloques se mantiene con claridad. La correlación más alta en toda la matriz es `arraigo2`–`arraigo3` = 0.82. **Esta matriz será la base del AFE en el Práctico 7.**
 
-*   **Test de Esfericidad de Bartlett:**
-    *   $H_0$: La matriz de correlaciones es una matriz identidad (no hay correlación).
-    *   **Advertencia:** Este test asume normalidad multivariante. Dado que nuestros datos no la cumplen, interpretaremos sus resultados con extrema cautela y daremos más peso al KMO.
+### Factorabilidad: Bartlett y KMO
 
-```{r bartlett_test}
-# Usamos la matriz de correlaciones de Pearson y el N de datosLW
-print(cortest.bartlett(cor_datos, n = nrow(datosLW)))
-```
-**Interpretación:**
-El Test de Bartlett arroja un Chi-cuadrado de **11488.26** con 36 grados de libertad, y un **p-valor de 0** (muy cercano a cero). Si asumiéramos normalidad, rechazaríamos la hipótesis nula, concluyendo que la matriz de correlaciones es significativamente diferente de una matriz identidad (es decir, hay correlaciones). Dada la falta de normalidad, este resultado es solo indicativo.
+```{r bartlett_kmo}
+cortest.bartlett(cor_datos, n = nrow(datosLW))
 
-*   **Medida de Adecuación Muestral de Kaiser-Meyer-Olkin (KMO):**
-    *   Evalúa si las variables comparten factores comunes. Más robusto a la no normalidad.
-
-```{r kmo_test}
-# KMO test
 KMO(datosLW)
 ```
+
 **Interpretación:**
-*   **Overall MSA (KMO global): 0.93**. Este valor se considera **"meritorio" o "excelente"** (según diferentes guías, >0.8 o >0.9). Indica que los datos son **muy adecuados** para el análisis factorial. Las variables comparten una cantidad sustancial de varianza común.
-*   **MSA for each item (KMOs individuales):** Todos los valores de MSA para los ítems individuales son altos, variando desde 0.88 (`liber`) hasta 0.95 (`salud` y `trab`). Todos están muy por encima del umbral mínimo aceptable de 0.50 (e incluso del deseable 0.70). Esto significa que cada variable contribuye bien a la estructura factorial común y ninguna necesitaría ser eliminada por baja adecuación muestral.
 
-**Conclusión de Supuestos:** A pesar de la falta de normalidad multivariante, la moderada asimetría univariada, las altas intercorrelaciones, un determinante cercano a cero y, fundamentalmente, un excelente KMO global e individual, sugieren que **los datos son adecuados para proceder con un Análisis Factorial Exploratorio.**
+*   **Bartlett:** χ²=12,766.41 con 28 grados de libertad y p≈0 indica que la matriz de correlaciones difiere significativamente de la identidad, es decir, hay correlaciones sustanciales entre los ítems. Dado el incumplimiento de normalidad, este resultado es orientativo.
+*   **KMO global = 0.91**, clasificado como "meritorio" según Kaiser (1974). Los KMOs individuales oscilan entre 0.87 (`cohesion2`) y 0.93 (`cohesion4`), todos muy por encima del umbral mínimo de 0.50. Esto indica que cada ítem comparte una cantidad sustancial de varianza con los demás y contribuye bien a la estructura factorial común.
 
-## 3. Siguientes Pasos
+**Conclusión:** A pesar de la falta de normalidad multivariante —esperable en ítems Likert de 5 categorías—, las altas intercorrelaciones, el determinante cercano a cero y el KMO=0.91 indican que **los datos son adecuados para el AFE.** El próximo práctico completa el análisis.
 
-Con los datos preparados y los supuestos evaluados favorablemente, los siguientes pasos en un AFE (que se verán en la próxima sesión/práctico) serían:
+## 4. Síntesis y Próximos Pasos
 
-1.  Elegir un método de extracción de factores.
-2.  Determinar el número de factores a retener.
-3.  Rotar la solución factorial para mejorar la interpretabilidad.
-4.  Interpretar los factores.
+Con los datos preparados, los próximos pasos en el Práctico 7 serán:
+
+1.  Determinar el número de factores (Scree Plot y Análisis Paralelo).
+2.  Extraer factores con correlaciones policóricas y `fm = "minres"`.
+3.  Comparar rotaciones Varimax y Promax.
+4.  Interpretar y nombrar los factores.
+5.  Calcular puntuaciones factoriales y explorar diferencias por grupos.
