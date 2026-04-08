@@ -31,6 +31,11 @@ Continuamos directamente desde el Práctico 6. Los objetivos de esta sesión son
 
 Replicamos los pasos de limpieza del Práctico 6, agregando el **factor de expansión** (`fact_exp02`) y las variables de diseño muestral (`estrato`, `segmento`).
 
+```{r load_packages_data_site, eval=TRUE, echo=FALSE}
+# Carga interna para renderizar el sitio (ruta del repositorio)
+load("../../data/ELSOC_Long_2016_2023.RData")
+```
+
 ```{r load_packages_data, warning=FALSE, message=FALSE}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
@@ -39,9 +44,14 @@ pacman::p_load(
   GPArotation,
   survey
 )
+```
 
-load("../../data/ELSOC_Long_2016_2023.RData")
+```{r load_elsoc_student, eval=FALSE, echo=TRUE}
+# Carga el archivo desde la carpeta raíz de tu proyecto
+load("ELSOC_Long_2016_2023.RData")
+```
 
+```{r datos_prep, warning=FALSE, message=FALSE}
 datos <- elsoc_long_2016_2023 %>%
   filter(ola == 7) %>%
   select(

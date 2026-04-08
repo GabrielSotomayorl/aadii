@@ -34,9 +34,9 @@ Trabajaremos con datos del **Estudio Longitudinal Social de Chile (ELSOC)**, pro
 
 Nos enfocaremos en el módulo de **territorio y vecindario**, que mide dos dimensiones teóricamente distintas del vínculo residencial:
 
--   **Arraigo barrial** (*t02*): grado en que una persona siente que el barrio le pertenece y constituye parte de su identidad. La literatura anglosajona lo vincula al concepto de *sense of place* o apego al lugar (Lewicka, 2011).
+-   **Arraigo barrial** (*t02*): grado en que una persona siente que el barrio le pertenece y constituye parte de su identidad.
 
--   **Cohesión barrial percibida** (*t03*): evaluación de la sociabilidad, cordialidad y disposición colaborativa de los vecinos. Refleja el capital social informal del vecindario (Sampson, Raudenbush & Earls, 1997; Putnam, 2000).
+-   **Cohesión barrial percibida** (*t03*): evaluación de la sociabilidad, cordialidad y disposición colaborativa de los vecinos.
 
 Ambas dimensiones son conceptualmente distinguibles: el arraigo refiere a la relación del individuo con el lugar, mientras que la cohesión refiere a la percepción de las relaciones entre vecinos. El AFE nos permitirá examinar empíricamente si los ítems que corresponden a cada dimensión conforman factores diferenciados en los datos.
 
@@ -65,9 +65,14 @@ Los datos de ELSOC están disponibles en el repositorio Dataverse de Harvard:
 
 👉 [Descargar ELSOC\_Long\_2016\_2023.RData](https://dataverse.harvard.edu/file.xhtml?fileId=10797987&version=3.0)
 
-Descarga el archivo `.RData` y guárdalo en la subcarpeta `data/` de tu proyecto (o ajusta la ruta en el código según tu estructura de carpetas).
+Descarga el archivo `.RData` y guárdalo en la **carpeta raíz de tu proyecto** (la misma donde está el archivo `.Rproj`).
 
 ### Carga de paquetes y datos
+
+```{r load_packages_data_site, eval=TRUE, echo=FALSE}
+# Carga interna para renderizar el sitio (ruta del repositorio)
+load("../../data/ELSOC_Long_2016_2023.RData")
+```
 
 ```{r load_packages_data, warning=FALSE, message=FALSE}
 if (!require("pacman")) install.packages("pacman")
@@ -76,9 +81,14 @@ pacman::p_load(
   summarytools,
   psych
 )
+```
 
-load("../../data/ELSOC_Long_2016_2023.RData")
+```{r load_elsoc_student, eval=FALSE, echo=TRUE}
+# Carga el archivo desde la carpeta raíz de tu proyecto
+load("ELSOC_Long_2016_2023.RData")
+```
 
+```{r datos_prep, warning=FALSE, message=FALSE}
 datos <- elsoc_long_2016_2023 %>%
   filter(ola == 7) %>%
   select(
