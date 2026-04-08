@@ -29,6 +29,16 @@ jobs:
         with:
           use-public-rspm: true # Acelera drásticamente la instalación de paquetes en Linux
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libmagick++-dev \
+            libcurl4-openssl-dev \
+            libfontconfig1-dev \
+            libfreetype6-dev \
+            cmake
+
       # Paso agregado: Instala los paquetes de R leyendo tu renv.lock
       - name: Setup renv
         uses: r-lib/actions/setup-renv@v2
