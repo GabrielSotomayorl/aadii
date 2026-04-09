@@ -9,7 +9,7 @@ En esta sesión introductoria, previa al inicio formal del curso, realizaremos u
 Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
 
 <div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
-<iframe src="slides.html" style="position=absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+<iframe src="slides.html" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
 </div>
 
 ## 💻 Taller Aplicado (Práctico 0)

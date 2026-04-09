@@ -37,7 +37,7 @@ Continuando con nuestro estudio del Análisis Factorial Exploratorio (AFE):
 
 En la sesión anterior, nos enfocamos en la **Preparación de Datos y Evaluación de Supuestos**.
 
-![](https://raw.githubusercontent.com/Clases-GabrielSotomayor/pruebapagina/master/static/slides/img/05/esquema.png){width="90%"}
+![](img/esquema.png){width="90%"}
 
 Hoy avanzamos hacia la **Extracción e Interpretación de los Factores**.
 
@@ -98,7 +98,7 @@ Es un método gráfico:
 
 ## Gráfico de Sedimentación (Scree Plot) {.smaller}
 
-![](https://raw.githubusercontent.com/Clases-GabrielSotomayor/pruebapagina/master/static/slides/img/06/Sedimentaci%C3%B3n.png){fig-align="center"}
+![](img/sedimentacion.png){fig-align="center"}
 *Ejemplo de Scree Plot: El "codo" parece estar después del 2do o 3er factor.*
 
 **Ventaja:** Intuitivo.
@@ -189,7 +189,7 @@ Después de la extracción (y usualmente rotación), obtenemos la **matriz de ca
 
 **Ejemplo (Matriz NO Rotada):** Podría ser confusa.  
 
-![](https://raw.githubusercontent.com/Clases-GabrielSotomayor/pruebapagina/master/static/slides/img/06/no%20rotado.jpg){fig-align="center" width="80%"}
+![](img/no_rotado.jpg){fig-align="center" width="80%"}
 
 ## Interpretando la Matriz Factorial (Post-Rotación) {.smaller}
 
@@ -213,12 +213,12 @@ El objetivo es lograr una **"Estructura Simple"**:
 
 ## Ejemplo de Matriz Rotada {.smaller}
 
-![](https://raw.githubusercontent.com/Clases-GabrielSotomayor/pruebapagina/master/static/slides/img/06/rotado.jpg){fig-align="center" width="80%"}
+![](img/rotado.jpg){fig-align="center" width="80%"}
 
 
 ## Ejemplo de Matriz Rotada {.smaller}
 
-![](https://raw.githubusercontent.com/Clases-GabrielSotomayor/pruebapagina/master/static/slides/img/06/rotadodest.jpg){fig-align="center" width="80%"}
+![](img/rotadodest.jpg){fig-align="center" width="80%"}
 
 # La Evaluación del Modelo Factorial
 

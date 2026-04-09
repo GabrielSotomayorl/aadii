@@ -73,15 +73,11 @@ datos <- elsoc_long_2016_2023 %>%
     segmento
   ) %>%
   mutate(across(starts_with(c("arraigo", "cohesion")),
-                ~na_if(.x, -888))) %>%
-  mutate(across(starts_with(c("arraigo", "cohesion")),
-                ~na_if(.x, -999))) %>%
-  mutate(across(starts_with(c("arraigo", "cohesion")),
-                ~na_if(.x, -777)))
+                ~ ifelse(.x %in% c(-777, -888, -999), NA, .x)))
 
 # Listwise sobre los 8 ítems del AFE
 datos_completos <- datos %>%
-  filter(complete.cases(select(., starts_with(c("arraigo", "cohesion")))))
+  drop_na(starts_with(c("arraigo", "cohesion")))
 
 # Mahalanobis
 vars_afe <- datos_completos %>% select(starts_with(c("arraigo", "cohesion")))

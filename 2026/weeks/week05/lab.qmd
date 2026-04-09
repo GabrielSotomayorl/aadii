@@ -99,8 +99,8 @@ casen_model_data <- casen %>%
     macrozona = factor(macrozona, levels = c("Metropolitana", "Norte", "Centro", "Sur"))
   ) %>%
   # Conservar solo casos completos en todas las variables del modelo
-  filter(complete.cases(ytrabajocor, os_factor, esc, edad, sexo_factor, macrozona,
-                        expr_osig, varstrat, varunit))
+  drop_na(ytrabajocor, os_factor, esc, edad, sexo_factor, macrozona,
+          expr_osig, varstrat, varunit)
 ```
 
 ```{r n_inline, echo=FALSE}

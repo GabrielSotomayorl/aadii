@@ -116,7 +116,7 @@ Son técnicas similares (ambas buscan reducir dimensiones) pero conceptualmente 
 
 El proceso de AFE suele seguir una serie de pasos definidos:
 
-![](https://raw.githubusercontent.com/Clases-GabrielSotomayor/pruebapagina/master/static/slides/img/05/esquema.png){width="90%"}
+![](img/esquema.png){width="90%"}
 
 # Preparación de Datos y Supuestos
 
@@ -142,7 +142,7 @@ Como toda técnica estadística, el AFE tiene requisitos y supuestos sobre los d
 
 ## 1. Nivel de Medición {.smaller}
 
-![](https://raw.githubusercontent.com/Clases-GabrielSotomayor/pruebapagina/master/static/slides/img/05/Medida.png)
+![](img/Medida.png)
 
 ## 2. Tamaño Muestral {.smaller}
 
