@@ -351,7 +351,7 @@ Para cambiar a frecuencias relativas, se modifica la definición de la estética
 
 casen %>% 
 ggplot(aes(x = as_factor(sexo))) +
-  geom_bar(width = 0.4, fill = "#1a365d", aes(y = (..count..)/sum(..count..))) +
+  geom_bar(width = 0.4, fill = "#1a365d", aes(y = after_stat(count/sum(count)))) +
   scale_x_discrete("Sexo") +
   scale_y_continuous("Porcentaje", labels = scales::percent) +
   labs(title = "Frecuencia relativa de sexo en Casen 2024",
