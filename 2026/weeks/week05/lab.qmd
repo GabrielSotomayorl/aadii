@@ -164,7 +164,7 @@ b_os_m1 <- round(coef(modelo_m1)["os_factorNo heterosexual"], 0)
 p_os_m1 <- summary(modelo_m1)$coefficients["os_factorNo heterosexual", "Pr(>|t|)"]
 ```
 
-**Interpretación (Tabla 1):** El coeficiente para "No heterosexual" es $`r format(b_os_m1, big.mark=",")`$ pesos (p = `r round(p_os_m1, 2)`): prácticamente nulo y no significativo. Sin controlar por ninguna otra variable, la orientación sexual no predice el ingreso laboral. Esto no significa que no haya brecha —significa que la educación y la edad más altas de las personas no heterosexuales **compensan** su desventaja estructural, haciéndola invisible a nivel descriptivo.
+**Interpretación (Tabla 1):** El coeficiente para "No heterosexual" es $`r format(b_os_m1, big.mark=",")`$ pesos (p = `r round(p_os_m1, 2)`): prácticamente nulo y no significativo. Sin controlar por ninguna otra variable, la orientación sexual no predice el ingreso laboral. Esto no significa que no haya brecha —significa que la educación más alta de las personas no heterosexuales **compensan** su desventaja estructural, haciéndola invisible a nivel descriptivo.
 
 ## 4. Regresión Lineal Múltiple: El Control Estadístico Revela la Brecha
 
@@ -334,7 +334,7 @@ car::vif(modelo_m5)
 
 ```{r vif_inline, echo=FALSE}
 vifs <- car::vif(modelo_m5)
-max_vif <- round(max(vifs), 2)
+max_vif <- round(max(vifs[,1]), 2)
 ```
 
 El VIF máximo es `r max_vif`. Todos los valores están por debajo del umbral problemático (comúnmente fijado en 5 o 10), lo que indica que los predictores no están excesivamente correlacionados entre sí. La multicolinealidad no representa un problema en este modelo y podemos interpretar los efectos parciales de cada predictor con relativa confianza.

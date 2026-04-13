@@ -1,4 +1,3 @@
-
 ---
 subtitle: "SOC9035 -- Análisis Avanzado de Datos II"
 title: "<font style='font-size:1em;'>🗓️ Semana 06<br/>Análisis Factorial Exploratorio (AFE)</font>"
@@ -81,16 +80,20 @@ El AFE es un conjunto de técnicas estadísticas multivariadas cuyo objetivo pri
     -   Calcular un valor estimado para cada individuo en cada uno de los factores latentes identificados.
     -   Estas puntuaciones pueden usarse luego como variables en otros análisis (regresión, ANOVA, etc.), representando de forma sintética las dimensiones encontradas.
 
-## El Modelo Matemático del AFE (Conceptual) {.smaller}
+## El Modelo Matemático del AFE {.smaller}
+
+::: {style="font-size: 1.5rem;"}
 
 La idea básica es que cada **variable observada (**$X_i$) puede ser expresada como una combinación lineal de:
 
 -   Un conjunto de **factores comunes (**$F_1, F_2, ..., F_k$) que son compartidos por múltiples variables observadas.
 -   Un **factor único (**$e_i$) que es específico para esa variable $X_i$ y representa la parte de su varianza que **no** es compartida con otros ítems (error de medida + varianza específica).
+-   $\lambda_{ij}$ (lambda): Es la **carga factorial** de la variable $X_i$ en el factor $F_j$. Indica la fuerza y dirección de la relación entre el ítem y el factor.
 
 $$ X_1 = \lambda_{11}F_1 + \lambda_{12}F_2 + ... + \lambda_{1k}F_k + e_1 $$ $$ X_2 = \lambda_{21}F_1 + \lambda_{22}F_2 + ... + \lambda_{2k}F_k + e_2 $$ $$ ... $$ $$ X_p = \lambda_{p1}F_1 + \lambda_{p2}F_2 + ... + \lambda_{pk}F_k + e_p $$
 
--   $\lambda_{ij}$ (lambda): Es la **carga factorial** de la variable $X_i$ en el factor $F_j$. Indica la fuerza y dirección de la relación entre el ítem y el factor.
+:::
+
 
 ## AFE vs. Análisis de Componentes Principales (ACP) {.smaller .dark-background}
 
@@ -113,8 +116,6 @@ Son técnicas similares (ambas buscan reducir dimensiones) pero conceptualmente 
 **En la práctica:** A menudo dan resultados similares, especialmente con muchas variables y altas comunalidades. ACP se usa a veces como un método de extracción en AFE.
 
 ## Etapas del Análisis Factorial Exploratorio {.smaller}
-
-El proceso de AFE suele seguir una serie de pasos definidos:
 
 ![](img/esquema.png){width="90%"}
 
@@ -157,6 +158,8 @@ No hay reglas únicas, pero sí recomendaciones generales:
 
 ## 3. Colinealidad {.smaller}
 
+::: {style="font-size: 1.5rem;"}
+
 A diferencia de la regresión donde la multicolinealidad es un problema, en AFE **necesitamos que las variables estén correlacionadas**.
 
 -   **Lógica:** Si las variables no se correlacionan entre sí, no pueden estar compartiendo varianza común, y por lo tanto, no habrá factores latentes que las agrupen.
@@ -167,6 +170,8 @@ A diferencia de la regresión donde la multicolinealidad es un problema, en AFE 
         -   *H*<sub>1</sub>: La matriz de correlaciones NO es una matriz identidad.
         -   **Resultado deseado:** Rechazar *H*<sub>0</sub> (p-valor \< 0.05). Indica que hay suficiente correlación para proceder.
         -   *Precaución:* Este test es sensible al tamaño muestral (con N grande, casi siempre es significativo) y asume normalidad multivariante.
+
+::: 
 
 ## 3. Multicolinealidad: El Test KMO {.smaller}
 
@@ -208,6 +213,8 @@ Además de que haya correlación, necesitamos que esta correlación sea "factori
 
 ## 5. Casos Perdidos y Atípicos {.smaller}
 
+::: {style="font-size: 1.5rem;"}
+
 -   **Casos Perdidos (Missing Data):**
     -   **Evaluar:** Proporción de NAs por variable y por caso. Patrón de missing (aleatorio o sistemático).
     -   **Opciones (orden de preferencia general):**
@@ -217,14 +224,17 @@ Además de que haya correlación, necesitamos que esta correlación sea "factori
         4.  Eliminación por lista (listwise deletion): Elimina cualquier caso con *algún* NA. Puede reducir drásticamente el N y sesgar si los NAs no son MCAR.
         5.  Eliminación por pares (pairwise deletion): Calcula cada correlación usando todos los casos disponibles para ese par. Puede llevar a matrices de correlación no definidas positivas (problemático).
 
+::: 
 
 ## 5. Casos Perdidos y Atípicos {.smaller}      
+
 
 -   **Casos Atípicos (Outliers):**
     -   **Univariados:** Valores extremos en una sola variable (Boxplots, Z-scores).
     -   **Multivariados:** Combinaciones inusuales de valores en múltiples variables. Se detectan con la **Distancia de Mahalanobis (***D*<sup>2</sup>). Valores de *D*<sup>2</sup> con p-valor \< 0.001 suelen considerarse atípicos multivariantes.
     -   **Impacto:** Pueden distorsionar gravemente las correlaciones y, por ende, la solución factorial.
     -   **Tratamiento:** Investigar si son errores. Si son válidos pero extremos, considerar transformaciones, winsorización o eliminación (justificando).
+
 
 ## 6. Estandarización de Variables {.smaller}
 
