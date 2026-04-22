@@ -21,6 +21,7 @@ _book
 *.epub
 *.mobi
 *.pdf
+!2026/weeks/**/Cea_*.pdf
 
 /.quarto/
 /_output/

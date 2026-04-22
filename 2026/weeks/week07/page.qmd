@@ -22,7 +22,7 @@ En este laboratorio completaremos el AFE sobre los datos del **Estudio Longitudi
 
 ## 📚 Lecturas Obligatorias
 
-- **Cea D'Ancona, M. A. (2002).** *Análisis multivariable: teoría y práctica de la investigación social.* Síntesis.
+- **Cea D'Ancona, M. A. (2002).** *Análisis multivariable: teoría y práctica de la investigación social.* Síntesis. [📄 Capítulo 5: Análisis Factorial](../week06/Cea_Analisis_multivariable._Cap_5_Analisis_Factorial.pdf)
 
 ## 📟 Dudas y Comunicación
 
