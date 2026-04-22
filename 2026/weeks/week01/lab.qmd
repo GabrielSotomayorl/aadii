@@ -419,4 +419,4 @@ casen_pob_a %>%
 ```
 
 
-Para ver material adicional pueden revisar la siguiente [Introducción al uso del paquete ggplot2](https://bookdown.org/gboccardo/manual-ED-UCH/construccion-de-graficos-usando-rstudio-funcionalidades-basicas-y-uso-del-paquete-ggplot2.html#introduccion-al-uso-del-paquete-ggplot2). Para una revisión más profunda pueden revisar los capítulos 3 y 28 del libro [R para ciencia de datos](https://es.r4ds.hadley.nz/03-visualize.html)
+Para ver material adicional pueden revisar la siguiente [Introducción al uso del paquete ggplot2](https://bookdown.org/gboccardo/manual-ED-UCH/construccion-de-graficos-usando-rstudio-funcionalidades-basicas-y-uso-del-paquete-ggplot2.html#introduccion-al-uso-del-paquete-ggplot2). Para una revisión más profunda pueden revisar los capítulos 3 y 28 del libro [R para ciencia de datos](https://davidrsch.github.io/r4ds-es/data-visualize.html)

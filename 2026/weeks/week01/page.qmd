@@ -25,8 +25,8 @@ En este laboratorio comenzaremos a utilizar funciones de `dplyr` y `ggplot2` par
 
 Para acompañar los contenidos de esta semana, por favor revisa el siguiente material:
 
-- **Wickham, H. (2019).** *R para ciencia de datos*. [Versión en español disponible aquí](https://es.r4ds.hadley.nz/index.html).
-  - Particularmente los capítulos sobre [Transformación de datos](https://es.r4ds.hadley.nz/05-transform.html) y [Visualización de datos](https://es.r4ds.hadley.nz/03-visualize.html).  
+- **Wickham, H., Çetinkaya-Rundel, M. y Grolemund, G. (2023).** *R para ciencia de datos* (2ª ed.). [Disponible aquí](https://davidrsch.github.io/r4ds-es/).
+  - Particularmente los capítulos sobre [Transformación de datos](https://davidrsch.github.io/r4ds-es/data-transform.html) y [Visualización de datos](https://davidrsch.github.io/r4ds-es/data-visualize.html).  
 - **Boccardo, G. & Ruiz, F. (2019).** *RStudio para estadística descriptiva en ciencias sociales: Manual de apoyo docente para la asignatura Estadística Descriptiva*. Departamento de Sociología, Facultad de Ciencias Sociales, Universidad de Chile.
 
 

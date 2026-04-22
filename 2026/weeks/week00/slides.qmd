@@ -228,7 +228,7 @@ Dominar R es un camino de mediano plazo. Es normal que el código arroje error (
 **Textos base:**
 
 * Boccardo, G. y Ruiz, F. (2018). *Uso de RStudio para Estadística Univariada en Ciencias Sociales*. Universidad de Chile. [Enlace al documento]
-* Wickham, H. y Grolemund, G. (2019). *R para Ciencia de Datos*.[https://es.r4ds.hadley.nz/](https://es.r4ds.hadley.nz/){preview-link="true"}
+* Wickham, H., Çetinkaya-Rundel, M. y Grolemund, G. (2023). *R para Ciencia de Datos* (2ª ed.).[https://davidrsch.github.io/r4ds-es/](https://davidrsch.github.io/r4ds-es/){preview-link="true"}
 * Paradis, E. (2003). *R para Principiantes*. [Enlace PDF CRAN](https://cran.r-project.org/doc/contrib/rdebuts_es.pdf){preview-link="true"}
 
 **Sitios web útiles:**

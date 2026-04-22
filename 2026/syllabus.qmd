@@ -173,7 +173,7 @@ Los estudiantes pueden impugnar la corrección de cualquier evaluación escrita,
 * Rodríguez-Sánchez, F., Pérez-Luque, A. J., Bartomeus, I., & Varela, S. (2016). Ciencia reproducible: qué, por qué, cómo. *Ecosistemas*, 25(2), 83-92. https://doi.org/10.7818/ECOS.2016.25-2.11
 * Ruiz, M. A., Pardo, A., & San Martín, R. (2010). Modelos de ecuaciones estructurales. *Papeles del Psicólogo*, 31(1), 34–45.
 * Uriel, E. & Aldás, J. (2005). *Análisis multivariado aplicado*. Editorial Thomson. ISBN: 8448136101
-* Wickham, H. (2019). *R para ciencia de datos*. [Versión en español]. Disponible en: https://es.r4ds.hadley.nz/index.html
+* Wickham, H., Çetinkaya-Rundel, M. y Grolemund, G. (2023). *R para ciencia de datos* (2ª ed.). Disponible en: https://davidrsch.github.io/r4ds-es/
 * Zimmer, S. A., Powell, R. J., & Velásquez, I. C. (2024). *Exploring complex survey data analysis using R: A tidy introduction with {srvyr} and {survey}*. CRC Press.
 
 ### Bibliografía Complementaria
