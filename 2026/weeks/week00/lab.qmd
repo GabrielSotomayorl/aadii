@@ -158,9 +158,8 @@ R es sensible a mayúsculas y minúsculas (*case-sensitive*). Para R, `"Hombre"`
 ```{r}
 #| label: vector-texto
 
-# Ingresamos las respuestas en texto (siempre entre comillas)
-# Ojo: aquí solo ingresamos 8 datos a modo de ejemplo.
-sexo <- c("Hombre", "Hombre", "Hombre", "Mujer", "Hombre", "Mujer", "Mujer", "Mujer")
+# Ingresamos las 9 respuestas en texto (siempre entre comillas)
+sexo <- c("Hombre", "Hombre", "Hombre", "Mujer", "Hombre", "Mujer", "Mujer", "Mujer", "NC")
 
 summary(sexo) # Como es texto, el summary no calcula promedios, solo cuenta la longitud
 table(sexo)   # La tabla sí nos muestra cuántos hay de cada uno

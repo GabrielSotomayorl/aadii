@@ -167,7 +167,7 @@ Debemos fijarnos en elegir el instalador correcto para nuestro sistema operativo
 :::
 
 ::: {.column width="40%"}
-![](img/imagen9.png){fig-align="center"}
+![](img/Imagen9.png){fig-align="center"}
 :::
 :::::
 
@@ -181,7 +181,7 @@ Para algunos análisis específicos (o al leer ciertos archivos de Excel viejos)
 Si te encuentras con este error en el futuro, debes descargar e instalar la versión **offline de 64 bits** de Java desde su página oficial:
 🔗 [https://www.java.com/es/download/manual.jsp](https://www.java.com/es/download/manual.jsp){preview-link="true"}
 
-![](img/imagen10.png){fig-align="center" width="60%"}
+![](img/Imagen10.png){fig-align="center" width="60%"}
 
 ## Conceptos clave: Estructuras de datos {.smaller background-color="white"}
 
@@ -206,7 +206,7 @@ Dentro de las estructuras (como un vector o una columna de un data.frame), los d
 | `factor` | Variables categóricas/nominales. Tienen "niveles" subyacentes | Nivel 1: `"Bajo"`, Nivel 2: `"Alto"` |
 :::
 
-![](img/imagen11.png){fig-align="center" width="50%"}
+![](img/Imagen11.png){fig-align="center" width="50%"}
 
 ## ¿Cómo sobrevivir y continuar aprendiendo? {.smaller background-color="white"}
 
@@ -227,7 +227,7 @@ Dominar R es un camino de mediano plazo. Es normal que el código arroje error (
 
 **Textos base:**
 
-* Boccardo, G. y Ruiz, F. (2018). *Uso de RStudio para Estadística Univariada en Ciencias Sociales*. Universidad de Chile. [Enlace al documento]
+* Boccardo, G. y Ruiz, F. (2018). *Uso de RStudio para Estadística Univariada en Ciencias Sociales*. Universidad de Chile. [https://bookdown.org/gboccardo/manual-ED-UCH/](https://bookdown.org/gboccardo/manual-ED-UCH/)
 * Wickham, H., Çetinkaya-Rundel, M. y Grolemund, G. (2023). *R para Ciencia de Datos* (2ª ed.).[https://davidrsch.github.io/r4ds-es/](https://davidrsch.github.io/r4ds-es/){preview-link="true"}
 * Paradis, E. (2003). *R para Principiantes*. [Enlace PDF CRAN](https://cran.r-project.org/doc/contrib/rdebuts_es.pdf){preview-link="true"}
 

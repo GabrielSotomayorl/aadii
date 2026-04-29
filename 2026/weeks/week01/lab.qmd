@@ -46,7 +46,7 @@ library(haven)
 ```
 
 ```{r, eval=FALSE}
-load(casen_2024.RData)
+load("casen_2024.RData")
 ```
 
 ```{r load, eval=TRUE, echo=FALSE}
@@ -55,7 +55,7 @@ casen <- readRDS("../../data/casen24.rds")
 
 # 2. Gestión de datos
 
-A continuación, revisaremos como realizar algunas cuestiones básicas de gestión de datos en R. Un aspecto relevante a tener un cuenta es que R, dado su carácter abierto, suele existir más de una solución para realizar cada tipo de análisis. En el caso de la gestión de datos, esto puede hacer a partir de las funciones base de R o a partir de funciones del paquete **dplyr**, el cual forma parte de [tidyverse](https://www.tidyverse.org/), el cuál consiste en un conjunto de paquetes para ciencia de datos desarrollados con una filosofía, gramática y estructura de datos en común. 
+A continuación, revisaremos como realizar algunas cuestiones básicas de gestión de datos en R. Un aspecto relevante a tener en cuenta es que R, dado su carácter abierto, suele existir más de una solución para realizar cada tipo de análisis. En el caso de la gestión de datos, esto puede hacer a partir de las funciones base de R o a partir de funciones del paquete **dplyr**, el cual forma parte de [tidyverse](https://www.tidyverse.org/), el cuál consiste en un conjunto de paquetes para ciencia de datos desarrollados con una filosofía, gramática y estructura de datos en común. 
 
 En las funciones de dplyr el primer argumento siempre es un DataFrame, los argumentos subsiguientes describen las columnas a operar, usando los nombres de las variables (sin comillas) y el resultado es siempre un nuevo DataFrame.
 
@@ -113,7 +113,7 @@ casen3 <-  casen %>%
 ```
 
 
-## 2.3 Recodificar variables
+## 2.4 Recodificar variables
 
 Para crear nuevas variables podemos utilizar R base a través de condiciones lógicas, o integrar esto dentro de las funciones if_else y case_when. Podemos ver que ambos procedimientos producen el mismo resultado, pero en general la sintaxis de estos últimos resulta más simple y legible. De igual manera se puede integrar de mejor manera dentro de la función "mutate" de dplyr.  
 
@@ -258,7 +258,7 @@ casen %>%
   aes(x = edad)
 ```
 
-Por último, necesitamos decirle a ggplot como representar nuestros datos en el eje señalado mediante un geom, es decir, el objeto geométrico que se utilizará para representar los datos. Para esto hay múltiple funciones que empiezan con "geom_", como geom_bar, geom_point o geom_line. En este caso queremos contruir un histograma así que usaremos geom_histogram. 
+Por último, necesitamos decirle a ggplot como representar nuestros datos en el eje señalado mediante un geom, es decir, el objeto geométrico que se utilizará para representar los datos. Para esto hay múltiple funciones que empiezan con "geom_", como geom_bar, geom_point o geom_line. En este caso queremos construir un histograma así que usaremos geom_histogram. 
 
 ```{r,message=FALSE,warning=F}
 casen %>% 
@@ -291,7 +291,7 @@ casen %>%
         axis.text = element_text(size = 12))   #Tamaño del texto de las etiquetas de los ejes
 ```
 
-Ahora veamos el ejemplo de un gráfico bivariado. para esto debemos fijar una varaible en cada eje para las aesthetics. En este caso veremos la relación entre años de escolaridad y ingresos del trabajo. Para esto usaremos un scatterplot, construido a partir de geom_point().
+Ahora veamos el ejemplo de un gráfico bivariado. para esto debemos fijar una variable en cada eje para las aesthetics. En este caso veremos la relación entre años de escolaridad y ingresos del trabajo. Para esto usaremos un scatterplot, construido a partir de geom_point().
 Filtraremos la base de datos a la Región de Valparaíso para reducir la cantidad de datos a graficar, y limitaremos los datos hasta 5 millones de peso para evitar valores muy extremos que dificulten la visualización.  
 
 ```{r,message=FALSE,warning=F}
@@ -302,7 +302,7 @@ casen %>%
   geom_point()
 ```
 
-Como vemos el gráfico tiene la escolaridad en el eje x, y los ingresos en el eje y. sin embargo, dada la gran cantidad de puntos, la relación entre ambas variables no resulta tan clara. Para mejorar lo anterior haremos dos cambios, aplicaremos una transparencia a cada punto apra poder observar la densidad de los puntos en cada parte del gráfico, y añadiremos una linea de tendencia lineal con la función geom_smooth().
+Como vemos el gráfico tiene la escolaridad en el eje x, y los ingresos en el eje y. sin embargo, dada la gran cantidad de puntos, la relación entre ambas variables no resulta tan clara. Para mejorar lo anterior haremos dos cambios, aplicaremos una transparencia a cada punto para poder observar la densidad de los puntos en cada parte del gráfico, y añadiremos una linea de tendencia lineal con la función geom_smooth().
 
 ```{r,message=FALSE,warning=F}
 casen %>%
@@ -365,7 +365,7 @@ A continuación haremos un gráfico de linea, que exprese la proporción de pobr
 - group_by(edad): Agrupa los datos por edad.
 - summarize(pob = mean(pobreza1, na.rm = TRUE) * 100): Calcula el porcentaje promedio de individuos pobres por edad, multiplicando por 100 para obtener un porcentaje.
 
-Luego a partir de esta base de datos contruimos el gráfico, ocupando dos geom, geom_point() y geom_line(), para dibujar una línea y puntos en cada edad, para visualizar la tendencia de la pobreza con la edad.
+Luego a partir de esta base de datos construimos el gráfico, ocupando dos geom, geom_point() y geom_line(), para dibujar una línea y puntos en cada edad, para visualizar la tendencia de la pobreza con la edad.
 
 ```{r,message=FALSE,warning=F}
 
@@ -390,7 +390,7 @@ casen_pob %>%
 
 ```
 
-Por útlimo veremos una posibilidad muy útil que ofrece ggplot que es segemtnar le gráfico a partir de una variable adicional. facet_wrap es una función de ggplot2 que permite dividir un gráfico en múltiples paneles basados en los niveles de una variable, organizando los paneles en una matriz que, por defecto, está orientada por filas. Esto facilita la comparación directa de subconjuntos de datos dentro de la misma área de visualización, manteniendo las mismas escalas y ejes en todos los paneles.
+Por útlimo veremos una posibilidad muy útil que ofrece ggplot que es segmentar el gráfico a partir de una variable adicional. facet_wrap es una función de ggplot2 que permite dividir un gráfico en múltiples paneles basados en los niveles de una variable, organizando los paneles en una matriz que, por defecto, está orientada por filas. Esto facilita la comparación directa de subconjuntos de datos dentro de la misma área de visualización, manteniendo las mismas escalas y ejes en todos los paneles.
 
 Para esto al calcular el porcentaje de pobreza para cada grupo de edad segmentaremos adicionalmente por área urbana y rural. Luego usaremos esta variable para segmentar el gráfico en facet_wrap.
 
@@ -414,7 +414,7 @@ casen_pob_a %>%
   labs(title = "Porcentaje de pobreza según edad por zona",
        caption = "Fuente: Encuesta Casen 2024") + 
   theme_bw() +
-  facet_wrap(as_factor(casen_pob_a$area))
+  facet_wrap(~as_factor(area))
 
 ```
 
