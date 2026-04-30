@@ -132,8 +132,8 @@ mean_brecha <- mean(datos$brecha, na.rm = TRUE)
 
 ggplot(datos[order(datos$brecha), ], aes(x = seq_along(brecha), y = brecha)) +
   geom_point(color = "#42affa", size = 3) +  # Puntos de datos
-  geom_hline(yintercept = mean_brecha, color = "red", linetype = "dashed", size = 1) +  # Línea de la media
-  geom_segment(aes(xend = seq_along(brecha), yend = mean_brecha), color = "#ffa500", size = 0.5) +  # Líneas desde cada punto hasta la media
+  geom_hline(yintercept = mean_brecha, color = "red", linetype = "dashed", linewidth = 1) +  # Línea de la media
+  geom_segment(aes(xend = seq_along(brecha), yend = mean_brecha), color = "#ffa500", linewidth = 0.5) +  # Líneas desde cada punto hasta la media
   labs(
     x = "Índice",
     y = "Brecha Salarial de Género (%)",
@@ -268,8 +268,8 @@ mean_brecha <- mean(datos$brecha, na.rm = TRUE)
 ggplot(datos, aes(x = promedio_anios_escolaridad25_2017, y = brecha)) +
   geom_point(color = "#0073C2", size = 3, alpha = 0.7) +  # Puntos más grandes y ligeramente transparentes
   geom_smooth(method = "lm", color = "black", linetype = "solid", se = FALSE) +  # Línea de tendencia en negro
-  geom_vline(xintercept = mean(datos$promedio_anios_escolaridad25_2017, na.rm = TRUE), color = "red", linetype = "dotted", size = 1) +  # Línea roja punteada en la media de 'promedio_anios_escolaridad25_2017'
-  geom_hline(yintercept = mean(datos$brecha, na.rm = TRUE), color = "red", linetype = "dotted", size = 1) +  # Línea roja punteada en la media de 'brecha'
+  geom_vline(xintercept = mean(datos$promedio_anios_escolaridad25_2017, na.rm = TRUE), color = "red", linetype = "dotted", linewidth = 1) +  # Línea roja punteada en la media de 'promedio_anios_escolaridad25_2017'
+  geom_hline(yintercept = mean(datos$brecha, na.rm = TRUE), color = "red", linetype = "dotted", linewidth = 1) +  # Línea roja punteada en la media de 'brecha'
   labs(
     x = "Promedio de Años de Escolaridad (2017)",
     y = "Brecha Salarial de Género (%)",
@@ -333,7 +333,7 @@ datos$predicciones <- predict(modelo)
 # Crear el gráfico de residuos
 ggplot(datos, aes(x = predicciones, y = residuos)) +
   geom_point(color = "#0073C2", size = 3, alpha = 0.7) +  # Puntos más grandes y ligeramente transparentes
-  geom_hline(yintercept = 0, color = "red", linetype = "dotted", size = 1) +  # Línea en y=0 para referencia
+  geom_hline(yintercept = 0, color = "red", linetype = "dotted", linewidth = 1) +  # Línea en y=0 para referencia
   labs(
     x = "Valores Predichos",
     y = "Residuos",

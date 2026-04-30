@@ -458,14 +458,14 @@ Modelamos la probabilidad de ser pobre (`pobrezad`) en función del área de res
 ## Modelar {.smaller background-color="white"}
 
 ```{r echo=TRUE, eval=TRUE}
-modelo_logistico <- glm(pobrezad ~ area, data = casen, family = "binomial")
+modelo_logistico <- glm(pobrezad ~ as_factor(area), data = casen, family = "binomial")
 summary(modelo_logistico)
 exp(coef(modelo_logistico)) # Odds Ratio
 ```
 
 ## Comunicar {.smaller background-color="white"}
 
-La regresión logística revela una **asociación significativa y positiva** entre el área de residencia rural y la pobreza. Específicamente, las personas que residen en áreas rurales tienen **odds de ser pobres 1.46 veces mayores** que quienes viven en áreas urbanas (p \< 0,001).
+La regresión logística revela una **asociación significativa y positiva** entre el área de residencia rural y la pobreza. Específicamente, las personas que residen en áreas rurales tienen **odds de ser pobres `r round(exp(coef(modelo_logistico))[2], 2)` veces mayores** que quienes viven en áreas urbanas (p \< 0,001).
 
 Este resultado sugiere que el riesgo de pobreza es considerablemente mayor en zonas rurales de Chile, incluso en un modelo simple que solo considera el área de residencia. Este hallazgo destaca la necesidad de políticas públicas diferenciadas y focalizadas en áreas rurales para abordar eficazmente la problemática de la pobreza.
 
