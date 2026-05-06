@@ -231,9 +231,9 @@ Es importante realizar la consulta al profesor responsable si existen dudas sobr
 | 20 de abril | Análisis Factorial Exploratorio II | | Se publica Hito 2 Trabajo Final. |
 | 27 de abril | Seminario de Lectura I | | **Entrega Tarea 1 (10%)**.<br>**Seminario de Lectura – Grupo 1 (15%)**. |
 | 04 de mayo | *Receso* | | |
-| 11 de mayo | Seminario de Lectura II /<br>Análisis Factorial Confirmatorio | Ferrando, P. J. & Anguiano-Carrasco, C. (2010). El análisis factorial...<br><br>Gana, K. & Broc, G. (2019). Structural equation modeling with lavaan. | **Entrega Hito 2 (10%)**: Base limpia y descriptivos.<br>**Seminario de Lectura – Grupo 2 (15%)**. |
+| 11 de mayo | Seminario de Lectura II /<br>Análisis Factorial Confirmatorio | Ferrando, P. J. & Anguiano-Carrasco, C. (2010). El análisis factorial...<br><br>Gana, K. & Broc, G. (2019). Structural equation modeling with lavaan. | **Seminario de Lectura – Grupo 2 (15%)**. |
 | 18 de mayo | Prueba 1 | | **Rendición Prueba (30%)**. |
-| 25 de mayo | Análisis Factorial Confirmatorio | | Se publica Hito 3 Trabajo Final. |
+| 25 de mayo | Análisis Factorial Confirmatorio | | **Entrega Hito 2 (10%)**: Base limpia y descriptivos.<br>Se publica Hito 3 Trabajo Final. |
 | 01 de junio | Análisis de sendero | Pérez, E., Medrano, L. A., & Rosas, J. S. (2013). El path analysis...<br><br>Gana, K. & Broc, G. (2019). Structural equation modeling with lavaan. | Se publica Tarea 2 (10%). |
 | 08 de junio | Análisis de sendero | | |
 | 15 de junio | Modelos de ecuaciones estructurales | Ruiz, M. A., Pardo, A., & San Martín, R. (2010). Modelos de ecuaciones estructurales.<br><br>Gana, K. & Broc, G. (2019). Structural equation modeling with lavaan. | **Entrega Tarea 2 (10%)**: Path/SEM. |

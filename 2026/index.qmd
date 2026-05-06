@@ -7,9 +7,9 @@ format: html
 ::: {.callout-important collapse=false}
 ## 📢 Avisos
 
-(Marzo 2026)
+(Mayo 2026)
 
-- ¡Bienvenidos al curso! Revisa el [📓 Programa del curso](/2026/syllabus.qmd) para conocer las fechas importantes.
+- La fecha de entrega del **Hito 2 (Trabajo Final)** se traslada al **25 de mayo**. 
 :::
 
 
@@ -61,6 +61,6 @@ Licenciada en Sociología <br>
 
 # Ayudantía
 
-- Día y horario por definir
-- Sala por confirmar
+- Lunes 13:00 a 14:20 hrs.
+- 📍 Laboratorio de Computación 2° Piso FCSH
 

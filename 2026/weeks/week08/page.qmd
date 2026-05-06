@@ -1,0 +1,29 @@
+---
+title: "🗓️ Semana 08: Análisis Factorial Confirmatorio (AFC)"
+---
+
+En esta semana abordamos el **Análisis Factorial Confirmatorio (AFC)**, técnica que permite testear una estructura factorial hipotetizada a partir de la teoría o de resultados exploratorios. A diferencia del AFE, el AFC restringe las relaciones entre indicadores y factores según un modelo teórico explícito, y evalúa en qué medida esa estructura se ajusta a los datos.
+
+Revisamos los **supuestos del AFC**, los pasos del análisis (identificación, estimación, evaluación del ajuste, interpretación y reespecificación) y los principales **índices de ajuste**: Chi-cuadrado, RMSEA y CFI. Mostramos cómo interpretar las **cargas factoriales estandarizadas** y las **comunalidades** (R²). Finalizamos con el AFC para **ítems ordinales** (correlaciones policóricas y estimador WLSMV), la **comparación de modelos** anidados y la incorporación de **ponderadores y diseño muestral complejo** con `lavaan` y `lavaan.survey`.
+
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## 💻 Taller Aplicado (Práctico 8)
+
+En este laboratorio implementaremos un AFC completo con datos sobre autoritarismo y dominancia social. Especificaremos un modelo de dos factores correlacionados con `lavaan`, evaluaremos el ajuste, interpretaremos cargas y comunalidades, visualizaremos el modelo con `semPlot` y exploraremos índices de modificación.
+
+👉 **[Ir al Práctico 8: Análisis Factorial Confirmatorio (AFC)](lab.qmd)**
+
+## 📚 Lecturas Obligatorias
+
+- **Ferrando, P. J. & Anguiano-Carrasco, C. (2010).** El análisis factorial como técnica de investigación en psicología. *Papeles del Psicólogo, 31*, 18-33. [https://www.redalyc.org/pdf/778/77812441003.pdf](https://www.redalyc.org/pdf/778/77812441003.pdf)
+
+## 📟 Dudas y Comunicación
+
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dudas sobre el curso.

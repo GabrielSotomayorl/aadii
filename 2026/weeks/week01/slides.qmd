@@ -200,7 +200,7 @@ El curso se evalúa mediante un sistema de **hitos escalonados**, uso de Quarto 
 | **Trabajo Final (TF):** Hito 1 | 5% | 06 de abril |
 | **Tarea Práctica N°1 (R)** | 10% | 27 de abril |
 | **Seminario de Lectura (Oral)** | 15% | 27 de abr o 11 de may (Según grupo) |
-| **Trabajo Final (TF):** Hito 2 | 10% | 11 de mayo |
+| **Trabajo Final (TF):** Hito 2 | 10% | 25 de mayo |
 | **Prueba Solemne** (Presencial) | 30% | 18 de mayo |
 | **Tarea Práctica N°2 (R)** | 10% | 15 de junio |
 | **Trabajo Final (TF):** Informe Final | 20% | 06 de julio (Quarto) |
