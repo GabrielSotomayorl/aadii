@@ -185,7 +185,7 @@ La Encuesta CASEN utiliza múltiples niveles de estratificación:
 -   **Ejemplo Bi-etápico (Común en encuestas de hogares como CASEN):**
     1.  **Etapa 1:** Seleccionar Manzanas/Sectores (Unidades Primarias de Muestreo - UPM).
     2.  **Etapa 2:** Dentro de las UPM seleccionadas, seleccionar Viviendas (Unidades Secundarias de Muestreo - USM).
-    3.  (Etapa 3 implícita): Dentro de las viviendas seleccionadas, encuestar a todos los hogares/personas.
+    -   *Dentro de cada vivienda seleccionada, se encuestan todos sus residentes sin selección adicional (recolección de datos, no una etapa de muestreo).*
 -   **¿Por qué usar conglomerados?**
     -   **Reducción significativa de costos y logística**
         -   No se necesita un marco muestral de *todas* las viviendas del país, solo de los conglomerados (Etapa 1) y luego listas de viviendas *solo* en los conglomerados seleccionados (Etapa 2).

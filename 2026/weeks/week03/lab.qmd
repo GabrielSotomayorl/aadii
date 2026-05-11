@@ -82,7 +82,7 @@ summary(as_factor(casen$pobreza)) # Situación de pobreza
 **Interpretación de la Exploración:**
 
 *   La base tiene muchísimas variables (`r ncol(casen)`) y un gran número de casos (`r nrow(casen)`), correspondientes a personas.
-*   La **edad** va de 0 a 120 años, con una media muestral (aún no ponderada) de `r round(mean(casen$edad, na.rm=TRUE), 1)` años.
+*   La **edad** va de `r min(casen$edad, na.rm=TRUE)` a `r max(casen$edad, na.rm=TRUE)` años, con una media muestral (aún no ponderada) de `r round(mean(casen$edad, na.rm=TRUE), 1)` años.
 *   El **sexo** está codificado (1=Hombre, 2=Mujer), con una leve mayoría de mujeres en la muestra.
 *   La **escolaridad** (`esc`) tiene un rango amplio y presenta valores perdidos (`NA's`). La media muestral es de `r round(mean(casen$esc, na.rm=TRUE), 1)` años.
 *   El **ingreso del hogar** (`ytotcorh`) muestra una gran dispersión (comparar mediana y media, y el máximo valor) y también tiene algunos `NA`.
@@ -192,13 +192,13 @@ prop_pobreza_ponderada
 
 **Comparación de resultados:**
 
-1.  **Edad:** La media ingenua fue **`r round(media_edad_ingenua, 2)` años**; la media ponderada es **`r round(as.numeric(media_edad_ponderada), 1)` años** (SE=`r round(SE(media_edad_ponderada), 3)`). Las estimaciones difieren: la versión ponderada, que representa mejor a la población, es menor.
-2.  **Pobreza:** La proporción ingenua fue **`r round(prop_pobreza_ingenua["1"]*100, 1)`%** (`r round(prop_pobreza_ingenua["1"], 3)`); la proporción ponderada es **`r round(as.numeric(prop_pobreza_ponderada)*100, 1)`%** (`r round(as.numeric(prop_pobreza_ponderada), 3)`, SE=`r round(SE(prop_pobreza_ponderada), 4)`). La diferencia también es apreciable: la estimación que respeta el diseño muestral resulta más baja.
+1.  **Edad:** La media ingenua fue **`r round(media_edad_ingenua, 2)` años**; la media ponderada es **`r round(as.numeric(media_edad_ponderada), 1)` años** (SE=`r round(SE(media_edad_ponderada), 3)`). Las estimaciones difieren: la versión ponderada, que representa mejor a la población, es **`r ifelse(as.numeric(media_edad_ponderada) < media_edad_ingenua, "menor", "mayor")`** que la estimación ingenua.
+2.  **Pobreza:** La proporción ingenua fue **`r round(prop_pobreza_ingenua["1"]*100, 1)`%** (`r round(prop_pobreza_ingenua["1"], 3)`); la proporción ponderada es **`r round(as.numeric(prop_pobreza_ponderada)*100, 1)`%** (`r round(as.numeric(prop_pobreza_ponderada), 3)`, SE=`r round(SE(prop_pobreza_ponderada), 4)`). La diferencia también es apreciable: la estimación que respeta el diseño muestral resulta **`r ifelse(as.numeric(prop_pobreza_ponderada) < prop_pobreza_ingenua["1"], "más baja", "más alta")`** que la ingenua.
 
 **Pregunta de Reflexión:** ¿Por qué crees que los resultados ponderados difieren de los resultados ingenuos? 
 
 ¿Qué implica esto para nuestras conclusiones si solo hubiéramos usado los cálculos ingenuos?
-*Respuesta posible:* Hubiéramos sobreestimado la edad promedio de la población y también la tasa de pobreza. Nuestras conclusiones sobre la sociedad chilena habrían sido incorrectas.
+*Respuesta posible:* Hubiéramos **`r ifelse(as.numeric(media_edad_ponderada) < media_edad_ingenua, "sobreestimado", "subestimado")`** la edad promedio de la población y **`r ifelse(as.numeric(prop_pobreza_ponderada) < prop_pobreza_ingenua["1"], "sobreestimado", "subestimado")`** la tasa de pobreza. Nuestras conclusiones sobre la sociedad chilena habrían sido incorrectas.
 
 ## 6. Conclusión
 

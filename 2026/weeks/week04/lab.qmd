@@ -92,7 +92,7 @@ medias_ci
 La salida muestra las estimaciones ponderadas y sus intervalos de confianza al 95%.
 
 -   **Edad:** La edad promedio estimada para la población cubierta por CASEN 2024 es **`r round(medias_ci$edad_media, 1)` años**. Con un 95% de confianza, la verdadera edad promedio poblacional se encuentra entre **`r round(medias_ci$edad_media_low, 1)` y `r round(medias_ci$edad_media_upp, 1)` años**.
--   **Escolaridad:** La escolaridad promedio estimada es de **`r round(medias_ci$esc_media, 1)` años**. El intervalo de confianza (95%) es muy estrecho, yendo de **`r round(medias_ci$esc_media_low, 1)` a `r round(medias_ci$esc_media_upp, 1)` años**, lo que indica una alta precisión en esta estimación.
+-   **Escolaridad:** La escolaridad promedio estimada es de **`r round(medias_ci$esc_media, 1)` años**. El intervalo de confianza (95%) es muy estrecho, yendo de **`r round(medias_ci$esc_media_low, 2)` a `r round(medias_ci$esc_media_upp, 2)` años**, lo que indica una alta precisión en esta estimación.
 
 ### Proporciones Ponderadas
 
@@ -179,13 +179,17 @@ pob_urbana_row <- pobreza_x_zona %>% filter(str_detect(tolower(as.character(zona
 pob_rural_row  <- pobreza_x_zona %>% filter(str_detect(tolower(as.character(zona_factor)), "rural"))
 esc_hombre_row <- esc_x_sexo %>% filter(str_detect(tolower(as.character(sexo_factor)), "hombre"))
 esc_mujer_row  <- esc_x_sexo %>% filter(str_detect(tolower(as.character(sexo_factor)), "mujer"))
+ics_pobreza_no_solapan <- pob_rural_row$tasa_pobreza_low > pob_urbana_row$tasa_pobreza_upp |
+                          pob_rural_row$tasa_pobreza_upp < pob_urbana_row$tasa_pobreza_low
+ics_esc_no_solapan <- esc_hombre_row$esc_media_low > esc_mujer_row$esc_media_upp |
+                      esc_hombre_row$esc_media_upp < esc_mujer_row$esc_media_low
 ```
 
 **Interpretación y Reflexión:**
 
 *   **Ingreso por Región:** La tabla muestra el ingreso medio estimado y su error estándar (SE) para cada región. Vemos diferencias: `r max_region_row$region_factor` tiene el ingreso medio estimado más alto (\$`r format(round(max_region_row$ingreso_medio_hogar, 0), big.mark=",")`; SE \$`r format(round(max_region_row$ingreso_medio_hogar_se, 0), big.mark=",")`), mientras que `r min_region_row$region_factor` presenta el más bajo (\$`r format(round(min_region_row$ingreso_medio_hogar, 0), big.mark=",")`; SE \$`r format(round(min_region_row$ingreso_medio_hogar_se, 0), big.mark=",")`). Errores estándar más pequeños indican mayor precisión en la estimación para esa región específica.
-*   **Pobreza por Zona:** La tasa de pobreza estimada es notablemente más alta en la zona **Rural (`r round(pob_rural_row$tasa_pobreza*100, 1)`%)** que en la zona **Urbana (`r round(pob_urbana_row$tasa_pobreza*100, 1)`%)**. Crucialmente, los intervalos de confianza **no se solapan** (Rural: `r round(pob_rural_row$tasa_pobreza_low*100, 1)`%-`r round(pob_rural_row$tasa_pobreza_upp*100, 1)`%; Urbana: `r round(pob_urbana_row$tasa_pobreza_low*100, 1)`%-`r round(pob_urbana_row$tasa_pobreza_upp*100, 1)`%). Esto nos da una fuerte evidencia de que la pobreza es significativamente mayor en zonas rurales según esta encuesta.
-*   **Escolaridad por Sexo:** La escolaridad media estimada es casi idéntica: **`r round(esc_hombre_row$esc_media, 1)` años para hombres** (IC 95%: `r round(esc_hombre_row$esc_media_low, 1)` - `r round(esc_hombre_row$esc_media_upp, 1)`) y **`r round(esc_mujer_row$esc_media, 1)` años para mujeres** (IC 95%: `r round(esc_mujer_row$esc_media_low, 1)` - `r round(esc_mujer_row$esc_media_upp, 1)`). Los intervalos de confianza **se solapan**, lo que sugiere que la diferencia observada es muy pequeña y probablemente no sea estadísticamente significativa (aunque para confirmarlo necesitaríamos una prueba formal).
+*   **Pobreza por Zona:** La tasa de pobreza estimada es notablemente más alta en la zona **Rural (`r round(pob_rural_row$tasa_pobreza*100, 1)`%)** que en la zona **Urbana (`r round(pob_urbana_row$tasa_pobreza*100, 1)`%)**. Crucialmente, los intervalos de confianza **`r ifelse(ics_pobreza_no_solapan, "no se solapan", "se solapan")`** (Rural: `r round(pob_rural_row$tasa_pobreza_low*100, 1)`%-`r round(pob_rural_row$tasa_pobreza_upp*100, 1)`%; Urbana: `r round(pob_urbana_row$tasa_pobreza_low*100, 1)`%-`r round(pob_urbana_row$tasa_pobreza_upp*100, 1)`%). `r ifelse(ics_pobreza_no_solapan, "Esto nos da una fuerte evidencia de que la pobreza es significativamente mayor en zonas rurales según esta encuesta.", "Los intervalos convergen, lo que invita a interpretar la diferencia con cautela.")`
+*   **Escolaridad por Sexo:** La escolaridad media estimada `r ifelse(ics_esc_no_solapan, "muestra una diferencia apreciable", "es muy similar")`: **`r round(esc_hombre_row$esc_media, 1)` años para hombres** (IC 95%: `r round(esc_hombre_row$esc_media_low, 1)` - `r round(esc_hombre_row$esc_media_upp, 1)`) y **`r round(esc_mujer_row$esc_media, 1)` años para mujeres** (IC 95%: `r round(esc_mujer_row$esc_media_low, 1)` - `r round(esc_mujer_row$esc_media_upp, 1)`). Los intervalos de confianza **`r ifelse(ics_esc_no_solapan, "no se solapan", "se solapan")`**, lo que sugiere que la diferencia observada `r ifelse(ics_esc_no_solapan, "podría ser estadísticamente significativa", "es muy pequeña y probablemente no sea estadísticamente significativa")` (aunque para confirmarlo necesitaríamos una prueba formal).
 
 ## 4. Visualización de Resultados Ponderados con `ggplot2`
 
