@@ -126,6 +126,8 @@ format:
         - darkly
         - css/custom.scss
     toc: true
+    include-in-header:
+      - goatcounter.html
     margin-header: |
       ![](/figures/logos/MY_INSTITUTION.png)
 
