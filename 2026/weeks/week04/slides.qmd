@@ -57,8 +57,9 @@ La idea central de `survey` es:
 1.  **Primero, describirle a R CÓMO fue hecha la muestra**, creando un objeto especial que contenga toda la información del diseño.
 2.  **Luego, usar funciones específicas** que lean la información de ese objeto para realizar los cálculos correctamente.
 
-## El Corazón de `survey`: El Objeto de Diseño Muestral {.smaller}
+## El Objeto de Diseño Muestral {.smaller}
 
+::: {style="font-size: 1.5rem;"}
 -   Piensa en este objeto como una **"receta"** o un **"manual de instrucciones"** para R sobre tu muestra.
 -   **NO** es solo la tabla de datos. Es un objeto más complejo que **contiene**:
     -   Los **datos** mismos.
@@ -68,6 +69,7 @@ La idea central de `survey` es:
     -   (Opcional) Información sobre población finita (FPC), etapas de muestreo, etc.
 -   Este objeto es creado **UNA VEZ** (generalmente al inicio del análisis) usando `survey::svydesign()` (o `srvyr::as_survey_design()`).
 -   **TODAS** las funciones de análisis posteriores (`svymean`, `svytotal`, `svyglm`...) **necesitan** este objeto como argumento para funcionar correctamente.
+:::
 
 ## Declarando el Diseño: `survey::svydesign()` (Repaso) {.smaller}
 
