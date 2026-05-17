@@ -302,7 +302,7 @@ Hay infinitas rectas posibles. OLS (Ordinary Least Squares) es el método están
 
 ## Fórmulas para OLS (RLS) {.smaller}
 
-Para calcular la pendiente 𝑏y la ordenada en el origen 𝑎, se utilizan las siguientes fórmulas: $$
+Para calcular la pendiente 𝑏 y la ordenada en el origen 𝑎, se utilizan las siguientes fórmulas: $$
 b = r \frac{s_y}{s_x}
 $$
 

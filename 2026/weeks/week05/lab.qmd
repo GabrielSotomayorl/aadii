@@ -164,7 +164,7 @@ b_os_m1 <- round(coef(modelo_m1)["os_factorNo heterosexual"], 0)
 p_os_m1 <- summary(modelo_m1)$coefficients["os_factorNo heterosexual", "Pr(>|t|)"]
 ```
 
-**Interpretación (Tabla 1):** El coeficiente para "No heterosexual" es $`r format(b_os_m1, big.mark=",")`$ pesos (p = `r round(p_os_m1, 2)`): prácticamente nulo y no significativo. Sin controlar por ninguna otra variable, la orientación sexual no predice el ingreso laboral. Esto no significa que no haya brecha —significa que la educación más alta de las personas no heterosexuales **compensan** su desventaja estructural, haciéndola invisible a nivel descriptivo.
+**Interpretación (Tabla 1):** El coeficiente para "No heterosexual" es \$`r format(b_os_m1, big.mark=",")`  pesos (p = `r round(p_os_m1, 2)`): prácticamente nulo y no significativo. Sin controlar por ninguna otra variable, la orientación sexual no predice el ingreso laboral. Esto no significa que no haya brecha —significa que la educación más alta de las personas no heterosexuales **compensa** su desventaja estructural, haciéndola invisible a nivel descriptivo.
 
 ## 4. Regresión Lineal Múltiple: El Control Estadístico Revela la Brecha
 
@@ -188,7 +188,7 @@ b_esc_m2 <- round(coef(modelo_m2)["esc"], 0)
 p_os_m2  <- summary(modelo_m2)$coefficients["os_factorNo heterosexual", "Pr(>|t|)"]
 ```
 
-**Interpretación (Tabla 2):** Una vez controlada la escolaridad, el coeficiente para "No heterosexual" pasa a ser $`r format(b_os_m2, big.mark=",")`$ pesos (p < 0.001). La brecha, que en el Modelo 1 era invisible, emerge con claridad: personas no heterosexuales con el **mismo número de años de estudio** que sus pares heterosexuales ganan significativamente menos. El efecto de la escolaridad es $`r format(b_esc_m2, big.mark=",")`$ pesos por año adicional.
+**Interpretación (Tabla 2):** Una vez controlada la escolaridad, el coeficiente para "No heterosexual" pasa a ser \$`r format(b_os_m2, big.mark=",")`  pesos (p < 0.001). La brecha, que en el Modelo 1 era invisible, emerge con claridad: personas no heterosexuales con el **mismo número de años de estudio** que sus pares heterosexuales ganan significativamente menos. El efecto de la escolaridad es \$`r format(b_esc_m2, big.mark=",")`  pesos por año adicional.
 
 Este resultado ilustra un caso clásico de **confusión por covariable**: la ventaja educativa de las personas no heterosexuales enmascaraba su desventaja de ingresos.
 
@@ -210,7 +210,7 @@ b_os_m3   <- round(coef(modelo_m3)["os_factorNo heterosexual"], 0)
 b_edad_m3 <- round(coef(modelo_m3)["edad"], 0)
 ```
 
-**Interpretación (Tabla 3):** Al agregar la edad, el coeficiente de orientación sexual se reduce a $`r format(b_os_m3, big.mark=",")`$ pesos, pero sigue siendo altamente significativo. Parte de la brecha del Modelo 2 se explicaba por la mayor juventud de las personas no heterosexuales (que aún no han acumulado el premio de experiencia laboral). Por cada año adicional de edad, el ingreso aumenta en promedio $`r format(b_edad_m3, big.mark=",")`$ pesos, controlando por escolaridad y orientación sexual.
+**Interpretación (Tabla 3):** Al agregar la edad, el coeficiente de orientación sexual se reduce a \$`r format(b_os_m3, big.mark=",")`  pesos, pero sigue siendo altamente significativo. Parte de la brecha del Modelo 2 se explicaba por la mayor juventud de las personas no heterosexuales (que aún no han acumulado el premio de experiencia laboral). Por cada año adicional de edad, el ingreso aumenta en promedio \$`r format(b_edad_m3, big.mark=",")`  pesos, controlando por escolaridad y orientación sexual.
 
 ### 4.3 Incorporando sexo y territorio: el modelo completo
 
@@ -246,11 +246,11 @@ b_sur_m5   <- round(coef(modelo_m5)["macrozonaSur"], 0)
 
 **Interpretación (Tabla 4):**
 
--   **Orientación sexual:** La brecha se mantiene robusta a través de los modelos. En el modelo completo (M5), las personas no heterosexuales ganan en promedio $`r format(b_os_m5, big.mark=",")`$ pesos menos que las heterosexuales, **controlando por escolaridad, edad, sexo y macrozona** (p < 0.001). Esta persistencia refuerza la hipótesis de una desventaja estructural.
+-   **Orientación sexual:** La brecha se mantiene robusta a través de los modelos. En el modelo completo (M5), las personas no heterosexuales ganan en promedio \$`r format(b_os_m5, big.mark=",")`  pesos menos que las heterosexuales, **controlando por escolaridad, edad, sexo y macrozona** (p < 0.001). Esta persistencia refuerza la hipótesis de una desventaja estructural.
 
--   **Sexo:** Las mujeres ganan en promedio $`r format(abs(b_mujer_m5), big.mark=",")`$ pesos menos que los hombres, controlando por los demás factores. La brecha de género coexiste con la brecha por orientación sexual.
+-   **Sexo:** Las mujeres ganan en promedio \$`r format(abs(b_mujer_m5), big.mark=",")`  pesos menos que los hombres, controlando por los demás factores. La brecha de género coexiste con la brecha por orientación sexual.
 
--   **Macrozona:** La Región Metropolitana presenta los ingresos estimados más altos. Las diferencias regionales son significativas y persistentes (Norte: $`r format(b_norte_m5, big.mark=",")`; Sur: $`r format(b_sur_m5, big.mark=",")`$ respecto a la RM).
+-   **Macrozona:** La Región Metropolitana presenta los ingresos estimados más altos. Las diferencias regionales son significativas y persistentes (Norte: \$`r format(b_norte_m5, big.mark=",")`; Sur: \$`r format(b_sur_m5, big.mark=",")`  respecto a la RM).
 
 ## 5. Comparando Efectos: Coeficientes Estandarizados (Betas)
 
@@ -334,10 +334,10 @@ car::vif(modelo_m5)
 
 ```{r vif_inline, echo=FALSE}
 vifs <- car::vif(modelo_m5)
-max_vif <- round(max(vifs[,1]), 2)
+max_vif <- round(max(vifs[,3]^2), 2)
 ```
 
-El VIF máximo es `r max_vif`. Todos los valores están por debajo del umbral problemático (comúnmente fijado en 5 o 10), lo que indica que los predictores no están excesivamente correlacionados entre sí. La multicolinealidad no representa un problema en este modelo y podemos interpretar los efectos parciales de cada predictor con relativa confianza.
+El GVIF máximo ajustado (GVIF^(1/Df), comparable a VIF) es `r max_vif`. Todos los valores están por debajo del umbral problemático (comúnmente fijado en 5 o 10), lo que indica que los predictores no están excesivamente correlacionados entre sí. La multicolinealidad no representa un problema en este modelo y podemos interpretar los efectos parciales de cada predictor con relativa confianza.
 
 ### Casos Influyentes
 
