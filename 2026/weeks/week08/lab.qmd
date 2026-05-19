@@ -22,10 +22,11 @@ En este práctico, aprenderemos a realizar un Análisis Factorial Confirmatorio 
 
 1.  **Especificar** un modelo de medición AFC en la sintaxis de `lavaan`.
 2.  **Estimar** los parámetros del modelo.
-3.  **Evaluar el ajuste** del modelo a los datos utilizando diversos índices (χ², RMSEA, CFI, TLI).
-4.  **Interpretar** las cargas factoriales estandarizadas y no estandarizadas.
-5.  Calcular e interpretar las **comunalidades** (R² de los indicadores).
-6.  Explorar los **índices de modificación** para posibles re-especificaciones del modelo.
+3.  **Evaluar el ajuste global** del modelo utilizando índices como χ², RMSEA, CFI y TLI, entendiendo sus limitaciones como heurísticos.
+4.  **Evaluar el ajuste local** mediante la matriz de residuos de correlación para detectar discrepancias a nivel de pares de ítems.
+5.  **Interpretar** las cargas factoriales estandarizadas y no estandarizadas.
+6.  Calcular e interpretar las **comunalidades** (R² de los indicadores).
+7.  Explorar los **índices de modificación** con sentido crítico, evitando la capitalización del azar.
 
 ## 1. Carga de Paquetes y Datos
 
@@ -114,18 +115,18 @@ print(summary_output)
 
 **Interpretación de la Salida de `summary()`:**
 
-*   **Encabezado:** `lavaan 0.6-19 ended normally after 29 iterations`. El modelo convergió. Se usó el estimador `ML` (Máxima Verosimilitud). `Number of observations 176`.
+*   **Encabezado:** `lavaan 0.6-21 ended normally after 29 iterations`. El modelo convergió sin problemas. Se usó el estimador `ML` (Máxima Verosimilitud) con N = 176.
 *   **`Latent Variables`:**
     *   **`autoritarismo =~`**:
-        *   `aut1`: Carga no estandarizada fijada a 1.000. Carga estandarizada (`Std.all`) = **0.907**.
-        *   `aut2`: Carga estandarizada (`Std.all`) = **0.887**. Es significativa (P(>|z|) = 0.000).
-        *   `aut3`: Carga estandarizada (`Std.all`) = **0.803**. Es significativa (P(>|z|) = 0.000).
-        *   Todos los indicadores muestran cargas estandarizadas muy altas (>0.80) y significativas sobre el factor "autoritarismo", sugiriendo que son buenos medidores de este constructo.
+        *   `aut1`: Carga no estandarizada fijada a 1.000 (restricción de identificación). Carga estandarizada (`Std.all`) = **0.907**.
+        *   `aut2`: Carga estandarizada (`Std.all`) = **0.887**; significativa (p < 0.001).
+        *   `aut3`: Carga estandarizada (`Std.all`) = **0.803**; significativa (p < 0.001).
+        *   Los tres indicadores tienen cargas superiores a 0.80 y todas son significativas, lo que indica que el factor autoritarismo está bien medido por estos ítems.
     *   **`dominancia =~`**:
         *   `dom1`: Carga no estandarizada fijada a 1.000. Carga estandarizada (`Std.all`) = **0.919**.
-        *   `dom2`: Carga estandarizada (`Std.all`) = **0.882**. Es significativa (P(>|z|) = 0.000).
-        *   `dom3`: Carga estandarizada (`Std.all`) = **0.685**. Es significativa (P(>|z|) = 0.000).
-        *   Los indicadores `dom1` y `dom2` son excelentes medidores de "dominancia". `dom3` tiene una carga un poco más baja pero aún sustancial y aceptable.
+        *   `dom2`: Carga estandarizada (`Std.all`) = **0.882**; significativa (p < 0.001).
+        *   `dom3`: Carga estandarizada (`Std.all`) = **0.685**; significativa (p < 0.001).
+        *   `dom1` y `dom2` tienen cargas altas y homogéneas. `dom3` muestra una carga más baja (0.685), lo que es aceptable pero señala que este ítem captura algo más que el núcleo del factor dominancia — un patrón que la evaluación local confirmará.
 *   **`Covariances`:**
     *   `autoritarismo ~~ dominancia`: La covarianza estimada es 0.678. La correlación estandarizada (`Std.all`) entre los dos factores latentes es **0.343**. Esta correlación es positiva, moderada y estadísticamente significativa (P(>|z|) = 0.000), indicando que "autoritarismo" y "dominancia social" son constructos relacionados pero distintos.
 *   **`Variances`:** Muestra las varianzas de los errores de los indicadores (ej. `.aut1` = 0.582) y las varianzas estimadas de los factores latentes (`autoritarismo` = 2.711, `dominancia` = 1.442 en la escala no estandarizada).
@@ -151,19 +152,47 @@ fitMeasures(mod_conf_afc,
                              "srmr"))                   # Standardized Root Mean Square Residual
 ```
 
-**Interpretación de los Índices de Ajuste:**
+**Interpretación de los Índices de Ajuste Global:**
+
+> **Nota metodológica:** Los umbrales que se usan a continuación (RMSEA < 0.05, CFI > 0.95) son **heurísticos aproximados**, derivados de simulaciones específicas (Hu & Bentler, 1999). No son leyes universales: su interpretación depende del tamaño de muestra, número de indicadores y complejidad del modelo. Siempre deben complementarse con la evaluación del ajuste local (ver sección siguiente).
 
 *   **`chisq` = 12.332, `df` = 8, `pvalue` = 0.137:**
-    *   El p-valor (0.137) es **mayor que 0.05**, por lo que **no rechazamos la hipótesis nula** de que el modelo se ajusta perfectamente a los datos poblacionales. Este es un **buen indicador de ajuste**.
-    *   $\chi^2/gl = 12.332 / 8 \approx 1.54$. Este valor está **por debajo de 2**, lo que sugiere un **excelente ajuste** según este criterio menos estricto.
-*   **`cfi` = 0.993:** Valor muy cercano a 1 (y > 0.95), indica un **excelente ajuste comparativo**.
-*   **`tli` = 0.987:** También muy cercano a 1 (y > 0.95), indica un **excelente ajuste comparativo**.
+    *   El p-valor (0.137) es **mayor que 0.05**, por lo que no rechazamos la hipótesis nula de buen ajuste. Este es un **indicador favorable**.
+    *   $\chi^2/gl = 12.332 / 8 \approx 1.54$. Este valor por debajo de 2 **sugiere un ajuste razonable** según este criterio.
+*   **`cfi` = 0.993:** Valor cercano a 1 (y > 0.95), **sugiere un buen ajuste comparativo**. Recuerda que este índice puede verse inflado con muestras pequeñas.
+*   **`tli` = 0.987:** También cercano a 1 (y > 0.95), **sugiere un buen ajuste comparativo**.
 *   **`rmsea` = 0.055:**
-    *   Este valor está en el límite entre "buen ajuste" ($\leq 0.05$) y "ajuste razonable" (0.05-0.08).
-    *   **IC 90% para RMSEA (`rmsea.ci.lower`, `rmsea.ci.upper`): 0.000 - 0.113.** El intervalo es algo amplio e incluye valores por encima de 0.08 (incluso 0.10), lo que modera un poco el optimismo. El límite inferior en 0 es bueno. La prueba de que RMSEA $\leq 0.05$ tiene un p-valor de 0.384 (no podemos rechazar que sea $\leq 0.05$).
-*   **`srmr` = 0.049:** Este valor es **menor que 0.08 (e incluso < 0.05)**, lo que indica un **muy buen ajuste** en términos de los residuos estandarizados promedio.
+    *   Este valor está en el límite entre "buen ajuste" ($\leq 0.05$) y "ajuste razonable" (0.05-0.08). **No es un resultado inequívocamente positivo.**
+    *   **IC 90% para RMSEA: 0.000 - 0.113.** El intervalo es amplio e incluye valores por encima de 0.10, lo que introduce incertidumbre sobre la precisión de esta estimación.
+*   **`srmr` = 0.049:** Por debajo de 0.08, **sugiere un ajuste aceptable** en términos de residuos estandarizados promedio.
 
-**Conclusión General del Ajuste:** El modelo de dos factores propuesto muestra un **ajuste general de bueno a excelente** a los datos, según la mayoría de los índices. El $\chi^2$ no es significativo, el $\chi^2/gl$ es bajo, CFI y TLI son muy altos, y SRMR es bajo. El RMSEA es aceptable, aunque su intervalo de confianza es un poco amplio.
+**Evaluación preliminar del ajuste global:** Los índices globales son, en conjunto, **favorables**. Sin embargo, recuerda que un buen ajuste global no garantiza que el modelo esté correctamente especificado en todos sus detalles. La siguiente sección examina el ajuste a nivel local.
+
+### 4.2 Evaluación del Ajuste Local (Matriz de Residuos de Correlación)
+
+El ajuste global resume el modelo en un único número y puede esconder discrepancias locales importantes. La matriz de residuos de correlación muestra las diferencias entre las correlaciones observadas en los datos y las correlaciones que el modelo *implica* para cada par de ítems. El umbral de referencia para detectar problemas es un **residuo con valor absoluto > 0.10**.
+
+Un punto importante sobre por qué se usa ese umbral y no los residuos estandarizados: los residuos estandarizados dependen del tamaño de muestra y con N grandes (ej. N > 1.000) casi cualquier residuo pequeño resulta "estadísticamente significativo". El umbral de 0.10 sobre la escala de correlaciones evalúa el **tamaño del efecto del desajuste**, independientemente de N — lo que nos interesa para juzgar si el modelo capta bien la realidad (Kline, 2023).
+
+```{r local_fit_residuals}
+# Calcular y extraer directamente la matriz de residuos de correlación
+residuos_cor <- lavResiduals(mod_conf_afc, type = "cor")$cov
+print(residuos_cor)
+```
+
+**Interpretación de los residuos:**
+
+La matriz muestra el siguiente patrón:
+
+*   **Ítems dentro del mismo factor** (`aut1`-`aut2`-`aut3` entre sí, y `dom1`-`dom2` entre sí): todos los residuos son prácticamente cero (entre -0.001 y 0.003), lo que indica que el modelo reproduce con precisión las correlaciones dentro de cada factor.
+*   **`dom3` con los ítems de `autoritarismo`**: aquí aparece el problema.
+    *   `dom3` ~ `aut2`: residuo = **-0.149** → supera el umbral de 0.10.
+    *   `dom3` ~ `aut3`: residuo = **-0.142** → supera el umbral de 0.10.
+    *   `dom3` ~ `aut1`: residuo = **-0.075** → por debajo del umbral, pero no despreciable.
+
+Un residuo negativo significa que la correlación observada entre esos dos ítems es **menor** que la que el modelo predice. El modelo, al conectar `dom3` con `autoritarismo` a través de la correlación inter-factor (r = 0.343), sobreestima la relación real de `dom3` con los ítems de autoritarismo.
+
+**Evaluación local:** el ajuste local no es satisfactorio para los pares que involucran a `dom3` con los ítems de `autoritarismo`. Este es exactamente el tipo de problema que el CFI = 0.993 esconde: el modelo ajusta bien *en promedio*, pero `dom3` se comporta de forma algo atípica respecto a los demás ítems de su factor. Este hallazgo es consistente con su comunalidad más baja (R² = 0.469) y tendrá implicancias directas para la lectura de los índices de modificación.
 
 ## 5. Visualización del Modelo (usando `semPlot`)
 
@@ -202,30 +231,55 @@ Todas las comunalidades son buenas (mayores a 0.40, y la mayoría > 0.60). El í
 
 ## 7. Índices de Modificación (Para Explorar Mejoras)
 
-Los índices de modificación (IM) sugieren cambios al modelo que podrían mejorar significativamente su ajuste. Deben usarse con **mucha cautela y siempre con justificación teórica.**
+Los índices de modificación (IM) señalan qué cambios al modelo reducirían significativamente el estadístico χ². Son una herramienta exploratoria útil, pero **deben usarse con máxima cautela**.
 
 ```{r modification_indices}
 # Mostrar los IM más altos, ordenados (IM > 3.84 es aprox. p<0.05 con 1gl)
-mod_indices <- modificationindices(mod_conf_afc, sort. = TRUE, minimum.value = 3.84) 
-print(head(mod_indices, 10)) 
+mod_indices <- modificationindices(mod_conf_afc, sort. = TRUE, minimum.value = 3.84)
+print(head(mod_indices, 10))
 ```
-**Interpretación:**
-La salida muestra los 3 cambios que superarían el umbral de 3.84 para el índice de modificación (`mi`):
-1.  `autoritarismo =~ dom3` (`mi` = 6.437): Sugiere que el ítem `dom3` (originalmente solo de `dominancia`) también podría cargar en el factor `autoritarismo`. El cambio esperado en el parámetro (`epc`) sería -0.152.
-2.  `dom1 ~~ dom2` (`mi` = 6.437): Sugiere correlacionar los errores de los ítems `dom1` y `dom2`. Esto implicaría que estos dos ítems comparten varianza específica no explicada por el factor `dominancia` (quizás por una redacción muy similar o un aspecto muy particular que miden juntos). El `epc` es -0.982 (para la covarianza).
-3.  `aut2 ~~ dom3` (`mi` = 4.180): Sugiere correlacionar los errores de `aut2` y `dom3`.
-**Consideraciones Teóricas:**
-*   ¿Es teóricamente plausible que `dom3` mida también autoritarismo? Podría ser, dependiendo de su contenido exacto.
-*   ¿Hay una razón teórica para que los errores de `dom1` y `dom2` (o `aut2` y `dom3`) estén correlacionados más allá de sus factores?
-**Decisión:** Dado el ya buen ajuste del modelo, estas modificaciones podrían no ser necesarias a menos que haya una fuerte justificación teórica. El IM más alto (6.437) no es extremadamente grande. En este caso, podríamos optar por mantener el modelo original por su parsimonia y buen ajuste general.
+
+**Interpretación de los IM:**
+
+Aparecen tres cambios que superan el umbral de 3.84:
+
+1.  `autoritarismo =~ dom3` (`mi` = 6.437, `epc` = -0.152): el modelo sugiere añadir `dom3` como indicador del factor autoritarismo con una carga *negativa*. Esto es coherente con los residuos: el modelo sobreestima cuánto se relaciona `dom3` con los ítems de autoritarismo, y liberar una carga negativa compensaría esa sobreestimación.
+2.  `dom1 ~~ dom2` (`mi` = 6.437, `epc` = -0.982): correlacionar los errores de `dom1` y `dom2`. Ambos comparten una redacción que apela al "lugar" de los grupos (*"quedarse en su lugar"* / *"mantenerse en su lugar"*), lo que podría justificar teóricamente esta correlación.
+3.  `aut2 ~~ dom3` (`mi` = 4.180, `epc` = -0.170): correlacionar los errores de `aut2` y `dom3`, también coherente con los residuos negativos identificados en la sección anterior.
+
+Nota que los tres IM involucran a `dom3`, el mismo ítem que ya mostraba residuos locales problemáticos. Esto no es coincidencia: los MIs y los residuos son dos formas distintas de detectar el mismo problema de especificación.
+
+---
+
+> **Capitalización del azar y HARKing**
+>
+> Que los MIs sean consistentes con los residuos no los convierte automáticamente en modificaciones justificadas. Aplicarlos mecánicamente — porque el valor supera 3.84 — es un ejemplo de **capitalización del azar**: se ajusta el modelo a las particularidades de esta muestra, no a la teoría. Esta práctica se conoce como **HARKing** (*Hypothesizing After the Results are Known*) y convierte el AFC en un análisis exploratorio sin que quede explícito en el reporte.
+>
+> Según Kline (2023): *"Parameter changes suggested by MIs that lack theoretical or logical justifications should not be made."*
+>
+> Correlacionar los errores de `dom1` y `dom2` tiene una justificación teórica plausible (redacción casi idéntica), pero eso debe haber sido identificado *antes* de mirar el IM — no después. Liberar `aut2 ~~ dom3` requiere una explicación de por qué esos dos ítems en particular comparten varianza más allá de sus factores, y esa explicación no es obvia a partir del contenido.
+
+**Si decides reespecificar el modelo guiándote por los IM:**
+
+1.  Documenta la justificación teórica antes de hacer el cambio.
+2.  Reporta el modelo reespecificado como exploratorio, no confirmatorio.
+3.  Valida el modelo modificado en una muestra independiente antes de presentarlo como resultado definitivo.
+
+**Decisión en este caso:** Los residuos locales confirman un problema real con `dom3`. Sin embargo, los MIs no ofrecen una solución teóricamente limpia: la carga cruzada negativa en autoritarismo no tiene interpretación sustantiva clara, y la correlación de errores con `aut2` tampoco. La opción más defendible es mantener el modelo de dos factores original, reportando la limitación de `dom3` (comunalidad 0.469, residuos locales elevados con los ítems de autoritarismo) y evaluando en trabajos futuros si este ítem debería ser revisado o eliminado del instrumento.
 
 ## 8. Conclusión
 
 En este práctico, hemos:
-1.  Especificado y estimado un modelo AFC de dos factores con `lavaan`.
-2.  Evaluado el ajuste del modelo, encontrando que es **bueno a excelente** según la mayoría de los índices (χ² no significativo, $\chi^2/gl \approx 1.54$, CFI/TLI > 0.98, SRMR < 0.05, RMSEA = 0.055).
-3.  Interpretado las **cargas factoriales estandarizadas**, que fueron todas altas y significativas, y la **correlación positiva y moderada (0.343)** entre los factores.
-4.  Revisado las **comunalidades**, que en general fueron buenas, con `dom3` como el ítem con menor varianza explicada.
-5.  Explorado los **índices de modificación**, que no sugirieron cambios urgentes o teóricamente obvios dado el buen ajuste inicial.
 
-El AFC nos ha permitido confirmar que la estructura de dos factores correlacionados (autoritarismo y dominancia) representa bien los datos de estos seis ítems.
+1.  Especificado y estimado un modelo AFC de dos factores con `lavaan` (N = 176, estimador ML).
+2.  Evaluado el **ajuste global**: χ²(8) = 12.332 (p = 0.137), CFI = 0.993, TLI = 0.987, RMSEA = 0.055 [0.000, 0.113], SRMR = 0.049. Los índices globales son favorables, aunque el intervalo del RMSEA es amplio. Estos valores son heurísticos, no criterios absolutos.
+3.  Evaluado el **ajuste local**: la matriz de residuos de correlación reveló que la mayoría de los pares de ítems tienen residuos cercanos a cero, pero `dom3` presenta residuos que superan el umbral de 0.10 con `aut2` (−0.149) y `aut3` (−0.142). El modelo sobreestima la relación de `dom3` con el factor autoritarismo — un problema que el CFI global escondía.
+4.  Interpretado las **cargas factoriales**: todas son positivas, significativas, y superiores a 0.68. Los factores están moderadamente correlacionados (r = 0.343).
+5.  Examinado las **comunalidades**: cinco de los seis ítems superan 0.64; `dom3` es el más débil (R² = 0.469), coherente con todos los indicadores anteriores.
+6.  Analizado los **índices de modificación** críticamente: los tres cambios sugeridos involucran a `dom3`, confirmando que es el ítem problemático. Ninguna modificación tiene una justificación teórica suficientemente sólida para alterar el modelo.
+
+El modelo de dos factores correlacionados es la especificación más parsimoniosamente defendible para estos datos. La limitación principal es `dom3`, cuyo comportamiento atípico respecto al factor autoritarismo es una señal para revisar el instrumento en estudios futuros.
+
+> **Reflexión final — Modelos Equivalentes:**
+>
+> El hecho de que este modelo de dos factores correlacionados ajuste bien a los datos **no demuestra que sea el único modelo verdadero**, ni siquiera que sea el mejor. Estadísticamente, existen **modelos equivalentes**: especificaciones alternativas (con diferente número de factores, diferentes restricciones, o incluso modelos causales distintos) que reproducirían exactamente la misma matriz de covarianza y, por tanto, tendrían idénticos valores de CFI, RMSEA y χ². El buen ajuste es evidencia *consistente* con la teoría, no *prueba* de ella. La selección del modelo correcto siempre depende en última instancia del argumento teórico sustantivo.

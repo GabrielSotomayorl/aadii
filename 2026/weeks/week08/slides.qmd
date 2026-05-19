@@ -217,6 +217,23 @@ graph {
 -   **Cargas factoriales:** medida estandarizada de asociación entre el indicador y la variable latente
 -   **Comunalidad:** proporción del indicador que se asocia a factor(es) comun(es)
 
+## Medición Reflectiva vs. Formativa {.smaller}
+
+-   El AFC asume el **Modelo de Factor Común** (medición **reflectiva**): la variable latente *causa* los indicadores
+    -   Si el constructo "machismo sexual" es alto → todos los ítems deberían ser altos en consecuencia
+    -   Los indicadores son *síntomas* o *efectos* del constructo, no sus componentes
+-   **No todos los constructos funcionan así.** En la medición **formativa**, los indicadores *forman* el constructo
+    -   Ej. *Nivel Socioeconómico*: ingreso + educación + ocupación
+    -   El constructo es un *compuesto* de sus partes, no su causa común
+    -   Que el ingreso suba no implica necesariamente que la educación también suba
+
+:::{.callout-warning}
+## Advertencia conceptual
+Aplicar AFC a un constructo formativo es un **error de especificación grave**. El mal ajuste no refleja un instrumento deficiente, sino un modelo causal equivocado desde el inicio. Kline (2023) señala que esta confusión es frecuente y costosa en ciencias sociales.
+:::
+
+-   **Pregunta guía antes de correr el AFC:** ¿Son mis ítems *efectos* del constructo, o son los ítems los que *definen* el constructo?
+
 ## Supuestos Análisis Factorial Confirmatorio {.smaller}
 
 -   Un número importante de variables observadas de nivel de medición intervalo/razón (mínimo 5 categorías de respuesta en escala).
@@ -309,6 +326,45 @@ mod_conf_cfa <- cfa(mod_conf,   # modelo especificado
 -   Es menos sensible al tamaño de la muestra
 -   Obtiene valores entre 0 y 1. Mientras más cercano a 1, mejor es el ajuste
 -   En general, se considera que un modelo tiene un ajuste razonable si CFI \> 0,90 y que tiene un ajuste bueno si CFI \> 0,95.
+
+## Los índices de ajuste son heurísticos, no leyes {.smaller}
+
+:::{.callout-warning}
+## El ajuste global no es suficiente
+Los umbrales RMSEA < 0.05 y CFI > 0.95 provienen de simulaciones de Hu & Bentler (1999) para condiciones muy específicas. No son criterios universales ni definitivos.
+:::
+
+-   Los umbrales dependen del tamaño muestral, el número de indicadores y la complejidad del modelo
+-   **Un modelo puede tener CFI > 0.95 y aun así ocultar graves errores de especificación**
+    -   Kline (2023) advierte explícitamente que el ajuste global puede enmascarar problemas locales importantes
+-   El índice global evalúa si el modelo *en su conjunto* reproduce la matriz de covarianza, pero **no dónde ni cómo falla**
+-   Basarse exclusivamente en los índices globales como criterio de decisión binario (*"el modelo ajusta / no ajusta"*) es una mala práctica
+-   **Conclusión:** Los índices globales son evidencia necesaria pero no suficiente. Siempre deben acompañarse de una evaluación **local** del modelo.
+
+## Ajuste Local: La Matriz de Residuos de Correlación {.smaller}
+
+-   La **evaluación profunda** del modelo ocurre a nivel local: par a par de variables
+-   La **Matriz de Residuos de Correlación** muestra las diferencias entre:
+    -   Las correlaciones **observadas** en los datos
+    -   Las correlaciones **reproducidas** (implicadas) por el modelo estimado
+-   **Kline (2023):** los residuos de correlación son uno de los indicadores más informativos para detectar errores de especificación
+
+    -   **Residuos absolutos \> 0.10** → problema grave de ajuste local entre ese par de variables
+    -   Indican que el modelo no captura adecuadamente la relación entre esos dos ítems
+
+-   En `lavaan` se obtienen con:
+
+```{r}
+#| echo: true
+#| eval: false
+residuos_cor <- lavResiduals(mod_conf_afc, type = "cor")$cov
+print(residuos_cor)
+```
+
+:::{.callout-important}
+## Regla práctica (Kline, 2023)
+Un modelo puede "pasar" el RMSEA y el CFI y **aun así debe ser rechazado o revisado** si presenta múltiples residuos de correlación con valor absoluto \> 0.10.
+:::
 
 ## Cargas factoriales y comunalidades {.smaller}
 
@@ -441,6 +497,26 @@ Covariances:
     -   Agregar `dom3` como un indicador de autoritarismo (mi = 6,437)
     -   Agregar una correlación entre los errores de `dom1` y `dom2` (mi = 6,437)
     -   Agregar una correlación entre los errores de `aut2` y `dom3` (mi = 4,180)
+
+## Reespecificar modelo: El peligro del HARKing {.smaller}
+
+:::{.callout-warning}
+## Capitalización del azar y HARKing
+Agregar correlaciones de error *solo* porque un IM es alto (\> 3.84) transforma el AFC en análisis exploratorio — y generalmente sin que el investigador lo reconozca.
+:::
+
+-   Este procedimiento equivale a **HARKing** (*Hypothesizing After the Results are Known*): postular hipótesis *después* de ver los resultados de los datos
+-   Al modificar el modelo guiado mecánicamente por los IM:
+    -   **Capitalizas el azar**: ajustas el modelo a las particularidades de *esta* muestra específica
+    -   Los índices de ajuste mejorarán artificialmente — no porque el modelo sea más correcto, sino porque tiene más parámetros libres
+    -   El modelo pierde su carácter **confirmatorio** y pasa a ser de facto **exploratorio**
+-   Kline (2023): *"Parameter changes suggested by MIs that lack theoretical or logical justifications should not be made"*
+
+**Reglas de oro para la reespecificación:**
+
+1.  Toda modificación debe tener una **justificación sustantiva y teórica previa**, no solo un IM alto
+2.  Correlacionar errores de dos ítems exige explicar por qué comparten varianza *más allá* del factor común (ej. mismo método, mismo momento, redacción similar)
+3.  Si el modelo se reespecifica guiado por los datos: **debe validarse en una muestra independiente** antes de reportarse como un resultado confirmatorio
 
 ## Repaso de conceptos centrales de análisis factorial confirmatorio {.smaller}
 
