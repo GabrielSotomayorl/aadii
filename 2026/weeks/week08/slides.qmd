@@ -327,32 +327,28 @@ mod_conf_cfa <- cfa(mod_conf,   # modelo especificado
 -   Obtiene valores entre 0 y 1. Mientras más cercano a 1, mejor es el ajuste
 -   En general, se considera que un modelo tiene un ajuste razonable si CFI \> 0,90 y que tiene un ajuste bueno si CFI \> 0,95.
 
-## Los índices de ajuste son heurísticos, no leyes {.smaller}
+## Heurísticos, no leyes {.smaller}
 
 :::{.callout-warning}
 ## El ajuste global no es suficiente
-Los umbrales RMSEA < 0.05 y CFI > 0.95 provienen de simulaciones de Hu & Bentler (1999) para condiciones muy específicas. No son criterios universales ni definitivos.
+Los umbrales RMSEA < 0.05 y CFI > 0.95 provienen de simulaciones de Hu & Bentler (1999) para condiciones específicas. No son criterios universales.
 :::
 
--   Los umbrales dependen del tamaño muestral, el número de indicadores y la complejidad del modelo
--   **Un modelo puede tener CFI > 0.95 y aun así ocultar graves errores de especificación**
-    -   Kline (2023) advierte explícitamente que el ajuste global puede enmascarar problemas locales importantes
--   El índice global evalúa si el modelo *en su conjunto* reproduce la matriz de covarianza, pero **no dónde ni cómo falla**
--   Basarse exclusivamente en los índices globales como criterio de decisión binario (*"el modelo ajusta / no ajusta"*) es una mala práctica
--   **Conclusión:** Los índices globales son evidencia necesaria pero no suficiente. Siempre deben acompañarse de una evaluación **local** del modelo.
+-   Los umbrales dependen del N, el número de indicadores y la complejidad del modelo
+-   **Un modelo puede tener CFI > 0.95 y aun así ocultar errores graves de especificación** (Kline, 2023)
+-   El ajuste global no dice *dónde* ni *cómo* falla el modelo
+-   Los índices globales son evidencia necesaria pero no suficiente — siempre deben complementarse con el ajuste **local**
 
-## Ajuste Local: La Matriz de Residuos de Correlación {.smaller}
+## Ajuste Local: Residuos de Correlación {.smaller}
 
--   La **evaluación profunda** del modelo ocurre a nivel local: par a par de variables
+-   El ajuste global promedia el ajuste de todo el modelo — puede esconder problemas específicos
 -   La **Matriz de Residuos de Correlación** muestra las diferencias entre:
-    -   Las correlaciones **observadas** en los datos
-    -   Las correlaciones **reproducidas** (implicadas) por el modelo estimado
--   **Kline (2023):** los residuos de correlación son uno de los indicadores más informativos para detectar errores de especificación
+    -   Correlaciones **observadas** en los datos
+    -   Correlaciones **reproducidas** por el modelo
+-   **Residuos absolutos \> 0.10** → problema grave de ajuste local entre ese par de ítems
+-   Kline (2023): es la herramienta más informativa para detectar errores de especificación
 
-    -   **Residuos absolutos \> 0.10** → problema grave de ajuste local entre ese par de variables
-    -   Indican que el modelo no captura adecuadamente la relación entre esos dos ítems
-
--   En `lavaan` se obtienen con:
+## Ajuste Local: Código en `lavaan` {.smaller}
 
 ```{r}
 #| echo: true
@@ -363,18 +359,16 @@ print(residuos_cor)
 
 :::{.callout-important}
 ## Regla práctica (Kline, 2023)
-Un modelo puede "pasar" el RMSEA y el CFI y **aun así debe ser rechazado o revisado** si presenta múltiples residuos de correlación con valor absoluto \> 0.10.
+Un modelo puede "pasar" el RMSEA y el CFI y **aun así debe ser rechazado o revisado** si presenta residuos de correlación con valor absoluto \> 0.10.
 :::
 
 ## Cargas factoriales y comunalidades {.smaller}
 
--   Estimamos el modelo y obtenemos cargas para cada variable en su factor correspondiente
--   Obtenemos soluciones estandarizadas y no estandarizadas
--   Un buen modelo tiene cargas factoriales estandarizadas sobre 0,7 (o al menos sobre 0,5)
--   **Recordatorio:** las cargas factoriales son una medida estandarizada de asociación entre el indicador y la variable latente
--   Las comunalidades corresponden al R-cuadrado, esto es, el porcentaje de varianza de una variable que es explicado por la variable latente (carga estandarizada al cuadrado).
--   Las cargas (y comunalidades) más altas implican que las variables son más relevantes a la hora de definir un factor (mediciones más “puras” de este)
--   La información de las cargas sirve para determinar eventualmente que ítem sería mejor eliminar (si es que es necesario eliminar algún ítem), pudiéndose descartar la(s) variable(s) con la(s) carga(s) más baja(s).
+-   Las **cargas factoriales estandarizadas** miden la asociación entre el indicador y la variable latente
+    -   Buen modelo: cargas ≥ 0,7 (mínimo aceptable: 0,5)
+-   Las **comunalidades** son el R² de cada indicador: proporción de su varianza explicada por el factor
+-   Cargas más altas → mediciones más “puras” del constructo
+-   El indicador con carga más baja es candidato a eliminar si es necesario reducir la escala
 
 ## Cargas factoriales y comunalidades {.smaller}
 
@@ -498,25 +492,25 @@ Covariances:
     -   Agregar una correlación entre los errores de `dom1` y `dom2` (mi = 6,437)
     -   Agregar una correlación entre los errores de `aut2` y `dom3` (mi = 4,180)
 
-## Reespecificar modelo: El peligro del HARKing {.smaller}
+## Reespecificar modelo: HARKing {.smaller}
 
 :::{.callout-warning}
-## Capitalización del azar y HARKing
-Agregar correlaciones de error *solo* porque un IM es alto (\> 3.84) transforma el AFC en análisis exploratorio — y generalmente sin que el investigador lo reconozca.
+## Capitalización del azar
+Agregar correlaciones de error *solo* porque un IM es alto transforma el AFC en análisis exploratorio.
 :::
 
--   Este procedimiento equivale a **HARKing** (*Hypothesizing After the Results are Known*): postular hipótesis *después* de ver los resultados de los datos
--   Al modificar el modelo guiado mecánicamente por los IM:
-    -   **Capitalizas el azar**: ajustas el modelo a las particularidades de *esta* muestra específica
-    -   Los índices de ajuste mejorarán artificialmente — no porque el modelo sea más correcto, sino porque tiene más parámetros libres
-    -   El modelo pierde su carácter **confirmatorio** y pasa a ser de facto **exploratorio**
+-   **HARKing** (*Hypothesizing After the Results are Known*): postular hipótesis *después* de ver los datos
+-   Al modificar mecánicamente según los IM:
+    -   **Capitalizas el azar**: ajustas a *esta* muestra, no a la teoría
+    -   Los índices mejoran artificialmente — más parámetros, no mejor modelo
+    -   El AFC pierde su carácter **confirmatorio**
 -   Kline (2023): *"Parameter changes suggested by MIs that lack theoretical or logical justifications should not be made"*
 
-**Reglas de oro para la reespecificación:**
+## Reespecificar modelo: Reglas de oro {.smaller}
 
-1.  Toda modificación debe tener una **justificación sustantiva y teórica previa**, no solo un IM alto
-2.  Correlacionar errores de dos ítems exige explicar por qué comparten varianza *más allá* del factor común (ej. mismo método, mismo momento, redacción similar)
-3.  Si el modelo se reespecifica guiado por los datos: **debe validarse en una muestra independiente** antes de reportarse como un resultado confirmatorio
+1.  Toda modificación requiere **justificación sustantiva y teórica previa** — no solo un IM alto
+2.  Correlacionar errores exige explicar por qué dos ítems comparten varianza *más allá* del factor (ej. redacción similar, mismo método, mismo momento)
+3.  Si el modelo se modifica guiado por los datos: **validar en muestra independiente** antes de reportarlo como resultado confirmatorio
 
 ## Repaso de conceptos centrales de análisis factorial confirmatorio {.smaller}
 
@@ -534,11 +528,10 @@ Agregar correlaciones de error *solo* porque un IM es alto (\> 3.84) transforma 
     -   **Matriz de Correlación:** En lugar de una matriz de Pearson (para variables continuas), el modelo se basa en una **matriz de correlación policórica**, que estima la correlación entre las variables latentes continuas que se asumen subyacen a las respuestas ordinales observadas.
     -   **Método de Estimación:** El estimador de Máxima Verosimilitud (ML) no es adecuado. Se utiliza un estimador robusto como el de **Mínimos Cuadrados Ponderados Diagonalmente (WLSMV)**, que está diseñado para datos categóricos.
 
-## Tratamiento de Ítems Ordinales en `lavaan` {.smaller}
+## Ítems Ordinales en `lavaan` {.smaller}
 
--   En lugar de modificar el dataframe previamente, `lavaan` permite declarar las variables como ordinales directamente dentro de la función `cfa()`.
--   Este método es más directo y no altera el objeto de datos original. Se logra usando el argumento `ordered`.
--   Al especificar variables ordinales, es crucial usar un estimador robusto como **WLSMV (Mínimos Cuadrados Ponderados Diagonalmente)**, el cual se especifica con el argumento `estimator`.
+-   `lavaan` permite declarar variables ordinales directamente en `cfa()` con el argumento `ordered`
+-   Usar siempre el estimador robusto **WLSMV** (`estimator = "WLSMV"`) para datos categóricos
 
 ```{r}
 #| echo: true
