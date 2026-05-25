@@ -85,7 +85,7 @@ Este es uno de los pasos más **críticos y subjetivos** del AFE. Extraer muy po
 *   **Para AFE (Factor Común):** Algunos autores sugieren retener factores con autovalor mayor que la **varianza común promedio**. Sin embargo, el >1 sobre la matriz de correlación original es el más común.
 
 **Ventaja:** Simple y objetivo.
-**Desventaja:** Tiende a **sobresestimar** (extraer demasiados) o a veces **subestimar** el número de factores. Usar con precaución y junto a otros criterios.
+**Desventaja:** Tiende a **sobreestimar** (extraer demasiados) o a veces **subestimar** el número de factores. Usar con precaución y junto a otros criterios.
 
 ## Gráfico de Sedimentación (Scree Plot) {.smaller}
 

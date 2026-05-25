@@ -250,7 +250,7 @@ disenio <- svydesign(
   ids     = ~segmento,
   strata  = ~estrato,
   weights = ~peso,
-  data    = datos_analisis,
+  data    = datos_completos,
   nest    = TRUE
 )
 
