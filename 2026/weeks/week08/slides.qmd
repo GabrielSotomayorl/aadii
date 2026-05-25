@@ -504,9 +504,8 @@ Agregar correlaciones de error *solo* porque un IM es alto transforma el AFC en 
     -   **Capitalizas el azar**: ajustas a *esta* muestra, no a la teoría
     -   Los índices mejoran artificialmente — más parámetros, no mejor modelo
     -   El AFC pierde su carácter **confirmatorio**
--   Kline (2023): *"Parameter changes suggested by MIs that lack theoretical or logical justifications should not be made"*
 
-## Reespecificar modelo: Reglas de oro {.smaller}
+## Reespecificar modelo {.smaller}
 
 1.  Toda modificación requiere **justificación sustantiva y teórica previa** — no solo un IM alto
 2.  Correlacionar errores exige explicar por qué dos ítems comparten varianza *más allá* del factor (ej. redacción similar, mismo método, mismo momento)
