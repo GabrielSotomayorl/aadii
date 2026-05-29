@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(quarto render:*)"
+      "Bash(quarto render:*)",
+      "Bash(unzip -o IPO-R.zip -d IPO-R_temp)"
     ]
   }
 }
