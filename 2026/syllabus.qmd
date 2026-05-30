@@ -166,7 +166,7 @@ Los estudiantes pueden impugnar la corrección de cualquier evaluación escrita,
 * De la Garza García, J. (2013). *Análisis estadístico multivariante: un enfoque teórico y práctico*. McGraw-Hill. ISBN: 978-607-15-0817-1
 * Ferrando, P. J. & Anguiano-Carrasco, C. (2010). El análisis factorial como técnica de investigación en psicología. *Papeles del Psicólogo*, 31, 18–33.
 * Gana, K. & Broc, G. (2019). *Structural equation modeling with lavaan*. Wiley. ISBN: 978-1786303691
-* Laboratorio de Ciencia Social Abierta (LISA-COES). (2021, 3 de noviembre). *Componentes: Guía para los análisis reproducibles*. https://lisa-coes.netlify.app/03componentes/
+* Laboratorio de Ciencia Social Abierta (LISA-COES). (2021, 3 de noviembre). *Componentes: Guía para los análisis reproducibles*. https://lisacoes.com/componentes/c-repro/
 * Levi, J. P. & Varela, J. (2001). *Análisis multivariante para las ciencias sociales*. Prentice Hall. ISBN: 84-205-3727-6
 * Ministerio de Desarrollo Social y Familia. (2023). *Metodología de diseño muestral: Encuesta de Caracterización Socioeconómica Nacional (Casen 2022)*. Santiago, Chile: Ministerio de Desarrollo Social y Familia. Recuperado de https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/casen/2022/Diseno_Muestral_Casen_2022_v20oct23.pdf
 * Pérez, E., Medrano, L. A., & Rosas, J. S. (2013). El path analysis: conceptos básicos y ejemplos de aplicación. *Revista Argentina de Ciencias del Comportamiento*, 5(1), 52–66.

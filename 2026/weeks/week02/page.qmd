@@ -22,4 +22,4 @@ En este laboratorio descargarás y explorarás un proyecto reproducible de ejemp
 
 - **Rodríguez-Sánchez, F., Pérez-Luque, A. J., Bartomeus, I., & Varela, S. (2016)**. *Ciencia reproducible: qué, por qué, cómo.* [https://revistaecosistemas.net/index.php/ecosistemas/article/view/1178/973](https://revistaecosistemas.net/index.php/ecosistemas/article/view/1178/973)
 
-- **LISA-COES.** Protocolo IPO para investigación reproducible: [https://lisa-coes.netlify.app/ipo-repro/](https://lisa-coes.netlify.app/ipo-repro/)
+- **LISA-COES.** Protocolo IPO para investigación reproducible: [https://lisacoes.com/protocolos/a-ipo-rep/](https://lisacoes.com/protocolos/a-ipo-rep/)

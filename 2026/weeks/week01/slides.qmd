@@ -184,7 +184,7 @@ Al finalizar el semestre, ustedes serán capaces de:
 | 9 | Exploring complex survey data analysis using R ({srvyr} & {survey}) | Zimmer, S. A. et al. | 2024 |
 | 10 | RStudio para estadística descriptiva en ciencias sociales | Boccardo, G. & Ruiz, F. | 2019 |
 | 11 | Ciencia reproducible: qué, por qué, cómo | Rodríguez-Sánchez et al. | 2016 |
-| 12 | [Guía para los análisis reproducibles](https://lisa-coes.netlify.app/03componentes/) | LISA-COES | 2021 |
+| 12 | [Guía para los análisis reproducibles](https://lisacoes.com/componentes/c-repro/) | LISA-COES | 2021 |
 | 13 | Metodología de diseño muestral: Encuesta Casen 2022 | Min. Desarrollo Social | 2023 |
 | 14 | [The lavaan tutorial](https://lavaan.ugent.be/tutorial/) | Rosseel, Y. | 2017 |
 :::

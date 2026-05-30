@@ -290,7 +290,7 @@ Para hacer nuestro proyecto de investigaci√≥n reproducible no solo importa el c√
 -   **Auto-Contenido**: Busca crear proyectos que contengan todo lo necesario para ser ejecutados y reproducidos por otros.
 
 ::: {style="font-size: 0.85rem; color: #555; margin-top: 1em;"}
-Basado en el protocolo de [LISA-COES](https://lisa-coes.netlify.app/ipo-repro/)
+Basado en el protocolo de [LISA-COES](https://lisacoes.com/protocolos/a-ipo-rep/)
 :::
 
 ## Estructura de Carpetas IPO {.smaller}

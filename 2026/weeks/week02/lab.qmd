@@ -29,6 +29,6 @@ Puedes descargar el archivo completo del proyecto en el siguiente enlace:
 
 [Descargar Proyecto Reproducible](IPO-R.zip)
 
-Para revisar un proyecto real de mayor complejidad, utilizando todos los componentes del protocolo, pueden consultar el [ejemplo provisto por LISA](https://lisa-coes.netlify.app/ipo-repro/).
+Para revisar un proyecto real de mayor complejidad, utilizando todos los componentes del protocolo, pueden consultar el [ejemplo provisto por LISA](https://lisacoes.com/protocolos/a-ipo-rep/).
 
 [Descargar ejemplo completo](https://lisa-coes.github.io/ipo/IPO_miniex/IPO_miniex.tar.gz)
