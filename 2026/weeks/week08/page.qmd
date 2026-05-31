@@ -14,11 +14,19 @@ Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer
 <iframe src="slides.html" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
 </div>
 
-## 💻 Taller Aplicado (Práctico 8)
+## 💻 Talleres Aplicados (Prácticos 8)
 
-En este laboratorio implementaremos un AFC completo con datos sobre autoritarismo y dominancia social. Especificaremos un modelo de dos factores correlacionados con `lavaan`, evaluaremos el ajuste, interpretaremos cargas y comunalidades, visualizaremos el modelo con `semPlot` y exploraremos índices de modificación.
+En esta semana desarrollaremos dos laboratorios prácticos:
 
-👉 **[Ir al Práctico 8: Análisis Factorial Confirmatorio (AFC)](lab.qmd)**
+### Parte 1: Fundamentos de AFC con Datos Ideales
+En este primer laboratorio implementaremos un AFC básico utilizando el estimador estándar (ML) sobre datos continuos. Especificaremos un modelo de dos factores correlacionados con `lavaan`, evaluaremos su ajuste global y local (matriz de residuos de correlación), interpretaremos cargas y comunalidades, visualizaremos el modelo con `semPlot` y exploraremos índices de modificación con sentido crítico.
+
+👉 **[Ir al Práctico 8.1: Análisis Factorial Confirmatorio (AFC) con lavaan](lab.qmd)**
+
+### Parte 2: AFC con Datos de Encuestas Complejas y Variables Ordinales
+En este segundo laboratorio daremos un paso hacia la aplicación real: manejaremos valores perdidos reales, tratamos variables ordinales con correlaciones policóricas y estimador WLSMV, comparamos modelos alternativos y corregimos los errores estándar e índices de ajuste según un diseño muestral complejo (ponderadores, estratos y conglomerados) utilizando `lavaan` y `lavaan.survey` sobre datos de la Encuesta de Bienestar Social (EBS) 2023.
+
+👉 **[Ir al Práctico 8.2: AFC con Datos de Encuesta Compleja](lab2.qmd)**
 
 ## 📚 Lecturas Obligatorias
 

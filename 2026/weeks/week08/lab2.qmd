@@ -1,0 +1,270 @@
+---
+title: "Práctico 8.2: Análisis Factorial Confirmatorio (AFC) con Datos Complejos"
+subtitle: "AFC con lavaan y lavaan.survey"
+date: "2026-04-27"
+lang: es
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-tools: true
+    df-print: paged
+    body-classes: lab-content
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## 0. Objetivos del Práctico
+
+En la primera parte de este práctico, aprendimos los fundamentos del Análisis Factorial Confirmatorio (AFC) con un conjunto de datos ideal. En este práctico, daremos un paso crucial hacia la aplicación en el mundo real, utilizando datos de una encuesta nacional con un **diseño muestral complejo**. El objetivo es ir más allá de la simple estimación y abordar los desafíos que surgen al trabajar con datos reales.
+
+Al finalizar, serás capaz de:
+
+1.  Aplicar un flujo de trabajo completo de AFC, desde la preparación de los datos hasta la interpretación final.
+2.  Manejar y codificar **valores perdidos** de manera apropiada.
+3.  Estimar modelos AFC con variables **ordinales**, utilizando el estimador correcto (`WLSMV`).
+4.  **Comparar modelos teóricos alternativos** (unifactorial vs. bifactorial) para determinar la mejor estructura latente.
+5.  Incorporar un **diseño muestral complejo** (ponderadores, estratos y conglomerados) para obtener estimaciones de parámetros, errores estándar e índices de ajuste generalizables y estadísticamente válidos.
+6.  **Evaluar el ajuste local** mediante la matriz de residuos de correlación en diseños complejos para detectar fallas específicas de especificación.
+
+## 1. Carga de Paquetes y Nota sobre `lavaan.survey`
+
+### Una Nota Importante Sobre `lavaan.survey`
+Antes de comenzar, es crucial abordar el estado del paquete `lavaan.survey`. Este paquete fue "archivado" en CRAN (el repositorio oficial de R) en 2023. Esto ocurrió porque, tras actualizaciones de R y del propio `lavaan`, algunas de sus pruebas automáticas internas comenzaron a fallar por diferencias numéricas muy pequeñas, y el autor no actualizó el paquete para corregirlas.
+
+Este es un ejemplo real y práctico de los desafíos del software de código abierto: los paquetes pueden quedar sin mantenimiento. Para este curso, seguiremos usándolo por su gran valor pedagógico para enseñar el flujo de trabajo con encuestas complejas. Lo instalaremos desde un "espejo" en GitHub, pero es importante que seas consciente de que para futuros proyectos de investigación, deberías verificar el estado del paquete y considerar las alternativas mencionadas en el texto de la clase.
+
+```{r install_survey_lavaan, eval=FALSE}
+# Como lavaan.survey fue archivado de CRAN, lo instalamos desde un mirror en GitHub
+# Esto podría requerir el paquete 'remotes'. Si no lo tienes, instálalo primero.
+# install.packages("remotes")
+remotes::install_github("cran/lavaan.survey")
+```
+
+Ahora, cargamos todos los paquetes que usaremos en este práctico.
+
+```{r load_packages}
+# Cargar paquetes necesarios
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(
+  haven,         # importar datos SPSS/Stata
+  survey,        # declarar y analizar diseños complejos
+  lavaan,        # estimación de modelos de ecuaciones estructurales/CFA
+  lavaan.survey, # corregir modelos lavaan por diseño complejo
+  dplyr,         # manipulación de datos
+  texreg,        # tablas comparativas de modelos
+  semPlot        # graficar modelos factoriales
+)
+```
+
+## 2. El Caso de Estudio: Escala PHQ-4 y Datos EBS 2023
+
+Nuestro caso de estudio es la validación de la estructura factorial de la escala **Patient Health Questionnaire-4 (PHQ-4)**, una herramienta de tamizaje ultra-breve para la ansiedad y la depresión. Utilizaremos los datos de la **Encuesta de Bienestar Social (EBS) 2023** de Chile.
+
+La escala PHQ-4 consta de 4 ítems: dos para depresión y dos para ansiedad.
+
+| Ítem EBS | Constructo | Pregunta | Opciones de Respuesta |
+|:---------|:-----------|:------------------------------------------------------------------|:----------------------|
+| `ss7_a`  | Depresión  | ¿Poco interés o placer en hacer cosas?                            | 1-4 (Nunca a Casi todos los días) |
+| `ss7_b`  | Depresión  | ¿Se ha sentido decaído(a), deprimido(a) o sin esperanzas?        | 1-4 (Nunca a Casi todos los días) |
+| `ss7_c`  | Ansiedad   | ¿Se ha sentido nervioso(a), ansioso(a) o con los nervios de punta? | 1-4 (Nunca a Casi todos los días) |
+| `ss7_d`  | Ansiedad   | ¿No ha sido capaz de parar o controlar su preocupación?           | 1-4 (Nunca a Casi todos los días) |
+
+Para este práctico, puedes descargar la base de datos `Base de datos EBS 2023.RData` directamente desde el sitio del curso y colocarla en tu directorio de trabajo. Al cargarla se importará el objeto `EBS_2023_vp`, que renombraremos como `ebs` para facilitar el código de la sesión.
+
+```{r load_data_hidden, eval=TRUE, echo=FALSE}
+load("../../data/Base de datos EBS 2023.RData")
+ebs <- EBS_2023_vp
+```
+
+```{r load_data, eval=FALSE}
+# Cargar datos de la EBS 2023
+load("Base de datos EBS 2023.RData")
+ebs <- EBS_2023_vp
+```
+
+## 3. Preparación y Limpieza de Datos
+
+El trabajo con datos reales casi siempre requiere una fase de limpieza. Nuestros pasos serán:
+1.  **Seleccionar** las variables de interés.
+2.  **Codificar los valores perdidos** (-88 y -99) como `NA`.
+3.  **Recodificar los ítems** de 1-4 a 0-3 para facilitar la interpretación.
+4.  **Gestionar los casos perdidos** (usaremos análisis de casos completos con `na.omit()`).
+
+```{r prepare_data}
+# 1. Nombres de las variables de interés
+phq4_vars <- c("ss7_a", "ss7_b", "ss7_c", "ss7_d")
+design_vars <- c("varunit", "estrato_ebs", "fexp")
+
+# 2. Seleccionar y limpiar los datos
+ebs_limpia <- ebs %>%
+  select(all_of(phq4_vars), all_of(design_vars)) %>%
+  mutate(across(all_of(phq4_vars), ~na_if(., -88))) %>% # Convertir -88 a NA
+  mutate(across(all_of(phq4_vars), ~na_if(., -99))) %>% # Convertir -99 a NA
+  # 3. Recodificar ítems de 1-4 a 0-3 (0 = Nunca, 3 = Casi todos los días)
+  mutate(across(all_of(phq4_vars), ~.x - 1)) %>%
+  # 4. Eliminar filas con cualquier NA en los ítems PHQ-4 para el análisis
+  na.omit()
+
+# Verificar cantidad de datos perdidos eliminados
+cat("Número de casos originales:", nrow(ebs), "\n")
+cat("Número de casos completos para el análisis:", nrow(ebs_limpia), "\n")
+```
+Observamos que solo se perdieron 19 casos (11234 - 11215), por lo que proceder con casos completos es una estrategia razonable aquí.
+
+## 4. Especificación y Comparación de Modelos
+
+Nuestra pregunta teórica es: ¿la escala PHQ-4 mide un único constructo de "malestar psicológico" o dos constructos distintos pero relacionados de "depresión" y "ansiedad"? Para responder, especificaremos y compararemos dos modelos.
+
+```{r define_phq_models}
+# Modelo 1: Un solo factor de malestar psicológico
+mod_phq4_1f <- '
+  malestar =~ ss7_a + ss7_b + ss7_c + ss7_d
+'
+
+# Modelo 2: Dos factores correlacionados (Depresión y Ansiedad)
+mod_phq4_2f <- '
+  depresion =~ ss7_a + ss7_b
+  ansiedad  =~ ss7_c + ss7_d
+'
+```
+
+Estimaremos ambos modelos usando el estimador **WLSMV**, adecuado para variables ordinales, e incorporando los pesos muestrales (`fexp`).
+
+```{r fit_phq_models}
+# Vector con los nombres de los ítems a tratar como ordinales
+items_ordinales <- c("ss7_a", "ss7_b", "ss7_c", "ss7_d")
+
+# Estimar Modelo 1 (Unifactorial)
+fit_1f <- cfa(mod_phq4_1f, 
+              data = ebs_limpia, 
+              ordered = items_ordinales,
+              sampling.weights = "fexp",
+              estimator = "WLSMV")
+
+# Estimar Modelo 2 (Bifactorial)
+fit_2f <- cfa(mod_phq4_2f, 
+              data = ebs_limpia, 
+              ordered = items_ordinales,
+              sampling.weights = "fexp",
+              estimator = "WLSMV")
+```
+
+Ahora, comparamos formalmente ambos modelos.
+
+```{r compare_models}
+# Comparar los dos modelos
+anova(fit_1f, fit_2f)
+```
+
+**Interpretación de la Comparación:**
+La prueba de diferencia de Chi-cuadrado escalada nos permite decidir qué modelo es superior. El resultado es inequívoco:
+*   **`Chisq diff = 217.58`**: La diferencia en el ajuste entre los modelos es extremadamente grande.
+*   **`Df diff = 1`**: Esta diferencia se evalúa con 1 grado de libertad.
+*   **`Pr(>Chisq) < 2.2e-16 ***`**: El p-valor es prácticamente cero.
+
+**Conclusión:** Rechazamos de forma contundente la hipótesis nula de que ambos modelos se ajustan igual de bien. El modelo más complejo (el de dos factores, `fit_2f`) ofrece una **mejora de ajuste estadísticamente muy significativa** en comparación con el modelo de un solo factor. Esto nos da una fuerte evidencia empírica para preferir la estructura de dos dimensiones (Depresión y Ansiedad) para la escala PHQ-4.
+
+## 5. Análisis en Profundidad del Modelo Seleccionado (2 Factores)
+
+Habiendo elegido el modelo de dos factores, ahora debemos corregir sus errores estándar e índices de ajuste para reflejar el diseño muestral completo de la EBS.
+
+```{r survey_design_ebs}
+# 1. Crear el objeto de diseño de encuesta con los datos limpios
+diseno_ebs <- svydesign(
+  id = ~varunit, 
+  strata = ~estrato_ebs, 
+  weights = ~fexp, 
+  data = ebs_limpia)
+
+# 2. Corregir el modelo lavaan usando el diseño de encuesta
+fit_2f_complejo <- lavaan.survey(
+  lavaan.fit = fit_2f, 
+  survey.design = diseno_ebs)
+```
+
+Ahora sí, solicitamos el resumen final y definitivo.
+
+```{r summary_final_model}
+# 3. Obtener el resumen completo y corregido
+summary(fit_2f_complejo, 
+        standardized = TRUE, 
+        fit.measures = TRUE, 
+        rsquare = TRUE)
+```
+
+**Interpretación de los Resultados del Modelo Final:**
+
+*   **Índices de Ajuste:**
+    *   **Test Chi-cuadrado (Scaled):** El valor es 11.367 con 1 gl, y un p-valor de 0.001. A pesar de que el p-valor es significativo (lo que indica un desajuste estadísticamente significativo), esto es esperable en muestras muy grandes (N=11,215), donde la prueba tiene un poder enorme para detectar discrepancias triviales. Por ello, nos fiamos más de los otros índices.
+    *   **CFI/TLI:** El **Robust CFI = 0.998** y el **Robust TLI = 0.989**. Ambos valores son excelentes, muy por encima del umbral de 0.95, lo que indica un ajuste comparativo casi perfecto.
+    *   **RMSEA:** El **Robust RMSEA = 0.051**. Este valor es muy bueno, situándose en el límite del criterio estricto (≤ 0.05). Su intervalo de confianza al 90% [0.027, 0.079] es estrecho y se encuentra completamente por debajo del umbral de mal ajuste (0.08).
+    *   **SRMR = 0.006:** Este valor es extremadamente bajo, indicando que, en promedio, los residuos estandarizados son muy pequeños.
+    *   **Conclusión de Ajuste:** En conjunto, a pesar del Chi-cuadrado significativo, los demás índices (CFI, TLI, RMSEA, SRMR) señalan un **excelente ajuste del modelo de dos factores a los datos**.
+
+*   **Parámetros del Modelo:**
+    *   **Cargas Factoriales (`Std.all`):**
+        *   **Depresión:** El ítem `ss7_a` ("poco interés") tiene una carga de **0.713** y `ss7_b` ("sentirse decaído") tiene una carga de **0.875**. Ambas son muy fuertes y significativas.
+        *   **Ansiedad:** El ítem `ss7_c` ("sentirse nervioso") carga **0.805** y `ss7_d` ("no controlar preocupación") carga **0.673**. Nuevamente, ambas son sustanciales y significativas, aunque `ss7_d` es un indicador ligeramente más débil que los otros tres.
+    *   **Correlación entre Factores (`Std.all`):**
+        *   La correlación entre los factores latentes `depresion` y `ansiedad` es de **0.870**. Esta es una correlación **muy alta y positiva**, lo que es teóricamente esperable dada la alta comorbilidad entre ambos constructos. Indica que, aunque son estadísticamente separables, en la práctica se superponen enormemente.
+    *   **Comunalidades (`R-Square`):**
+        *   `ss7_a`: 50.9% de su varianza es explicada por el factor "depresión".
+        *   `ss7_b`: 76.6% (excelente).
+        *   `ss7_c`: 64.8% (muy bueno).
+        *   `ss7_d`: 45.3%.
+        *   Los ítems `ss7_b` y `ss7_c` son los indicadores más "puros" de sus respectivos factores. `ss7_d` es el más débil, con más de la mitad de su varianza siendo única o error de medición.
+
+### 5.2 Evaluación del Ajuste Local (Matriz de Residuos de Correlación)
+
+El ajuste global resume el ajuste del modelo en unos pocos indicadores heurísticos, pero puede ocultar problemas específicos importantes a nivel de ítems. La **matriz de residuos de correlación** evalúa el ajuste local al mostrar las discrepancias (residuos) entre las correlaciones observadas empíricamente y las correlaciones reproducidas (o implicadas) por el modelo para cada par de ítems.
+
+De acuerdo con la regla práctica (Kline, 2023), un residuo con un valor absoluto **mayor a 0.10** indica un problema grave de ajuste local entre ese par de indicadores. Un residuo con signo positivo indica que el modelo subestima la asociación real entre las variables, mientras que uno negativo señala que la sobreestima.
+
+Calculamos y extraemos la matriz de residuos de correlación para nuestro modelo final:
+
+```{r local_fit_residuals}
+# Calcular y extraer la matriz de residuos de correlación para el modelo final
+residuos_cor <- lavResiduals(fit_2f_complejo, type = "cor")$cov
+print(round(residuos_cor, 3))
+```
+
+**Interpretación de la Matriz de Residuos de Correlación:**
+
+Al examinar los residuos del modelo de dos factores para la escala PHQ-4, observamos que:
+*   Todos los residuos de correlación son extremadamente pequeños, en un rango entre **-0.011 y 0.020**.
+*   Ninguno de los valores se acerca, ni de lejos, al umbral problemático de **0.10**.
+*   La mayor discrepancia se observa entre los ítems `ss7_a` (Depresión) y `ss7_d` (Ansiedad), con un residuo de `0.020`. Esto indica que el modelo subestima la correlación real entre estos dos ítems de manera totalmente insignificante.
+
+**Conclusión del Ajuste Local:**
+La evaluación local confirma que el modelo de dos factores no solo se comporta de manera óptima a nivel global (CFI robusto = 0.998, RMSEA robusto = 0.051), sino que también es capaz de **reproducir con altísima fidelidad las correlaciones originales** entre cada par de ítems. Esto descarta problemas de especificación local y nos da plena seguridad para sostener que la escala PHQ-4 está compuesta por dos dimensiones claras (Depresión y Ansiedad) que reproducen adecuadamente las respuestas de la población.
+
+## 6. Visualización del Modelo Final
+
+```{r plot_final_model, fig.width=10, fig.height=6}
+# Graficar el modelo original (fit_2f). Los valores de los parámetros son los correctos.
+semPlot::semPaths(fit_2f, 
+                  what = "std",
+                  whatLabels = "std",
+                  residuals = TRUE, 
+                  intercepts = FALSE, 
+                  edge.color = "black",
+                  layout = "tree2")
+```
+
+**Interpretación del Gráfico:**
+El diagrama visualiza claramente la estructura del modelo. Vemos los dos factores latentes (círculos) y sus respectivos indicadores (rectángulos). Las flechas muestran las cargas estandarizadas, confirmando visualmente que `ss7_b` (0.875) y `ss7_c` (0.805) son los indicadores más fuertes. Lo más destacable es la línea curva gruesa entre `depresion` y `ansiedad` con el valor **0.87**, ilustrando la altísima correlación entre ambos constructos.
+
+## 7. Conclusión General
+
+En este práctico, hemos realizado un análisis factorial confirmatorio de principio a fin utilizando datos reales de una encuesta compleja. El proceso nos llevó a:
+
+1.  **Preparar y limpiar** una base de datos real, manejando valores perdidos.
+2.  **Comparar formalmente dos modelos teóricos**, concluyendo que una estructura de dos factores (Depresión y Ansiedad) es empíricamente superior a una de un solo factor.
+3.  **Aplicar correctamente las correcciones por diseño muestral complejo**, obteniendo resultados válidos y generalizables.
+4.  **Evaluar tanto el ajuste global como el ajuste local (matriz de residuos)**, confirmando la precisión del modelo tanto en sus heurísticos generales como en cada par individual de ítems (con residuos menores a 0.02).
+5.  **Interpretar en detalle un modelo final**, que mostró un ajuste excelente, cargas factoriales robustas y una correlación muy alta entre los factores latentes.
+
+Este ejercicio demuestra el poder del AFC no solo para "confirmar" una teoría, sino para testear activamente hipótesis rivales y manejar las complejidades inherentes a los datos reales de las ciencias sociales.

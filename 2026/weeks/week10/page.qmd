@@ -1,0 +1,29 @@
+---
+title: "🗓️ Semana 10: Análisis de Senderos II"
+---
+
+En esta semana profundizamos en el **Análisis de Senderos (Path Analysis)**, enfocándonos en los pasos prácticos para especificar, identificar, estimar, evaluar y reespecificar estos modelos en R utilizando el paquete `{lavaan}`.
+
+Revisamos la sintaxis del lenguaje de fórmulas de `lavaan` (`~` para regresiones directas, `~~` para covarianzas de residuos, y `:=` para calcular efectos indirectos y totales). Aprendimos a realizar una minuciosa comprobación de supuestos (casos perdidos, correlaciones y normalidad multivariante mediante el test de Mardia). Discutimos la selección del estimador robusto **DWLS** ante violaciones de normalidad y variables dicotómicas, y aprendimos a evaluar la bondad de ajuste global (Chi-cuadrado, RMSEA, CFI, TLI y SRMR) e interpretar coeficientes path directos, indirectos y varianza explicada ($R^2$).
+
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## 💻 Taller Aplicado (Práctico 10)
+
+En este laboratorio implementaremos un Análisis de Senderos completo con datos de la encuesta **ELSOC (Ola 1)**. Evaluaremos el supuesto de normalidad multivariante, estimaremos un modelo inicial mediante DWLS, analizaremos sus índices de ajuste y coeficientes path, y luego especificaremos un modelo reespecificado que incluye efectos directos, calculando y testeando explícitamente los efectos indirectos de la orientación política sobre el acuerdo con castigos severos mediado por el autoritarismo.
+
+👉 **[Ir al Práctico 10: Análisis de Senderos](lab.qmd)**
+
+## 📚 Lecturas Obligatorias
+
+- **Gana, K. & Broc, G. (2019).** *Structural equation modeling with lavaan*. Wiley. Chapter 2: Path Analysis.
+
+## 📟 Dudas y Comunicación
+
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dudas sobre el curso.

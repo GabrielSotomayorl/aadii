@@ -99,7 +99,21 @@ website:
                 - href: 2026/weeks/week08/page.qmd
                   text: "👨‍🏫 Material de clase"
                 - href: 2026/weeks/week08/lab.qmd
-                  text: "💻 Práctico"
+                  text: "💻 Práctico 8.1"
+                - href: 2026/weeks/week08/lab2.qmd
+                  text: "💻 Práctico 8.2"
+            - section: "Semana 09"
+              collapse: false
+              contents:
+                - href: 2026/weeks/week09/page.qmd
+                  text: "👨‍🏫 Material de clase"
+            - section: "Semana 10"
+              collapse: false
+              contents:
+                - href: 2026/weeks/week10/page.qmd
+                  text: "👨‍🏫 Material de clase"
+                - href: 2026/weeks/week10/lab.qmd
+                  text: "💻 Práctico 10"
 
 
   navbar:

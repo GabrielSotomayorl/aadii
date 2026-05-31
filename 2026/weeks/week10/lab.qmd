@@ -1,0 +1,299 @@
+---
+title: "Práctico 10: Análisis de Senderos"
+subtitle: "Análisis de Senderos con lavaan"
+date: "2026-06-08"
+lang: es
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-tools: true
+    df-print: paged
+    body-classes: lab-content
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## 0. Objetivos del Práctico
+
+En este práctico, aprenderemos a especificar, estimar e interpretar modelos de Análisis de Senderos (Path Analysis - PA) utilizando el paquete `lavaan` en R. Nos enfocaremos en:
+
+1.  Comprender la **lógica y sintaxis** para definir modelos de senderos en `lavaan`.
+2.  Realizar una **revisión de supuestos** pertinente para el Análisis de Senderos, adaptando nuestras decisiones según los hallazgos.
+3.  **Estimar** los parámetros del modelo utilizando un estimador adecuado, en este caso, `DWLS` (Mínimos Cuadrados Ponderados Diagonalmente), debido a la naturaleza de nuestros datos.
+4.  Evaluar el **ajuste global** del modelo a los datos mediante diversos índices.
+5.  **Interpretar** detalladamente los coeficientes path (directos e indirectos) y la varianza explicada ($R^2$).
+6.  **Visualizar** el modelo de senderos para una mejor comprensión gráfica.
+
+## Introducción al Ejemplo
+
+El análisis de senderos es una técnica poderosa que nos permite ir más allá de las correlaciones simples, ayudándonos a testear teorías sobre cómo diferentes variables se influyen mutuamente, tanto de forma directa como a través de variables intermedias (mediadoras).
+
+Trabajaremos con un ejemplo adaptado del taller de la Dra. Monica Gerber sobre Ecuaciones Estructurales. El objetivo es analizar el efecto de la **posición política** sobre el **acuerdo con castigos severos** para quienes cometen delitos, considerando el **autoritarismo de derechas (RWA)** como una variable mediadora clave.
+
+**Modelo Hipotetizado Inicial:**
+
+Este es el diagrama conceptual que representa nuestra teoría inicial:
+
+![](https://github.com/Clases-GabrielSotomayor/pruebapagina/blob/master/content/example/input/sendero.png?raw=true){fig-align="center"}
+
+## 1. Carga de Paquetes y Datos
+
+Comenzamos cargando los paquetes que necesitaremos. `{lavaan}` será nuestra herramienta principal para el análisis de senderos.
+
+```{r load_packages}
+# Cargar paquetes
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(
+  haven,      # importar datos SPSS/Stata/RData
+  lavaan,     # estimación de modelos de senderos/CFA
+  dplyr,      # manipulación de datos
+  lavaanPlot, # visualización de diagramas de senderos
+  texreg,     # tablas comparativas de resultados
+  MVN         # test de normalidad multivariante (Mardia)
+)
+```
+
+Para este práctico, trabajaremos con la base de datos longitudinal **ELSOC_Long_2016_2023.RData**, la cual puedes descargar desde el sitio del curso y guardar en tu directorio de trabajo. Al cargarla se importará el objeto `elsoc_long_2016_2023`. 
+
+Dado que nuestro análisis se centra en el año 2016, filtraremos las observaciones correspondientes a la **Ola 1** y construiremos nuestras variables de interés a partir de los ítems originales de la encuesta:
+- **Autoritarismo de derechas (RWA):** Promedio de los ítems `c18_04` ("gobierno firme"), `c18_05` ("mandatario fuerte"), `c18_06` ("obediencia en niños") y `c18_07` ("obediencia y disciplina").
+- **Acuerdo con castigos severos (Punición):** Promedio de los ítems `f06_01` ("Asaltantes cumplir condena") y `f06_02` ("Condenas largas").
+- **Posición política:** Recodificamos la escala de autoubicación `c15` (0-10) en tres categorías excluyentes (`derecha` [7-10], `centro` [4-6], `izquierda` [0-3]). Los independientes o sin posición (`11` o `12`) actúan como categoría de referencia (`0` en todas las dummies).
+
+```{r load_data_hidden, eval=TRUE, echo=FALSE}
+load("../../data/ELSOC_Long_2016_2023.RData")
+datos <- elsoc_long_2016_2023 %>%
+  filter(ola == 1) %>%
+  mutate(
+    # Recodificar perdidos a NA en variables Likert (1 a 5)
+    c18_04 = ifelse(c18_04 %in% 1:5, c18_04, NA),
+    c18_05 = ifelse(c18_05 %in% 1:5, c18_05, NA),
+    c18_06 = ifelse(c18_06 %in% 1:5, c18_06, NA),
+    c18_07 = ifelse(c18_07 %in% 1:5, c18_07, NA),
+    f06_01 = ifelse(f06_01 %in% 1:5, f06_01, NA),
+    f06_02 = ifelse(f06_02 %in% 1:5, f06_02, NA)
+  ) %>%
+  mutate(
+    # Construcción de las variables del modelo
+    castigo_media = (f06_01 + f06_02) / 2,
+    rwa_media     = (c18_04 + c18_05 + c18_06 + c18_07) / 4,
+    derecha       = ifelse(c15 %in% 7:10, 1, ifelse(c15 %in% c(0:6, 11:12), 0, NA)),
+    izquierda     = ifelse(c15 %in% 0:3, 1, ifelse(c15 %in% c(4:12), 0, NA)),
+    centro        = ifelse(c15 %in% 4:6, 1, ifelse(c15 %in% c(0:3, 7:12), 0, NA))
+  )
+```
+
+```{r load_data, eval=FALSE}
+# Cargar la base de datos longitudinal ELSOC
+load("ELSOC_Long_2016_2023.RData")
+
+# Preparar las variables del modelo a partir de Ola 1 (2016)
+datos <- elsoc_long_2016_2023 %>%
+  filter(ola == 1) %>%
+  mutate(
+    # Convertir perdidos a NA
+    c18_04 = ifelse(c18_04 %in% 1:5, c18_04, NA),
+    c18_05 = ifelse(c18_05 %in% 1:5, c18_05, NA),
+    c18_06 = ifelse(c18_06 %in% 1:5, c18_06, NA),
+    c18_07 = ifelse(c18_07 %in% 1:5, c18_07, NA),
+    f06_01 = ifelse(f06_01 %in% 1:5, f06_01, NA),
+    f06_02 = ifelse(f06_02 %in% 1:5, f06_02, NA)
+  ) %>%
+  mutate(
+    # Construcción de variables promedio y dummies políticas
+    castigo_media = (f06_01 + f06_02) / 2,
+    rwa_media     = (c18_04 + c18_05 + c18_06 + c18_07) / 4,
+    derecha       = ifelse(c15 %in% 7:10, 1, ifelse(c15 %in% c(0:6, 11:12), 0, NA)),
+    izquierda     = ifelse(c15 %in% 0:3, 1, ifelse(c15 %in% c(4:12), 0, NA)),
+    centro        = ifelse(c15 %in% 4:6, 1, ifelse(c15 %in% c(0:3, 7:12), 0, NA))
+  )
+```
+
+## 2. Comprobación de Supuestos
+
+Antes de ajustar cualquier modelo, es fundamental revisar las características de nuestros datos y si cumplen (o no) con los supuestos de la técnica.
+
+```{r check_assumptions}
+# Seleccionar solo las variables que se usarán en el modelo
+variables_modelo <- c("castigo_media", "rwa_media", "derecha", "izquierda", "centro")
+datos_modelo <- datos %>%
+  select(all_of(variables_modelo))
+
+# Manejo de Casos Perdidos (Listwise deletion para simplificar este práctico)
+print(paste("Observaciones antes de eliminar NAs:", nrow(datos_modelo)))
+datos_modelo_completos <- datos_modelo %>%
+  na.omit()
+print(paste("Observaciones después de eliminar NAs:", nrow(datos_modelo_completos)))
+print(paste("Observaciones perdidas:", nrow(datos_modelo) - nrow(datos_modelo_completos)))
+
+# Matriz de Correlaciones (Pearson)
+matriz_cor <- cor(datos_modelo_completos, use = "pairwise.complete.obs") 
+print("Matriz de Correlaciones (Pearson):")
+print(round(matriz_cor, 2))
+
+# Normalidad Multivariante (Test de Mardia)
+resultados_mvn <- mvn(datos_modelo_completos, 
+                      mvn_test = "mardia", 
+                      univariate_test = "SW", 
+                      show_new_data = FALSE) 
+print("Resultados Test de Normalidad Multivariante (Mardia):")
+print(resultados_mvn$multivariateNormality)
+print("Resultados Test de Normalidad Univariante (Shapiro-Wilk):")
+print(resultados_mvn$univariateNormality)
+```
+
+**Interpretación Detallada de Supuestos:**
+
+*   **Casos Perdidos:** Se eliminaron **120** observaciones debido a valores perdidos en alguna de las variables del modelo, quedando **2807** casos completos para el análisis. Esta pérdida es de aproximadamente 4.1%, lo cual es sumamente bajo y aceptable.
+*   **Correlaciones (Pearson):**
+    *   `castigo_media` y `rwa_media` muestran una correlación positiva moderada de **0.28**.
+    *   `rwa_media` tiene una correlación positiva con `derecha` (**0.11**) y negativa con `izquierda` (**-0.19**), y prácticamente nula con `centro` (**-0.02**).
+    *   `castigo_media` tiene una correlación positiva baja con `derecha` (**0.07**) y negativa con `izquierda` (**-0.09**) y `centro` (**-0.06**).
+    *   No se observan correlaciones extremadamente altas (ej. > 0.80) entre los predictores de `rwa_media`, lo que sugiere que la multicolinealidad no será un problema grave.
+*   **Normalidad:**
+    *   *Multivariante (Test de Mardia):* Los resultados para Asimetría (`Skewness`) y Curtosis (`Kurtosis`) muestran p-valores de **0.00**, lo que indica que **se rechaza la hipótesis de normalidad multivariante**.
+    *   *Univariante (Test de Shapiro-Wilk):* Para todas las variables analizadas, el p-valor es **< 0.001**. Esto significa que **ninguna de estas variables sigue una distribución normal univariante** por sí sola.
+    *   **Implicancia Principal:** La marcada no-normalidad de los datos, junto con la presencia de variables dicotómicas (posición política), hace que el estimador estándar por defecto de `lavaan` (Máxima Verosimilitud - ML) no sea el más adecuado. Por ello, utilizaremos el estimador **DWLS (Diagonally Weighted Least Squares)**, que es más robusto ante la violación del supuesto de normalidad y está diseñado para manejar variables que pueden ser tratadas como ordinales o categóricas.
+
+## 3. Especificación y Estimación del Modelo de Senderos Inicial
+
+Especificamos el modelo donde el autoritarismo (`rwa_media`) media la relación entre la posición política y el acuerdo con castigos severos (`castigo_media`).
+
+**Sintaxis Clave de `lavaan`:**
+
+| Sintaxis | Operador | Ejemplo |
+|:---|:---:|:---|
+| Regresión | `~` | `Y ~ X` (Y es predicha por X) |
+| Covarianza / Varianza | `~~` | `X1 ~~ X2` (Covarianza entre errores/variables) |
+| Parámetro Definido | `:=` | `ind := a*b` (Definición de efectos indirectos) |
+| Etiquetar Path | `*` | `Y ~ b1*X` (Etiqueta el path como `b1`) |
+
+```{r specify_fit_path_model1}
+# Especificar el modelo de senderos inicial
+mod_sendero1_spec <- '
+  # Regresiones (senderos directos)
+  castigo_media ~ rwa_media          
+  rwa_media     ~ derecha + izquierda + centro 
+'
+
+# Ajustar el modelo usando DWLS y datos_modelo_completos
+ajus_sendero1 <- sem(model = mod_sendero1_spec, 
+                     data = datos_modelo_completos, 
+                     estimator = "DWLS") # Estimador robusto
+```
+
+### Resumen y Evaluación del Modelo Inicial
+
+```{r summary_path_model1}
+summary(ajus_sendero1, 
+        fit.measures = TRUE,
+        standardized = TRUE,
+        rsquare = TRUE)
+```
+
+**Interpretación del Modelo Inicial (con DWLS):**
+
+*   **Ajuste Global del Modelo:**
+    *   **Test $\chi^2$:** El estadístico es **20.030** con **3** grados de libertad ($p < 0.001$). Aunque el p-valor significativo sugiere desajuste, esto es esperable en muestras grandes ($N = 2807$).
+    *   **CFI = 0.939; TLI = 0.857:** El CFI es aceptable (>0.90), pero el TLI cae por debajo del umbral recomendado de 0.90, lo que señala que el modelo requiere mejoras locales de ajuste.
+    *   **RMSEA = 0.045 (IC 90%: 0.028 - 0.065):** Excelente valor (<0.05), con un p-valor para $H_0$ (RMSEA $\leq 0.05$) de 0.631, indicando buen ajuste.
+    *   **SRMR = 0.019:** Extremadamente bajo (<0.08), señalando una muy baja discrepancia promedio de residuos.
+    *   **Conclusión de Ajuste Inicial:** Los índices generales (RMSEA y SRMR) son excelentes, pero el TLI bajo (0.857) es un punto débil, lo que justifica la reespecificación teórica del modelo.
+
+*   **Estimaciones de los Senderos (`Std.all` para estandarizados):**
+    *   `castigo_media ~ rwa_media`: El path estandarizado es **0.294** ($p < 0.001$). Por cada aumento de una desviación estándar en autoritarismo (`rwa_media`), el acuerdo con castigos severos (`castigo_media`) aumenta en 0.294 DE. Es un efecto positivo y estadísticamente muy significativo.
+    *   `rwa_media ~ derecha`: Path = **0.077** ($p < 0.001$). Identificarse con la derecha (vs. independiente/ninguno) se asocia con un aumento de 0.077 DE en autoritarismo.
+    *   `rwa_media ~ izquierda`: Path = **-0.207** ($p < 0.001$). Identificarse con la izquierda se asocia con una disminución de 0.207 DE en autoritarismo.
+    *   `rwa_media ~ centro`: Path = **-0.072** ($p < 0.001$). Identificarse con el centro se asocia con una disminución de 0.072 DE en autoritarismo.
+
+*   **$R^2$ (Varianza Explicada):**
+    *   Para `castigo_media`: $R^2 = 0.086$ (8.6% de la varianza explicada).
+    *   Para `rwa_media`: $R^2 = 0.049$ (4.9% de la varianza explicada).
+
+## 4. Modelo Modificado: Incluyendo Efectos Directos y Definiendo Efectos Indirectos
+
+Dado que la literatura sugiere que la ideología política (`derecha`) tiene influencias tanto directas como indirectas (mediadas) sobre las actitudes hacia el castigo, especificaremos un modelo reespecificado. Añadiremos una relación directa de `derecha` sobre `castigo_media` y calcularemos explícitamente el **efecto indirecto** y el **efecto total** usando el operador `:=`.
+
+**Nuevo Modelo Hipotetizado:**
+![](https://github.com/Clases-GabrielSotomayor/pruebapagina/blob/master/content/example/input/sendero2.png?raw=true){fig-align="center"}
+
+```{r specify_fit_path_model2}
+# Especificar el modelo con efecto directo de 'derecha' y etiquetas para efectos indirectos/totales
+mod_sendero2_spec <- '
+  # Regresiones (senderos directos con etiquetas a, b, c)
+  castigo_media ~ a*rwa_media + c*derecha   # a es rwa->castigo, c es derecha->castigo
+  rwa_media     ~ b*derecha + izquierda + centro # b es derecha->rwa
+  
+  # Definir efecto indirecto de derecha sobre castigo_media via rwa_media
+  ind_derecha_rwa := a*b
+  
+  # Definir efecto total de derecha sobre castigo_media
+  total_derecha_rwa := (a*b) + c 
+'
+
+# Ajustar el modelo modificado con DWLS
+ajus_sendero2 <- sem(model = mod_sendero2_spec, 
+                     data = datos_modelo_completos,
+                     estimator = "DWLS")
+```
+
+### Resumen y Evaluación del Modelo Modificado
+
+```{r summary_path_model2}
+summary(ajus_sendero2, 
+        fit.measures = TRUE, 
+        standardized = TRUE, 
+        rsquare = TRUE)
+```
+
+**Interpretación del Modelo Modificado (con DWLS):**
+
+*   **Ajuste Global del Modelo Modificado:**
+    *   **Test $\chi^2$:** **14.634** con **2** grados de libertad ($p = 0.001$). El estadístico disminuyó respecto al primer modelo (era 20.030), reflejando una mejoría.
+    *   **CFI = 0.955; TLI = 0.841:** El CFI mejoró sustancialmente y ahora es excelente (>0.95). El TLI sigue siendo el punto más marginal de ajuste debido a la simplicidad del modelo.
+    *   **RMSEA = 0.047 (IC 90%: 0.027 - 0.072):** Excelente ajuste (<0.05), con un intervalo de confianza estrecho e inferior al 0.08 crítico.
+    *   **SRMR = 0.013:** Bajó de 0.019 a 0.013, confirmando un excelente ajuste local en las discrepancias promedio de covarianza.
+    *   **Conclusión de Ajuste:** Añadir el sendero directo de `derecha` a `castigo_media` **mejoró el ajuste global del modelo**, especialmente el CFI y el SRMR.
+
+*   **Estimaciones de los Senderos (`Std.all`):**
+    *   `castigo_media ~ rwa_media` (path `a`): Coeficiente estandarizado = **0.279** ($p < 0.001$).
+    *   `castigo_media ~ derecha` (path `c`): Coeficiente estandarizado = **0.055** ($p = 0.003$). Esto demuestra que **ser de derecha tiene un efecto directo positivo y significativo** sobre el acuerdo con castigos severos, incluso controlando por el autoritarismo.
+    *   `rwa_media ~ derecha` (path `b`): Coeficiente estandarizado = **0.062** ($p = 0.002$).
+
+*   **$R^2$ (Varianza Explicada):**
+    *   Para `castigo_media`: $R^2 = 0.084$ (8.4% de la varianza).
+    *   Para `rwa_media`: $R^2 = 0.049$ (4.9% de la varianza).
+
+*   **Parámetros Definidos (`Defined Parameters - Std.all`):**
+    *   `ind_derecha_rwa (a*b)`: El efecto indirecto de `derecha` sobre `castigo_media` mediado por el autoritarismo es **0.017** ($p = 0.002$). Es estadísticamente significativo.
+    *   `total_derecha_rwa ((a*b)+c)`: El efecto total estandarizado de `derecha` es **0.072** ($p < 0.001$).
+    *   **Conclusión Sustantiva:** Ser de derecha aumenta significativamente el acuerdo con castigos severos. El efecto total se compone de una influencia directa y un camino mediado a través del autoritarismo.
+
+## 5. Visualización del Modelo Final (con `lavaanPlot`)
+
+```{r plot_path_model}
+# Diagrama del modelo de senderos modificado
+lavaanPlot(
+  model = ajus_sendero2, 
+  node_options = list(shape = "box", fontname = "Helvetica"),
+  edge_options = list(color = "black"),
+  coefs = TRUE,          # Muestra los coeficientes
+  stand = TRUE,          # Usa coeficientes estandarizados
+  stars = "regress"      # Añade estrellas de significancia
+)
+```
+
+**Interpretación del Gráfico:** El diagrama visualiza perfectamente el modelo mediado. Las flechas sólidas muestran los coeficientes de regresión estandarizados (`Std.all`). Las estrellas indican que todos los caminos son estadísticamente significativos a un 95% de confianza.
+
+## 6. Conclusión del Práctico
+
+En este práctico hemos:
+1.  Revisado los supuestos para Análisis de Senderos, diagnosticando no-normalidad multivariante, lo que fundamentó el uso del estimador `DWLS` en `lavaan`.
+2.  Especificado y estimado un modelo inicial y un modelo de senderos modificado que incorpora efectos directos e indirectos simultáneos.
+3.  Evaluado el ajuste global de ambos modelos, evidenciando que el **segundo modelo (reespecificado) presenta un mejor comportamiento comparativo y menores residuos** (CFI = 0.955, SRMR = 0.013).
+4.  Interpretado los coeficientes path directos, confirmando la influencia significativa de la posición política sobre el autoritarismo, y de este último sobre las actitudes punitivas.
+5.  Definido y testeado un **efecto indirecto significativo** de la ideología de derecha sobre el acuerdo con castigos severos mediado por el autoritarismo (0.017), así como el **efecto total** (0.072).
+6.  Comprobado que, si bien todas las relaciones son significativas, la varianza explicada ($R^2$) es moderada, recordándonos que el acuerdo con castigos severos es un fenómeno complejo multicausal que va más allá de la ideología y el autoritarismo de derechas.

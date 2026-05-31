@@ -1,0 +1,23 @@
+---
+title: "🗓️ Semana 09: Análisis de Senderos I"
+---
+
+En esta semana abordamos la primera parte del **Análisis de Senderos (Path Analysis - PA)**, una técnica multivariada que nos permite evaluar y contrastar modelos causales que proponen una red de relaciones de dependencia directa e indirecta entre variables observadas.
+
+Discutimos los orígenes de la técnica (desarrollada por el genetista Sewall Wright) y su diferencia con los Modelos de Ecuaciones Estructurales (SEM) completos con variables latentes. Revisamos las convenciones gráficas de los **diagramas de senderos** y los tipos de variables (exógenas, endógenas y mediadoras). Además, aprendimos sobre la riqueza del PA al permitir la **descomposición de efectos** (directos, indirectos y totales) y estudiamos los **supuestos fundamentales** de linealidad, aditividad, recursividad y correcta especificación.
+
+## 👨‍🏫 Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## 📚 Lecturas Obligatorias
+
+- **Pérez, E., Medrano, L. A., & Rosas, J. S. (2013).** El path analysis: conceptos básicos y ejemplos de aplicación. *Revista Argentina de Ciencias del Comportamiento, 5*(1), 52-66. [https://dialnet.unirioja.es/servlet/articulo?codigo=4292976](https://dialnet.unirioja.es/servlet/articulo?codigo=4292976)
+
+## 📟 Dudas y Comunicación
+
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dudas sobre el curso.
