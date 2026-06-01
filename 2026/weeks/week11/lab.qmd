@@ -170,12 +170,12 @@ summary(ajus_sem,
 
 **A. Evaluación del Ajuste Global del Modelo:**
   
-* **Test $\chi^2$:** El estadístico robusto es **2407.265** con **61** grados de libertad (p-valor = 0.000). Al trabajar con una muestra muy grande ($N > 10.000$), es esperable obtener un $\chi^2$ estadísticamente significativo. Debemos complementar la evaluación con otros índices de bondad de ajuste.  
-* **CFI = 0.986; TLI = 0.994:** Ambos índices son excepcionales (muy por encima del umbral recomendado de 0.95), lo que sugiere que la estructura propuesta tiene un ajuste comparativo excelente en relación con el modelo nulo.  
-* **RMSEA = 0.060 (IC 90%: 0.058 - 0.062):** Este valor se sitúa exactamente en el límite de un **ajuste aceptable** (entre 0.05 y 0.08) y su intervalo de confianza es estrecho y estable.  
-* **SRMR = 0.024:** Este valor es excelente (muy inferior al valor crítico de 0.08).  
+* **Test $\chi^2$:** El estadístico robusto es **2407.265** con **61** grados de libertad (p-valor = 0.000). Al trabajar con una muestra de gran tamaño ($N > 10.000$), la prueba de $\chi^2$ es sumamente sensible y es de esperar que el p-valor sea significativo. Debemos complementar esta evaluación global con otros índices descriptivos de ajuste.  
+* **CFI = 0.986; TLI = 0.994:** Ambos valores superan holgadamente el heurístico convencional de 0.95, lo que sugiere que la estructura propuesta tiene un ajuste comparativo excelente en relación con el modelo nulo de independencia.  
+* **RMSEA = 0.060 (IC 90%: 0.058 - 0.062):** Este valor se sitúa dentro del rango considerado como de **ajuste aceptable** (entre 0.05 y 0.08) y cuenta con un intervalo de confianza muy estrecho y estable.  
+* **SRMR = 0.024:** Este valor es sumamente satisfactorio (muy inferior a la guía sugerida de 0.08).  
 
-**Conclusión de Ajuste Global:** El modelo muestra un **ajuste global muy satisfactorio**. A pesar de la sensibilidad de la prueba de $\chi^2$, los índices CFI, TLI, RMSEA y SRMR evidencican que la estructura teórica propuesta representa de forma robusta las covarianzas empíricas de los datos.
+**Conclusión de Ajuste Global:** En general, la evaluación global del modelo resulta altamente satisfactoria. Los índices CFI, TLI, RMSEA y SRMR sugieren de manera consistente que la estructura de covarianzas implicada teóricamente representa adecuadamente las relaciones observadas en la muestra. Sin embargo, estas medidas globales actúan únicamente como una "luz verde" preliminar: para validar rigurosamente la especificación del modelo, es indispensable descender al nivel de análisis más exigente, que es la evaluación del ajuste local.
 
 **B. Interpretación del Modelo de Medida (Cargas Factoriales `Std.all`):**
   
@@ -215,9 +215,7 @@ print(round(residuos_cor, 3))
 
 **Interpretación de los Residuos**:
 
-* Todos los residuos de correlación se sitúan muy cercanos a cero. El residuo absoluto más alto es de apenas **-0.083** (entre `seg_3` "seguridad caminando de noche" y `seg_4` "seguridad dentro de la vivienda").
-* Ningún par de variables excede el límite crítico de **$|0.10|$**.
-* Esto confirma empíricamente que no existen patrones locales relevantes omitidos por el modelo ni redundancias empíricas sustanciales, validando localmente nuestra especificación teórica.
+Al analizar la matriz de residuos de correlación policórica, observamos que todas las discrepancias específicas se sitúan sumamente cercanas a cero, lo cual indica que el modelo reproduce de forma muy precisa las asociaciones individuales entre las variables. El residuo absoluto más alto es de apenas **-0.083** (entre `seg_3` "seguridad caminando de noche" y `seg_4` "seguridad dentro de la vivienda"), situándose todos los demás muy por debajo de ese límite. Al constatar que ningún par de indicadores excede el límite crítico heurístico de **$|0.10|$**, obtenemos evidencia empírica sólida de que el modelo reproduce con gran fidelidad las asociaciones específicas observadas en los datos, descartando problemas locales de sub-especificación o de redundancias no modeladas.
 
 ---
 
@@ -249,8 +247,14 @@ lavaanPlot(model = ajus_sem,
 En este práctico hemos logrado:
 
 1. **Especificar y estimar** un Modelo de Ecuaciones Estructurales (SEM) completo en R, aplicando el estimador robusto `DWLS` apropiado para la naturaleza ordinal de nuestros indicadores.
-2. **Evaluar el ajuste global**, encontrando índices excelentes (CFI = 0.986, TLI = 0.994, RMSEA = 0.060, SRMR = 0.024) que avalan la validez de la estructura empírica del modelo.
-3. **Validar localmente el ajuste**, confirmando que ningún residuo absoluto supera el umbral $|0.10|$.
-4. **Analizar la validez interna** de las variables latentes de sintomatología depresiva y percepción de seguridad.
-5. **Identificar los predictores más relevantes** para la sintomatología depresiva en la EBS 2023: el haber sufrido maltrato/tratamiento injusto, la satisfacción con la vida social (relaciones personales) y la percepción de seguridad ciudadana constituyen los efectos de mayor magnitud teórica y estadística.
-6. Cuantificar que este sistema estructural logra dar cuenta de un **18.0% de la varianza** en la sintomatología depresiva latente.
+2. **Evaluar el ajuste global**, encontrando índices descriptivos altamente satisfactorios (CFI = 0.986, TLI = 0.994, RMSEA = 0.060, SRMR = 0.024) que sugieren un muy buen ajuste comparativo del modelo propuesto.
+3. **Validar localmente el ajuste**, confirmando de manera empírica que ningún residuo de correlación absoluta supera el heurístico límite de $|0.10|$.
+4. **Analizar la validez interna** del modelo de medida, confirmando que las escalas de sintomatología depresiva (`SM`) y percepción de seguridad (`SEG`) son representadas adecuadamente por sus indicadores.
+5. **Identificar los predictores más relevantes** para la sintomatología depresiva en la EBS 2023: la vivencia de tratos injustos o discriminación en el último año, la satisfacción con las relaciones personales y la percepción de seguridad ciudadana constituyen los factores con mayor fuerza asociativa.
+6. Cuantificar que este sistema estructural completo explica un **18.0% de la varianza** en el constructo de sintomatología depresiva latente.
+
+### Reflexión Epistemológica sobre Inferencia Causal y Modelos Equivalentes (Kline, 2023)
+
+Al finalizar este práctico, es de suma importancia adoptar una postura reflexiva sobre los alcances reales de nuestra inferencia. Al trabajar con datos transversales (cross-sectional) de la Encuesta de Bienestar Social (EBS) 2023, la estimación de un coeficiente de trayectoria significativo y negativo de `SEG` sobre `SM` (Percepción de Seguridad ➡️ Sintomatología Depresiva) representa únicamente una asociación estadística de coincidencia temporal y consistencia empírica. 
+
+Metodológicamente, nos enfrentamos al desafío de los **Modelos Equivalentes**: estadísticamente, un modelo alternativo en el cual la Sintomatología Depresiva afecte e influya sobre la Percepción de Seguridad (es decir, invirtiendo la dirección de la flecha: `SM` ➡️ `SEG`, bajo el argumento teórico de que las personas con mayor sintomatología depresiva tienden cognitivamente a percibir su entorno de plazas y calles como más hostil o inseguro) reproduciría exactamente la misma matriz de varianzas-covarianzas implicada y reportaría idénticos estadísticos de ajuste global. Dado que el software matemático no puede resolver esta equivalencia empírica por sí solo, nuestra decisión de modelar la seguridad como predictor se ampara en la plausibilidad teórica establecida por la literatura sociológica, pero el investigador riguroso debe tener presente que la validación definitiva de estas hipótesis causales requiere la explotación de diseños de investigación longitudinales que garanticen la precedencia temporal de las variables.

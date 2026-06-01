@@ -45,35 +45,36 @@ Los **Modelos de Ecuaciones Estructurales (SEM)** son una familia de modelos est
 
 En resumen, los SEM nos permiten testear teorías sociológicas completas, que involucran tanto la medición de conceptos abstractos como las relaciones causales entre ellos.
 
-## La Lógica Confirmatoria de los SEM {.smaller}
+## La Lógica "Confirmatoria" de los SEM {.smaller}
 
--   **Guiados por la Teoría:** Los SEM son fundamentalmente **modelos confirmatorios**. El investigador debe proponer, *a priori*, un modelo que especifique el tipo y la dirección de todas las relaciones de interés, basándose en un sólido marco teórico o en evidencia empírica previa.
--   **Objetivo Principal:** El interés no es explorar, sino **"confirmar"** si la estructura de relaciones hipotetizada es consistente con los datos observados en una muestra.
--   **Base Empírica:** La estimación del modelo se basa en analizar la **matriz de varianzas y covarianzas** (o de correlaciones) de las variables observadas. El modelo se considera bueno si la matriz de covarianzas que *implica* nuestro modelo teórico es muy similar a la que *observamos* en nuestros datos.
+-   **Guiados por la Teoría:** Los SEM son de naturaleza **confirmatoria**, lo que significa que el investigador propone, *a priori*, una estructura que modela el tipo y dirección de las relaciones de interés, basándose en la teoría sociológica o en la literatura científica.
+-   **Objetivo Principal:** El interés es evaluar si la estructura teórica propuesta es **consistente con** los datos empíricos observados en una muestra (lo que Kline denomina lógica de no-refutación), no "confirmar" de forma absoluta una verdad empírica.
+-   **Base Empírica:** La estimación del modelo compara la **matriz de varianzas y covarianzas observada** contra la **matriz implicada** por las ecuaciones de nuestro modelo conceptual. Si la discrepancia entre ambas es mínima, consideramos que la teoría no es refutada por la evidencia empírica.
 
 ## Ejemplo de Aplicación en Salud {.smaller}
 
 Imaginemos un modelo que busca explicar los **síntomas psicosomáticos**.
 
--   **Teoría:** Se postula que antecedentes personales como la **autoestima**, la **autoeficacia** y el **apoyo social** influyen en los síntomas, pero no solo directamente, sino también a través de variables mediadoras como el **estrés** y el **cansancio emocional**.
--   **Análisis con SEM:** La interpretación de los parámetros estimados (los "paths" o senderos) nos permite constatar estas relaciones. Por ejemplo, podríamos evaluar si el apoyo social tiene un efecto negativo sobre el estrés (reduciéndolo) y si, a su vez, el estrés tiene un efecto positivo sobre los síntomas psicosomáticos. El modelo nos permitiría cuantificar tanto los efectos directos como los indirectos.
+-   **Teoría:** Se postula que antecedentes personales como la **autoestima**, la **autoeficacia** y el **apoyo social** influyen en los síntomas, pero no solo directamente, sino también a través de variables intermedias como el **estrés** y el **cansancio emocional**.
+-   **Análisis con SEM:** La estimación de los coeficientes de trayectoria (paths) nos permite evaluar estas asociaciones estadísticas. Podríamos constatar, por ejemplo, si el apoyo social se asocia negativamente con el estrés y si este último muestra una asociación positiva con los síntomas. El modelo nos permite cuantificar tanto efectos directos como indirectos de forma integrada.
 
 ![](img/1.jpg){fig-align="center"}
 
-## SEM y Causalidad: Una Advertencia Crucial {.smaller}
+## SEM e Inferencia Causal: Límites Metodológicos {.smaller}
 
-**1. Estimación Estadística NO es Prueba Causal:**
+**1. Consistencia no es Demostración Causal**:
 
--   Aunque los diagramas SEM utilizan flechas que representan una **hipótesis de influencia causal**, la estimación de un parámetro significativo **NO demuestra por sí sola la existencia de causalidad**.\
--   SEM es una técnica que evalúa la **consistencia de los datos con un modelo causal propuesto**. Un buen ajuste del modelo significa que la teoría no es refutada por los datos, pero no que es la única explicación posible.\
--   La defensa de la causalidad requiere, además del ajuste estadístico, un **sólido argumento teórico** y, preferiblemente, un **diseño de investigación** que permita inferencia causal (ej. datos longitudinales, diseños experimentales o cuasi-experimentales).
+-   Aunque los diagramas SEM utilizan flechas que representan hipótesis direccionales ("causales"), la obtención de un path significativo **no prueba la existencia de causalidad**.
+-   Un buen ajuste global del modelo simplemente demuestra que la estructura de covarianzas empíricas de los datos es **compatible con la hipótesis del investigador**. No excluye la existencia de otras explicaciones plausibles.
+-   La inferencia causal legítima exige, además de un ajuste estadístico satisfactorio, un sólido marco teórico sustantivo y, prioritariamente, un **diseño de investigación** fuerte (ej. datos longitudinales con precedencia temporal o diseños experimentales).
 
-## SEM y Causalidad: Una Advertencia Crucial {.smaller}
+## SEM e Inferencia Causal: Modelos Equivalentes {.smaller}
 
-**2. Verificación de Teorías:**
+**2. El Desafío de los Modelos Equivalentes (Kline, 2023)**:
 
--   La lógica es: "Si mi teoría es una buena representación de la realidad, entonces la estructura de covarianzas que mi teoría implica debería ser muy similar a la estructura de covarianzas que observo en mis datos".\
--   SEM nos proporciona una herramienta poderosa para realizar esta comprobación de forma rigurosa.
+-   En diseños de investigación transversales (cross-sectional), es estadísticamente muy común la presencia de **Modelos Equivalentes**.
+-   Un modelo equivalente es una especificación alternativa del sistema (por ejemplo, invirtiendo la dirección de las flechas para simular **causalidad reversa**, o asumiendo variables latentes comunes omitidas) que produce exactamente la misma matriz de covarianza implicada.
+-   Estadísticamente, el modelo original y el modelo equivalente **ajustan de forma idéntica** (tienen el mismo $\chi^2$, CFI y RMSEA). Por lo tanto, el ajuste matemático nunca puede resolver cuál es la dirección causal correcta; esa es una defensa eminentemente teórica y metodológica.
 
 ## Estructura de un Modelo SEM: Un Modelo de "Dos Partes" {.smaller}
 
@@ -190,48 +191,61 @@ title_slide_background: "#008080"
 
 ## Paso 3: Estimación del Modelo {.smaller}
 
-1.  Se estiman los parámetros del modelo (cargas, paths, varianzas, etc.) a partir del modelo especificado.
-2.  El método por defecto en `lavaan` es **Máxima Verosimilitud (ML)**, que busca los valores de los parámetros que maximizan la probabilidad de observar la matriz de covarianzas de la muestra. Hay otros estimadores disponibles (ej. DWLS, MLR) para datos que no son normales o son categóricos.
+1.  Se estiman los parámetros del modelo (cargas factoriales, coeficientes de trayectoria o paths, varianzas de error y perturbaciones) a partir del modelo especificado.
+2.  **Métodos de Estimación y Naturaleza de las Variables (Kline, 2023)**:
+    -   **Máxima Verosimilitud (ML/MLR)**: Es el método estándar por defecto en `{lavaan}`. Asume que las variables indicadoras son continuas y siguen una distribución normal multivariante (MLR provee errores estándar robustos ante la no-normalidad).
+    -   **Mínimos Cuadrados Ponderados Diagonales (DWLS/WLSMV)**: Constituye el estándar metodológico moderno cuando el modelo de medida incluye indicadores que son estrictamente **ordinales o categóricos** (como ítems Likert de 4 o 5 categorías). Modela las matrices de **correlaciones policóricas** subyacentes, evitando los sesgos severos que introduce tratar variables ordinales como si fueran continuas.
 
 ## Paso 4: Evaluación de Ajuste {.smaller}
 
-1.  **Valorar el ajuste del modelo:** Si las estimaciones obtenidas no reproducen correctamente la matriz de covarianzas observada en los datos, será necesario rechazar el modelo y/o reformularlo.
-2.  **Doble Desafío en SEM:** Un buen ajuste en SEM requiere que **tanto el modelo de medición como el modelo estructural se ajusten bien a los datos simultáneamente**, lo cual es una prueba más exigente que evaluar cada parte por separado.
+1.  **Valorar el ajuste del modelo:** Evaluamos qué tan bien las estimaciones obtenidas reproducen la matriz de varianzas-covarianzas observada en los datos empíricos.
+2.  **Doble Desafío en SEM:** Un buen ajuste en SEM requiere que **tanto el modelo de medición (AFC) como el modelo estructural (paths) se ajusten bien a los datos de forma simultánea**, lo que constituye una prueba altamente exigente.
+3.  **Perspectiva del Ajuste de Dos Niveles (Kline, 2023)**:
+    -   **Ajuste Global**: Índices que resumen la discrepancia media del modelo.
+    -   **Ajuste Local**: Análisis detallado de las discrepancias específicas entre pares de variables (residuos). Es el paso definitivo, ya que un buen ajuste global promedio puede ocultar errores graves y localizados.
 
 ## Estadísticos de Bondad de Ajuste {.smaller}
 
 ::::: columns
 ::: {.column width="50%"}
-Se utilizan tres tipos de estadísticos:
+Se utilizan tres tipos de estadísticos como **heurísticos y guías orientativas** aproximadas (no como leyes o reglas de corte rígidas):
 
--   **Ajuste Absoluto:** Valoran qué tan bien el modelo reproduce los datos sin un punto de comparación (ej. $\chi^2$, RMSEA).
--   **Ajuste Relativo (Incremental):** Comparan el ajuste del modelo propuesto con un modelo base (normalmente el "modelo nulo" de independencia) (ej. CFI, TLI).
--   **Ajuste Parsimonioso:** Evalúan el ajuste penalizando por la complejidad del modelo (ej. AIC, BIC, PNFI).
+-   **Ajuste Absoluto:** Valoran la reproducción directa de los datos sin un modelo comparativo de referencia (ej. $\chi^2$, RMSEA).
+-   **Ajuste Relativo (Incremental):** Comparan el ajuste del modelo propuesto contra un modelo de independencia o nulo (ej. CFI, TLI).
+-   **Ajuste Parsimonioso:** Penalizan la complejidad y cantidad de parámetros libres estimados (ej. AIC, BIC).
 
 Se debe reportar un conjunto de índices de diferentes tipos para una evaluación robusta.
 :::
 
 ::: {.column width="50%"}
-![](img/4.jpg) *(Tabla de referencia con criterios comunes)*
+![](img/4.jpg) *(Tabla de referencia con criterios comunes, entendidos como guías flexibles)*
 :::
 :::::
 
 ## Chi Cuadrado ($\chi^2$) {.smaller}
 
--   Es conceptualmente el más atractivo, ya que contrasta la hipótesis nula de que el modelo se ajusta perfectamente a los datos poblacionales (todos los errores del modelo son nulos).
--   Sin embargo, es **muy sensible al tamaño de la muestra**: con muestras grandes (N \> 200-400), es muy probable que resulte significativo (p \< 0.05), llevando a rechazar modelos que en la práctica son muy buenos.
--   Por lo tanto, además de valorar su significación estadística, suele compararse con sus grados de libertad (Criterio: $\chi^2/gl$ \< 2 o 3).
--   A pesar de sus limitaciones, siempre se debe informar este estadístico.
+-   Es el estadístico más fundamental, ya que contrasta la hipótesis nula de que el modelo se ajusta perfectamente a los datos poblacionales (todos los errores del modelo son nulos).
+-   Sin embargo, es **extremadamente sensible al tamaño de la muestra**: con muestras grandes (N \> 200-400), es muy probable que resulte significativo (p \< 0.05), llevando a rechazar modelos que en la práctica representan de forma muy razonable a los datos.
+-   Por lo tanto, se debe informar siempre este estadístico pero contrastándolo críticamente con los grados de libertad y complementándolo con otros heurísticos globales y con la evaluación local.
+
+## Evaluación del Ajuste Local: La Matriz de Residuos {.smaller}
+
+-   **La Limitación del Ajuste Global**: Un modelo puede tener un CFI \> 0.95 y un RMSEA \< 0.05 (sugiriendo un excelente ajuste general), pero al mismo tiempo predecir de forma muy deficiente la covarianza entre un par específico de variables clave.
+-   **La Solución (Local Fit)**: Examinar la **Matriz de Residuos de Correlación** (o covarianza). 
+-   **Interpretación de Residuos (Kline, 2023)**:
+    -   Cada residuo representa la diferencia entre la correlación observada y la implicada por el modelo para un par de variables indicadoras.
+    -   Buscamos que los residuos sean lo más cercanos a 0 posible.
+    -   Valores residuales absolutos superiores a **$|0.10|$** indican una falla de ajuste localizada de importancia diagnóstica (ej. una relación teórica omitida o una redundancia de medición no modelada).
 
 ## Paso 5: Re-especificación {.smaller}
 
--   Si el modelo presenta un ajuste insatisfactorio, se pueden introducir modificaciones (agregar o quitar parámetros).
+-   Si el modelo presenta un ajuste insatisfactorio (global y/o local), se pueden introducir modificaciones (agregar o quitar parámetros).
 -   Este proceso debe ser guiado por los **índices de modificación** y el análisis de los **residuos**, pero **siempre justificado por la teoría**.
 -   Los cambios propuestos deben ser coherentes con el marco conceptual. No se debe "cazar el ajuste" a costa del sentido teórico.
 
 ## Paso 6: Interpretación de Resultados {.smaller}
 
--   **Coeficientes Beta Estandarizados:** Se interpretan como en regresión o análisis de senderos. Representan el cambio en desviaciones estándar en la variable dependiente por un cambio de una DE en la predictora, controlando por otras.
--   **Significación de cada coeficiente:** Se evalúa con el p-valor (usualmente p \< 0.05) para determinar si el efecto es estadísticamente diferente de cero.
--   **R-cuadrado (**$R^2$): Representa el porcentaje de la varianza en cada **variable endógena** (tanto latente como observada) que es explicado por sus predictores en el modelo.
+-   **Coeficientes Beta Estandarizados:** Se interpretan de manera análoga a la regresión múltiple. Representan el cambio en desviaciones estándar en la variable dependiente por un cambio de una DE en la predictora, controlando por las demás variables del sistema.
+-   **Significación de cada coeficiente:** Se evalúa con el p-valor (usualmente p \< 0.05) para determinar si el efecto estimado es significativamente diferente de cero.
+-   **R-cuadrado (**$R^2$): Representa el porcentaje de la varianza en cada **variable endógena** (tanto latente como observada) que es explicado por sus predictores en el modelo estructural.
 -   **Atención al Doble Papel:** En SEM, los coeficientes describen tanto el **modelo de medición** (cargas) como el **modelo estructural** (paths). Es crucial interpretar ambos niveles para una comprensión completa del modelo.
