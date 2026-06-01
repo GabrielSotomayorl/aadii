@@ -221,6 +221,7 @@ Las comunalidades indican qué proporción de la varianza de cada ítem es expli
 inspect(mod_conf_afc, what = "rsquare") 
 ```
 **Interpretación:**
+
 *   **aut1:** 0.823 (El factor `autoritarismo` explica el 82.3% de la varianza de `aut1`).
 *   **aut2:** 0.787 (78.7%)
 *   **aut3:** 0.644 (64.4%)
@@ -254,9 +255,6 @@ Nota que los tres IM involucran a `dom3`, el mismo ítem que ya mostraba residuo
 > **Capitalización del azar y HARKing**
 >
 > Que los MIs sean consistentes con los residuos no los convierte automáticamente en modificaciones justificadas. Aplicarlos mecánicamente — porque el valor supera 3.84 — es un ejemplo de **capitalización del azar**: se ajusta el modelo a las particularidades de esta muestra, no a la teoría. Esta práctica se conoce como **HARKing** (*Hypothesizing After the Results are Known*) y convierte el AFC en un análisis exploratorio sin que quede explícito en el reporte.
->
-> Según Kline (2023): *"Parameter changes suggested by MIs that lack theoretical or logical justifications should not be made."*
->
 > Correlacionar los errores de `dom1` y `dom2` tiene una justificación teórica plausible (redacción casi idéntica), pero eso debe haber sido identificado *antes* de mirar el IM — no después. Liberar `aut2 ~~ dom3` requiere una explicación de por qué esos dos ítems en particular comparten varianza más allá de sus factores, y esa explicación no es obvia a partir del contenido.
 
 **Si decides reespecificar el modelo guiándote por los IM:**

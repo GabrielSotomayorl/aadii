@@ -72,7 +72,7 @@ La escala PHQ-4 consta de 4 ítems: dos para depresión y dos para ansiedad.
 | `ss7_c`  | Ansiedad   | ¿Se ha sentido nervioso(a), ansioso(a) o con los nervios de punta? | 1-4 (Nunca a Casi todos los días) |
 | `ss7_d`  | Ansiedad   | ¿No ha sido capaz de parar o controlar su preocupación?           | 1-4 (Nunca a Casi todos los días) |
 
-Para este práctico, puedes descargar la base de datos `Base de datos EBS 2023.RData` directamente desde el sitio del curso y colocarla en tu directorio de trabajo. Al cargarla se importará el objeto `EBS_2023_vp`, que renombraremos como `ebs` para facilitar el código de la sesión.
+Para este práctico, puedes descargar la base de datos `Base de datos EBS 2023.RData` directamente desde el [sitio del Observatorio Social del Ministerio de Desarrollo Social](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-bienestar-social-2023) y colocarla en tu directorio de trabajo. Al cargarla se importará el objeto `EBS_2023_vp`, que renombraremos como `ebs` para facilitar el código de la sesión.
 
 ```{r load_data_hidden, eval=TRUE, echo=FALSE}
 load("../../data/Base de datos EBS 2023.RData")
@@ -88,6 +88,7 @@ ebs <- EBS_2023_vp
 ## 3. Preparación y Limpieza de Datos
 
 El trabajo con datos reales casi siempre requiere una fase de limpieza. Nuestros pasos serán:
+
 1.  **Seleccionar** las variables de interés.
 2.  **Codificar los valores perdidos** (-88 y -99) como `NA`.
 3.  **Recodificar los ítems** de 1-4 a 0-3 para facilitar la interpretación.
@@ -160,12 +161,13 @@ anova(fit_1f, fit_2f)
 ```
 
 **Interpretación de la Comparación:**
-La prueba de diferencia de Chi-cuadrado escalada nos permite decidir qué modelo es superior. El resultado es inequívoco:
+La prueba de diferencia de Chi-cuadrado escalada nos permite decidir qué modelo es superior. El resultado es claro:
+
 *   **`Chisq diff = 217.58`**: La diferencia en el ajuste entre los modelos es extremadamente grande.
 *   **`Df diff = 1`**: Esta diferencia se evalúa con 1 grado de libertad.
 *   **`Pr(>Chisq) < 2.2e-16 ***`**: El p-valor es prácticamente cero.
 
-**Conclusión:** Rechazamos de forma contundente la hipótesis nula de que ambos modelos se ajustan igual de bien. El modelo más complejo (el de dos factores, `fit_2f`) ofrece una **mejora de ajuste estadísticamente muy significativa** en comparación con el modelo de un solo factor. Esto nos da una fuerte evidencia empírica para preferir la estructura de dos dimensiones (Depresión y Ansiedad) para la escala PHQ-4.
+**Conclusión:** Rechazamos de la hipótesis nula de que ambos modelos se ajustan igual de bien. El modelo más complejo (el de dos factores, `fit_2f`) ofrece una **mejora de ajuste estadísticamente muy significativa** en comparación con el modelo de un solo factor. Esto nos da una fuerte evidencia empírica para preferir la estructura de dos dimensiones (Depresión y Ansiedad) para la escala PHQ-4.
 
 ## 5. Análisis en Profundidad del Modelo Seleccionado (2 Factores)
 
@@ -234,12 +236,13 @@ print(round(residuos_cor, 3))
 **Interpretación de la Matriz de Residuos de Correlación:**
 
 Al examinar los residuos del modelo de dos factores para la escala PHQ-4, observamos que:
+
 *   Todos los residuos de correlación son extremadamente pequeños, en un rango entre **-0.011 y 0.020**.
 *   Ninguno de los valores se acerca, ni de lejos, al umbral problemático de **0.10**.
 *   La mayor discrepancia se observa entre los ítems `ss7_a` (Depresión) y `ss7_d` (Ansiedad), con un residuo de `0.020`. Esto indica que el modelo subestima la correlación real entre estos dos ítems de manera totalmente insignificante.
 
 **Conclusión del Ajuste Local:**
-La evaluación local confirma que el modelo de dos factores no solo se comporta de manera óptima a nivel global (CFI robusto = 0.998, RMSEA robusto = 0.051), sino que también es capaz de **reproducir con altísima fidelidad las correlaciones originales** entre cada par de ítems. Esto descarta problemas de especificación local y nos da plena seguridad para sostener que la escala PHQ-4 está compuesta por dos dimensiones claras (Depresión y Ansiedad) que reproducen adecuadamente las respuestas de la población.
+La evaluación local confirma que el modelo de dos factores no solo se comporta de manera óptima a nivel global (CFI robusto = 0.998, RMSEA robusto = 0.051), sino que también es capaz de **reproducir las correlaciones originales** entre cada par de ítems. Esto descarta problemas de especificación local y nos da plena seguridad para sostener que la escala PHQ-4 está compuesta por dos dimensiones claras (Depresión y Ansiedad) que reproducen adecuadamente las respuestas de la población.
 
 ## 6. Visualización del Modelo Final
 
