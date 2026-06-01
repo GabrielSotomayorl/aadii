@@ -1,6 +1,6 @@
 ---
 subtitle: "SOC9035 -- Análisis Avanzado de Datos II"
-title: "<font style='font-size:1em;'>🗓️ Semana 09<br/>Introducción al Análisis de Senderos (Parte I)</font>"
+title: "<font style='font-size:1em;'>Semana 09<br/>Introducción al Análisis de Senderos (Parte I)</font>"
 author: Prof. [Gabriel Sotomayor](https://gabrielsotomayorl.github.io/)
 institute: '[Universidad Diego Portales](https://sociologia.udp.cl/)'
 date: 1 June 2026
@@ -233,6 +233,27 @@ El PA nos ayuda a entender *cómo* una variable afecta a otra.
     *   Para los efectos directos, se obtiene de la salida de regresión (t-value o z-value, p-valor).
     *   Para efectos indirectos y totales, se pueden usar métodos como el *bootstrapping* o la prueba de Sobel para estimar su significancia (`lavaan` lo puede hacer).
 
+## El Mito de la Mediación (Kline 2023) {.smaller}
+
+::: callout-warning
+### Inferencia Causal en Datos Transversales
+Estimar y calcular un "efecto indirecto" ($a \times b$) estadísticamente significativo utilizando datos **transversales (cross-sectional)** **no es suficiente para probar mediación causal** (Kline, 2023, Cap. 20).
+:::
+
+* **La Mediación como Proceso**: La mediación real es una cadena causal dinámica que ocurre en el tiempo. Requiere estrictamente **precedencia temporal**: la causa ($X$) debe anteceder a la variable interviniente ($M$), y esta a su vez debe anteceder al resultado ($Y$).
+* **Efectos Indirectos Estadísticos**: En datos transversales, todas las variables se miden en el mismo instante del tiempo. Por ende, lo que calculamos es meramente un **efecto indirecto estadístico** (asociaciones condicionadas).
+* **Defensa del Modelo**: Para sostener una hipótesis de mediación genuina, es indispensable contar con un **diseño longitudinal** (mediciones en múltiples olas) o una sólida justificación experimental.
+
+## Modelos Equivalentes en Path Analysis {.smaller}
+
+En el análisis de senderos, los modelos estimados son altamente vulnerables a los **modelos matemáticamente equivalentes** (Kline, 2023).
+
+* **Definición**: Dos o más modelos de senderos son equivalentes si **reproducen exactamente la misma matriz de covarianza implicada** ($\Sigma(\hat{\theta})$) y, por lo tanto, tienen **los mismos grados de libertad y los mismos índices de ajuste global** ($\chi^2$, CFI, RMSEA).
+* **El Problema del Sentido de la Flecha**:
+  * En un diseño transversal, el modelo $A \longrightarrow B$ se ajusta estadísticamente **exactamente igual** que el modelo $B \longrightarrow A$.
+  * De forma similar, un modelo mediado $X \longrightarrow M \longrightarrow Y$ puede ser estadísticamente equivalente a $Y \longrightarrow M \longrightarrow X$ o $M \longrightarrow X \longrightarrow Y$.
+* **Implicancia Pedagógica**: El ajuste de los datos **nunca prueba que la dirección causal especificada sea la única correcta**. La teoría y el diseño de investigación son los únicos elementos que pueden defender la direccionalidad de las flechas.
+
 ## Ejemplo: Descomposición de Efectos (Diagrama con Coeficientes) {.smaller}
 
 ::: columns
@@ -303,7 +324,9 @@ El PA es una extensión de la regresión múltiple; por lo tanto, muchos supuest
 *   **Normalidad (para estimación ML y tests de significancia estándar):**
     *   Idealmente, las variables (o los residuos de las ecuaciones) deberían seguir una distribución normal multivariada.
     *   Evaluar asimetría y curtosis univariada, y tests de normalidad multivariada (ej. Mardia).
-    *   Si hay no-normalidad severa, considerar estimadores robustos (ej. DWLS en `lavaan` si se usan datos ordinales, o bootstrap).
+    *   **Estimadores según tipo de variable (Kline, 2023):**
+        *   Para variables **CONTINUAS** (incluyendo índices promedios) con no-normalidad, se utiliza el estimador **MLR (Maximum Likelihood Robust / Máxima Verosimilitud Robusta)**, el cual ajusta los errores estándar (corrección robusta sandwich) y los índices de ajuste.
+        *   El estimador **DWLS (Diagonally Weighted Least Squares) / WLSMV** se utiliza cuando las variables son tratadas estrictamente como **ORDINALES** o categóricas (ej. ítems Likert individuales sin promediar).
 
 ## Supuestos Clave del Path Analysis {.smaller}
 

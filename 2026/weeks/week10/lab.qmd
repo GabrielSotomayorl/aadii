@@ -156,11 +156,11 @@ print(resultados_mvn$univariateNormality)
 *   **Normalidad:**
     *   *Multivariante (Test de Mardia):* Los resultados para Asimetría (`Skewness`) y Curtosis (`Kurtosis`) muestran p-valores de **0.00**, lo que indica que **se rechaza la hipótesis de normalidad multivariante**.
     *   *Univariante (Test de Shapiro-Wilk):* Para todas las variables analizadas, el p-valor es **< 0.001**. Esto significa que **ninguna de estas variables sigue una distribución normal univariante** por sí sola.
-    *   **Implicancia Principal:** La marcada no-normalidad de los datos, junto con la presencia de variables dicotómicas (posición política), hace que el estimador estándar por defecto de `lavaan` (Máxima Verosimilitud - ML) no sea el más adecuado. Por ello, utilizaremos el estimador **DWLS (Diagonally Weighted Least Squares)**, que es más robusto ante la violación del supuesto de normalidad y está diseñado para manejar variables que pueden ser tratadas como ordinales o categóricas.
+    *   **Implicancia Principal y Selección de Estimador (Kline, 2023):** Dado que las variables dependientes que estamos modelando (`castigo_media` y `rwa_media`) son **índices promedio continuos** que presentan una marcada violación a la normalidad multivariante, el estimador metodológicamente correcto y robusto a utilizar en este Análisis de Senderos es **MLR (Maximum Likelihood Robust / Máxima Verosimilitud Robusta)**. Este estimador utiliza el algoritmo estándar de Máxima Verosimilitud (ML) pero aplica correcciones robustas (tipo Sandwich y correcciones de escala tipo Yuan-Bentler) para ajustar los errores estándar, valores *p* e índices de ajuste global, protegiendo nuestra inferencia estadística frente a la no-normalidad de los datos.
 
 ## 3. Especificación y Estimación del Modelo de Senderos Inicial
 
-Especificamos el modelo donde el autoritarismo (`rwa_media`) media la relación entre la posición política y el acuerdo con castigos severos (`castigo_media`).
+Especificamos el modelo donde el autoritarismo (`rwa_media`) actúa como una variable intermedia clave entre la posición política y el acuerdo con castigos severos (`castigo_media`).
 
 **Sintaxis Clave de `lavaan`:**
 
@@ -179,10 +179,10 @@ mod_sendero1_spec <- '
   rwa_media     ~ derecha + izquierda + centro 
 '
 
-# Ajustar el modelo usando DWLS y datos_modelo_completos
+# Ajustar el modelo usando MLR y datos_modelo_completos
 ajus_sendero1 <- sem(model = mod_sendero1_spec, 
                      data = datos_modelo_completos, 
-                     estimator = "DWLS") # Estimador robusto
+                     estimator = "MLR") # Estimador robusto
 ```
 
 ### Resumen y Evaluación del Modelo Inicial
@@ -194,28 +194,48 @@ summary(ajus_sendero1,
         rsquare = TRUE)
 ```
 
-**Interpretación del Modelo Inicial (con DWLS):**
+**Interpretación del Modelo Inicial (con MLR Robusto):**
 
 *   **Ajuste Global del Modelo:**
-    *   **Test $\chi^2$:** El estadístico es **20.030** con **3** grados de libertad ($p < 0.001$). Aunque el p-valor significativo sugiere desajuste, esto es esperable en muestras grandes ($N = 2807$).
-    *   **CFI = 0.939; TLI = 0.857:** El CFI es aceptable (>0.90), pero el TLI cae por debajo del umbral recomendado de 0.90, lo que señala que el modelo requiere mejoras locales de ajuste.
-    *   **RMSEA = 0.045 (IC 90%: 0.028 - 0.065):** Excelente valor (<0.05), con un p-valor para $H_0$ (RMSEA $\leq 0.05$) de 0.631, indicando buen ajuste.
-    *   **SRMR = 0.019:** Extremadamente bajo (<0.08), señalando una muy baja discrepancia promedio de residuos.
-    *   **Conclusión de Ajuste Inicial:** Los índices generales (RMSEA y SRMR) son excelentes, pero el TLI bajo (0.857) es un punto débil, lo que justifica la reespecificación teórica del modelo.
+    *   **Test $\chi^2_{\text{scaled}}$ (corrección Yuan-Bentler):** El estadístico robusto es **19.411** con **3** grados de libertad ($p < 0.001$). Aunque el p-valor significativo sugiere desajuste, este estadístico es altamente sensible al tamaño muestral en muestras grandes ($N = 2807$), por lo que debemos complementar su lectura con otros índices heurísticos (Kline, 2023).
+    *   **Robust CFI = 0.954; Robust TLI = 0.892:** El CFI robusto es muy bueno y supera el umbral tradicionalmente aceptado de 0.90 (e incluso el de 0.95). El TLI robusto se sitúa en **0.892**, levemente por debajo del umbral de 0.90, lo que sugiere que aunque la estructura general es sólida, el modelo comparativo es susceptible de mejoras.
+    *   **Robust RMSEA = 0.045 (IC 90%: 0.028 - 0.065):** Excelente valor (<0.05), lo que sugiere un muy buen ajuste de aproximación por grados de libertad.
+    *   **SRMR = 0.020:** Extremadamente bajo (muy inferior al límite de 0.08), lo que indica que las correlaciones observadas son reproducidas con alta fidelidad por el modelo.
+    *   **Conclusión de Ajuste Inicial:** Los índices robustos globales sugieren que el modelo se comporta bastante bien, aunque el TLI marginalmente bajo (0.892) nos advierte la necesidad de explorar si existen desajustes locales significativos.
 
 *   **Estimaciones de los Senderos (`Std.all` para estandarizados):**
-    *   `castigo_media ~ rwa_media`: El path estandarizado es **0.294** ($p < 0.001$). Por cada aumento de una desviación estándar en autoritarismo (`rwa_media`), el acuerdo con castigos severos (`castigo_media`) aumenta en 0.294 DE. Es un efecto positivo y estadísticamente muy significativo.
-    *   `rwa_media ~ derecha`: Path = **0.077** ($p < 0.001$). Identificarse con la derecha (vs. independiente/ninguno) se asocia con un aumento de 0.077 DE en autoritarismo.
-    *   `rwa_media ~ izquierda`: Path = **-0.207** ($p < 0.001$). Identificarse con la izquierda se asocia con una disminución de 0.207 DE en autoritarismo.
-    *   `rwa_media ~ centro`: Path = **-0.072** ($p < 0.001$). Identificarse con el centro se asocia con una disminución de 0.072 DE en autoritarismo.
+    *   `castigo_media ~ rwa_media`: El coeficiente path estandarizado es **0.279** ($p < 0.001$). Por cada aumento de una desviación estándar en autoritarismo (`rwa_media`), el acuerdo con castigos severos (`castigo_media`) aumenta en promedio estimado un 0.279 DE. Es una asociación positiva y estadísticamente muy significativa.
+    *   `rwa_media ~ derecha`: Path = **0.072** ($p < 0.001$). Autoubicarse en la derecha (en comparación con ser independiente/ninguno) se asocia con un aumento estimado de 0.072 DE en autoritarismo.
+    *   `rwa_media ~ izquierda`: Path = **-0.191** ($p < 0.001$). Autoubicarse en la izquierda se asocia con una disminución estimada de 0.191 DE en autoritarismo.
+    *   `rwa_media ~ centro`: Path = **-0.055** ($p = 0.006$). Autoubicarse en el centro se asocia con una disminución estimada de 0.055 DE en autoritarismo.
 
 *   **$R^2$ (Varianza Explicada):**
-    *   Para `castigo_media`: $R^2 = 0.086$ (8.6% de la varianza explicada).
-    *   Para `rwa_media`: $R^2 = 0.049$ (4.9% de la varianza explicada).
+    *   Para `castigo_media`: $R^2 = 0.078$ (el modelo explica el 7.8% de su varianza).
+    *   Para `rwa_media`: $R^2 = 0.045$ (el modelo explica el 4.5% de su varianza).
+
+### 3.1 Evaluación del Ajuste Local (Matriz de Residuos)
+
+Siguiendo de manera rigurosa a Kline (2023), la evaluación de un modelo estructural nunca debe limitarse a los índices de ajuste global. Los índices globales pueden enmascarar desajustes locales significativos entre variables específicas. Por ello, debemos inspeccionar la **Matriz de Residuos de Correlación**. 
+
+Un residuo de correlación es la discrepancia entre la correlación observada empíricamente en la muestra y la correlación reproducida teóricamente por las restricciones del modelo. Metodológicamente, buscamos que todos los residuos de correlación en valor absoluto sean **inferiores a 0.10** (Kline, 2023). Un residuo mayor a $|0.10|$ indica que la relación entre esas dos variables está sustancialmente subestimada o mal especificada.
+
+En `lavaan`, podemos extraer y visualizar la matriz de residuos estandarizados de correlación utilizando `lavResiduals` con `type = "cor"` y accediendo al elemento `[["cov"]]` de la lista resultante:
+
+```{r local_fit_residuals}
+# Calcular y visualizar la matriz de residuos de correlación
+residuos_list <- lavResiduals(ajus_sendero1, type = "cor")
+residuos_cor <- residuos_list[["cov"]]
+print(round(residuos_cor, 3))
+```
+
+**Interpretación del Ajuste Local:**
+* Como se observa en la consola, todos los residuos de correlación son sumamente pequeños. Las mayores discrepancias se presentan en la relación de `castigo_media` con las variables de posición política: ser de centro (**-0.052**), derecha (**0.042**) e izquierda (**-0.041**).
+* Todos estos residuos se encuentran **muy por debajo del umbral crítico de 0.10**, lo que confirma un excelente comportamiento del modelo a nivel local.
+* **Sustento Metodológico para la Reespecificación**: Aunque todos los residuos son aceptables, su consistencia entre la posición política y el acuerdo con el castigo (las cuales tienen residuos de correlación residual debido a la ausencia de caminos directos en el modelo inicial) sugiere la hipótesis de que la ideología política no influye únicamente a través del autoritarismo, sino que puede tener un **efecto directo estadístico** sobre las actitudes punitivas. Esto justifica teórica y empíricamente la reespecificación de un modelo modificado.
 
 ## 4. Modelo Modificado: Incluyendo Efectos Directos y Definiendo Efectos Indirectos
 
-Dado que la literatura sugiere que la ideología política (`derecha`) tiene influencias tanto directas como indirectas (mediadas) sobre las actitudes hacia el castigo, especificaremos un modelo reespecificado. Añadiremos una relación directa de `derecha` sobre `castigo_media` y calcularemos explícitamente el **efecto indirecto** y el **efecto total** usando el operador `:=`.
+Dado que la teoría sugiere que la ideología política (`derecha`) tiene influencias tanto directas como indirectas sobre las actitudes hacia el castigo, especificaremos un modelo reespecificado. Añadiremos una relación directa de `derecha` sobre `castigo_media` y calcularemos explícitamente el **efecto indirecto** y el **efecto total** usando el operador `:=`.
 
 **Nuevo Modelo Hipotetizado:**
 ![](https://github.com/Clases-GabrielSotomayor/pruebapagina/blob/master/content/example/input/sendero2.png?raw=true){fig-align="center"}
@@ -234,10 +254,10 @@ mod_sendero2_spec <- '
   total_derecha_rwa := (a*b) + c 
 '
 
-# Ajustar el modelo modificado con DWLS
+# Ajustar el modelo modificado con MLR
 ajus_sendero2 <- sem(model = mod_sendero2_spec, 
                      data = datos_modelo_completos,
-                     estimator = "DWLS")
+                     estimator = "MLR")
 ```
 
 ### Resumen y Evaluación del Modelo Modificado
@@ -249,28 +269,28 @@ summary(ajus_sendero2,
         rsquare = TRUE)
 ```
 
-**Interpretación del Modelo Modificado (con DWLS):**
+**Interpretación del Modelo Modificado (con MLR Robusto):**
 
 *   **Ajuste Global del Modelo Modificado:**
-    *   **Test $\chi^2$:** **14.634** con **2** grados de libertad ($p = 0.001$). El estadístico disminuyó respecto al primer modelo (era 20.030), reflejando una mejoría.
-    *   **CFI = 0.955; TLI = 0.841:** El CFI mejoró sustancialmente y ahora es excelente (>0.95). El TLI sigue siendo el punto más marginal de ajuste debido a la simplicidad del modelo.
-    *   **RMSEA = 0.047 (IC 90%: 0.027 - 0.072):** Excelente ajuste (<0.05), con un intervalo de confianza estrecho e inferior al 0.08 crítico.
-    *   **SRMR = 0.013:** Bajó de 0.019 a 0.013, confirmando un excelente ajuste local en las discrepancias promedio de covarianza.
-    *   **Conclusión de Ajuste:** Añadir el sendero directo de `derecha` a `castigo_media` **mejoró el ajuste global del modelo**, especialmente el CFI y el SRMR.
+    *   **Test $\chi^2_{\text{scaled}}$:** **13.653** con **2** grados de libertad ($p = 0.001$). El estadístico disminuyó significativamente respecto al primer modelo (era 19.411), lo que refleja un mejor ajuste tras la inclusión del path directo. (Scaling correction factor = 1.076).
+    *   **Robust CFI = 0.966; Robust TLI = 0.881:** El CFI robusto mejoró sustancialmente y ahora supera con creces el criterio heurístico excelente de 0.95. El TLI robusto sigue ubicándose en una zona marginal debido a la penalización por grados de libertad en modelos con muy pocos parámetros, lo que nos recuerda que los índices son heurísticos y no leyes absolutas (Kline, 2023).
+    *   **Robust RMSEA = 0.047 (IC 90%: 0.027 - 0.072):** Sugiere un buen ajuste de aproximación (<0.05), con un límite superior del intervalo de confianza por debajo de 0.08.
+    *   **SRMR = 0.014:** Disminuyó de 0.020 a 0.014, lo que indica un ajuste local sumamente satisfactorio.
+    *   **Conclusión de Ajuste:** La reespecificación del modelo **mejoró sustancialmente el ajuste global y local**, logrando un modelo más equilibrado.
 
-*   **Estimaciones de los Senderos (`Std.all`):**
-    *   `castigo_media ~ rwa_media` (path `a`): Coeficiente estandarizado = **0.279** ($p < 0.001$).
-    *   `castigo_media ~ derecha` (path `c`): Coeficiente estandarizado = **0.055** ($p = 0.003$). Esto demuestra que **ser de derecha tiene un efecto directo positivo y significativo** sobre el acuerdo con castigos severos, incluso controlando por el autoritarismo.
-    *   `rwa_media ~ derecha` (path `b`): Coeficiente estandarizado = **0.062** ($p = 0.002$).
+*   **Estimaciones de los Senderos (`Std.all` para estandarizados):**
+    *   `castigo_media ~ rwa_media` (path `a`): Coeficiente estandarizado = **0.274** ($p < 0.001$).
+    *   `castigo_media ~ derecha` (path `c`): Coeficiente estandarizado = **0.042** ($p = 0.017$). Esto demuestra que **ser de derecha tiene un efecto directo positivo estadísticamente significativo** sobre el acuerdo con castigos severos, incluso controlando por el nivel de autoritarismo.
+    *   `rwa_media ~ derecha` (path `b`): Coeficiente estandarizado = **0.072** ($p < 0.001$).
 
 *   **$R^2$ (Varianza Explicada):**
-    *   Para `castigo_media`: $R^2 = 0.084$ (8.4% de la varianza).
-    *   Para `rwa_media`: $R^2 = 0.049$ (4.9% de la varianza).
+    *   Para `castigo_media`: $R^2 = 0.079$ (el modelo explica el 7.9% de su varianza).
+    *   Para `rwa_media`: $R^2 = 0.045$ (el modelo explica el 4.5% de su varianza).
 
 *   **Parámetros Definidos (`Defined Parameters - Std.all`):**
-    *   `ind_derecha_rwa (a*b)`: El efecto indirecto de `derecha` sobre `castigo_media` mediado por el autoritarismo es **0.017** ($p = 0.002$). Es estadísticamente significativo.
-    *   `total_derecha_rwa ((a*b)+c)`: El efecto total estandarizado de `derecha` es **0.072** ($p < 0.001$).
-    *   **Conclusión Sustantiva:** Ser de derecha aumenta significativamente el acuerdo con castigos severos. El efecto total se compone de una influencia directa y un camino mediado a través del autoritarismo.
+    *   `ind_derecha_rwa (a*b)`: El efecto indirecto estimado de `derecha` sobre `castigo_media` a través del autoritarismo es **0.020** ($p < 0.001$, coeficiente no estandarizado = 0.049). Es estadísticamente muy significativo.
+    *   `total_derecha_rwa ((a*b)+c)`: El efecto total estandarizado de `derecha` es **0.062** ($p = 0.001$, coeficiente no estandarizado = 0.154).
+    *   **Interpretación Sustantiva**: Ser de derecha se asocia con un mayor acuerdo con castigos severos. Este efecto total está compuesto por una asociación directa de carácter ideológico (path `c`) y una relación indirecta estadísticamente significativa mediada por el nivel de autoritarismo del individuo (path `a * b`).
 
 ## 5. Visualización del Modelo Final (con `lavaanPlot`)
 
@@ -286,14 +306,19 @@ lavaanPlot(
 )
 ```
 
-**Interpretación del Gráfico:** El diagrama visualiza perfectamente el modelo mediado. Las flechas sólidas muestran los coeficientes de regresión estandarizados (`Std.all`). Las estrellas indican que todos los caminos son estadísticamente significativos a un 95% de confianza.
+**Interpretación del Gráfico:** El diagrama visualiza el modelo especificado. Las flechas muestran los coeficientes de regresión estandarizados (`Std.all`). Las estrellas indican que todas las trayectorias representadas son estadísticamente significativas a un nivel de confianza del 95% o superior.
 
-## 6. Conclusión del Práctico
+## 6. Conclusión y Reflexión Metodológica
 
 En este práctico hemos:
-1.  Revisado los supuestos para Análisis de Senderos, diagnosticando no-normalidad multivariante, lo que fundamentó el uso del estimador `DWLS` en `lavaan`.
-2.  Especificado y estimado un modelo inicial y un modelo de senderos modificado que incorpora efectos directos e indirectos simultáneos.
-3.  Evaluado el ajuste global de ambos modelos, evidenciando que el **segundo modelo (reespecificado) presenta un mejor comportamiento comparativo y menores residuos** (CFI = 0.955, SRMR = 0.013).
-4.  Interpretado los coeficientes path directos, confirmando la influencia significativa de la posición política sobre el autoritarismo, y de este último sobre las actitudes punitivas.
-5.  Definido y testeado un **efecto indirecto significativo** de la ideología de derecha sobre el acuerdo con castigos severos mediado por el autoritarismo (0.017), así como el **efecto total** (0.072).
-6.  Comprobado que, si bien todas las relaciones son significativas, la varianza explicada ($R^2$) es moderada, recordándonos que el acuerdo con castigos severos es un fenómeno complejo multicausal que va más allá de la ideología y el autoritarismo de derechas.
+1.  Evaluado los supuestos del Análisis de Senderos, diagnosticando violaciones a la normalidad multivariante, lo que fundamentó el uso del estimador robusto **MLR (Maximum Likelihood Robust)** para variables continuas promediadas en R.
+2.  Especificado y estimado un modelo inicial y un modelo modificado que incorpora un sendero directo de la posición política.
+3.  Examinado el **Ajuste Local** mediante la **Matriz de Residuos de Correlación**, encontrando discrepancias mínimas e inferiores al $|0.10|$ recomendado (Kline, 2023).
+4.  Definido y testeado un **efecto indirecto estadístico significativo** (0.020) y un **efecto total** (0.062) de autoubicarse en la derecha sobre el acuerdo con el castigo, mediado por el autoritarismo.
+
+### Nota sobre la Inferencia Causal y Modelos Equivalentes (Kline, 2023)
+
+Al trabajar con datos transversales (cross-sectional) como los de la Ola 1 de ELSOC, es fundamental interpretar estos resultados con cautela metodológica:
+*   **Ausencia de Precedencia Temporal**: La mediación teórica es un proceso causal dinámico que requiere precedencia temporal, es decir, que la causa anteceda a la variable intermedia, y esta al resultado en el tiempo ($X \longrightarrow M \longrightarrow Y$). Al haber medido todas las variables en un mismo instante, lo que estimamos son únicamente **efectos indirectos estadísticos** (asociaciones condicionadas).
+*   **Modelos Equivalentes**: Estadísticamente, existen especificaciones alternativas (ej. que el acuerdo con el castigo genere mayor autoritarismo, o que ambos sean explicados por un factor común omitido) que reproducirían exactamente la misma matriz de covarianza implicada y, por lo tanto, los mismos índices de ajuste global. 
+*   **Recomendación**: La validez de la direccionalidad de las flechas no descansa en los índices de ajuste de R, sino en la solidez de la teoría sociológica y en la explotación de **diseños longitudinales** (ej. analizando olas de seguimiento de ELSOC).
