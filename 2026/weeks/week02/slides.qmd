@@ -76,7 +76,7 @@ Esto puede pensarse en todas las etapas del proceso de producción de conocimien
 Basado en la perspectiva de ciencia abierta elaborada por **LISA-COES**:
 
 ::: {style="text-align: center;"}
-![](img/lisa.png){width=55%}
+![](img/lisa.png){width=35%}
 :::
 
 ## Diseño transparente {.smaller}
@@ -196,7 +196,7 @@ El promedio es **2**
 :::
 :::::
 
-## Quarto: Bloques de código {.smaller}
+## Quarto: Bloques de código {.smaller .scrollable}
 
 ::::: columns
 ::: {.column width="50%"}
