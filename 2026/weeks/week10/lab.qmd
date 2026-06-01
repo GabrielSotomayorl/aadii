@@ -311,6 +311,7 @@ lavaanPlot(
 ## 6. Conclusión y Reflexión Metodológica
 
 En este práctico hemos:
+
 1.  Evaluado los supuestos del Análisis de Senderos, diagnosticando violaciones a la normalidad multivariante, lo que fundamentó el uso del estimador robusto **MLR (Maximum Likelihood Robust)** para variables continuas promediadas en R.
 2.  Especificado y estimado un modelo inicial y un modelo modificado que incorpora un sendero directo de la posición política.
 3.  Examinado el **Ajuste Local** mediante la **Matriz de Residuos de Correlación**, encontrando discrepancias mínimas e inferiores al $|0.10|$ recomendado (Kline, 2023).

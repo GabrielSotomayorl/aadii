@@ -5,6 +5,7 @@ title: "Semana 11: Modelos de Ecuaciones Estructurales (SEM)"
 En esta semana abordamos los **Modelos de Ecuaciones Estructurales (SEM)**, una de las metodologías multivariantes más potentes en las ciencias sociales, que representa la integración teórica y metodológica de las técnicas analizadas a lo largo del curso: el **Análisis Factorial Confirmatorio (AFC)** y el **Análisis de Senderos (Path Analysis)**.
 
 Discutimos cómo los modelos SEM se componen de dos partes esenciales que se estiman de forma simultánea:
+
 1. El **Modelo de Medida**, que vincula constructos latentes inobservables con sus indicadores empíricos directos, modelando explícitamente el error de medición de cada ítem.
 2. El **Modelo Estructural**, que define la red de relaciones direccionales (de asociación o predicción) entre las variables latentes y exógenas en el sistema.
 

@@ -214,6 +214,7 @@ print(round(residuos_cor, 3))
 ```
 
 **Interpretación de los Residuos**:
+
 * Todos los residuos de correlación se sitúan muy cercanos a cero. El residuo absoluto más alto es de apenas **-0.083** (entre `seg_3` "seguridad caminando de noche" y `seg_4` "seguridad dentro de la vivienda").
 * Ningún par de variables excede el límite crítico de **$|0.10|$**.
 * Esto confirma empíricamente que no existen patrones locales relevantes omitidos por el modelo ni redundancias empíricas sustanciales, validando localmente nuestra especificación teórica.
@@ -246,6 +247,7 @@ lavaanPlot(model = ajus_sem,
 ## 6. Conclusión del Práctico
 
 En este práctico hemos logrado:
+
 1. **Especificar y estimar** un Modelo de Ecuaciones Estructurales (SEM) completo en R, aplicando el estimador robusto `DWLS` apropiado para la naturaleza ordinal de nuestros indicadores.
 2. **Evaluar el ajuste global**, encontrando índices excelentes (CFI = 0.986, TLI = 0.994, RMSEA = 0.060, SRMR = 0.024) que avalan la validez de la estructura empírica del modelo.
 3. **Validar localmente el ajuste**, confirmando que ningún residuo absoluto supera el umbral $|0.10|$.
