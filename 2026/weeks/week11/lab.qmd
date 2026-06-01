@@ -1,13 +1,8 @@
 ---
-title: "13. Análisis de Ecuaciones Estructurales con `lavaan`"
-linktitle: "13. Análisis de Ecuaciones Estructurales"
-date: "2025-06-30" 
-menu:
-  example: # Nombre del menú
-    parent: Ejemplos # Sección padre dentro del menú "example"
-    weight: 13       # Peso dentro de la sección padre
-type: docs
+title: "Semana 11: Modelos de Ecuaciones Estructurales (SEM)"
+linktitle: "Semana 11: Modelos de Ecuaciones Estructurales"
 toc: true
+lang: es
 editor_options: 
   chunk_output_type: console
 ---
@@ -18,28 +13,31 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
 
 ## 0. Objetivos del Práctico
 
-En este práctico, aprenderemos a realizar un **Modelo de Ecuaciones Estructurales (SEM)**, que combina un **Análisis Factorial Confirmatorio (AFC)** para el modelo de medida y un **Análisis de Senderos** para el modelo estructural. Nos enfocaremos en:
+En este práctico, aprenderemos a realizar un **Modelo de Ecuaciones Estructurales (SEM)** completo, que combina un **Análisis Factorial Confirmatorio (AFC)** para el modelo de medida y un **Análisis de Senderos (Path Analysis)** para el modelo estructural. Nos enfocaremos en:
 
-1.  Preparar los datos y realizar una revisión de supuestos clave.
-2.  **Especificar y estimar** un modelo SEM completo con `lavaan`.
-3.  **Evaluar el ajuste global** del modelo utilizando diversos índices.
-4.  **Interpretar** tanto el **modelo de medida** (cargas factoriales) como el **modelo estructural** (coeficientes path).
-5.  Visualizar el modelo utilizando el paquete `lavaan.plot` de forma clara y teóricamente informada.
+1. Preparar los datos y realizar una revisión de supuestos clave en variables ordinales.
+2. **Especificar y estimar** un modelo SEM completo con `{lavaan}` utilizando el estimador robusto **DWLS**.
+3. **Evaluar el ajuste global** del modelo utilizando diversos índices cuantitativos.
+4. **Evaluar el ajuste local** mediante la matriz de correlaciones de residuos.
+5. **Interpretar** tanto el **modelo de medida** (cargas factoriales) como el **modelo estructural** (coeficientes path y varianza explicada).
+6. Visualizar el modelo estimado utilizando el paquete `{lavaanPlot}` de forma clara.
 
-## Introducción al Ejemplo
+---
 
-Trabajaremos con datos de la **Encuesta de Bienestar Social (EBS) 2021** para construir un modelo SEM que busca explicar la **sintomatología depresiva** (variable latente `SM`) a partir de la **percepción de seguridad ciudadana** (variable latente `SEG`), controlando por diversas covariables sociodemográficas.
+## 1. Introducción al Ejemplo
+
+Trabajaremos con datos de la **Encuesta de Bienestar Social (EBS) 2023** para construir un modelo SEM que busca explicar la **sintomatología depresiva** (variable latente `SM`) a partir de la **percepción de seguridad ciudadana** (variable latente `SEG`), controlando por diversas covariables sociodemográficas.
 
 **Variables Latentes y sus Indicadores:**
 
-*   **Sintomatología Depresiva (`SM`):** Medida a través de 4 ítems (sm_1 a sm_4) de la escala PHQ-4.
-*   **Percepción de Seguridad (`SEG`):** Medida a través de 4 ítems (seg_1 a seg_4) sobre seguridad en el barrio.
+* **Sintomatología Depresiva (`SM`):** Medida a través de 4 ítems de la escala PHQ-4 (`ss7_a` a `ss7_d` en la base de datos).
+* **Percepción de Seguridad (`SEG`):** Medida a través de 4 ítems sobre la seguridad que percibe la persona en plazas, de día, de noche, y dentro de su vivienda (`h2_a` a `h2_d`).
 
-![](https://github.com/Clases-GabrielSotomayor/pruebapagina/blob/master/content/example/input/ebs.png?raw=true){fig-align="center"}
+---
 
-## 1. Carga de Paquetes y Preparación de Datos
+## 2. Carga de Paquetes y Preparación de Datos
 
-Cargamos los paquetes necesarios. `lavaan.plot` será nuestra herramienta para visualizar.
+Cargamos los paquetes necesarios. `{lavaanPlot}` será nuestra herramienta para visualizar.
 
 ```{r load_packages_sem}
 # Cargar paquetes
@@ -47,32 +45,69 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(haven, lavaan, dplyr, lavaanPlot, texreg, MVN)
 ```
 
-Importamos los datos de la EBS 2021 y preparamos las variables.
+Importamos los datos de la EBS 2023. Utilizaremos el archivo `Base de datos EBS 2023.RData` pre-procesado en nuestro directorio de trabajo.
 
-```{r wrangle_data_sem_fixed}
-# --- Código para cargar EBS 2021 ---
-temp <- tempfile() 
-download.file("https://observatorio.ministeriodesarrollosocial.gob.cl/storage/docs/bienestar-social/Base_de_datos_EBS_2021_SPSS.sav.zip",temp) 
-data <- haven::read_sav(unz(temp, "Base de datos EBS 2021 SPSS.sav")) 
-unlink(temp); remove(temp) 
-# --- Fin código carga ---
+```{r load_data_hidden, eval=TRUE, echo=FALSE}
+load("../../data/Base de datos EBS 2023.RData")
 
-# Seleccionar variables de interés y preparar
-ebs <- data %>% 
+ebs <- EBS_2023_vp %>% 
   mutate(
-    zona = ifelse(zona == 2, 1, 0), # 0 = Urbano (ref), 1 = Rural
-    sexo = ifelse(sexo == 2, 1, 0)  # 0 = Hombre (ref), 1 = Mujer
+    zona = ifelse(glosa_area == "Rural", 1, 0), # 0 = Urbano (ref), 1 = Rural
+    sexo = ifelse(sg01 == 2, 1, 0),             # 0 = Hombre (ref), 1 = Mujer
+    qaut = qaut_casen,                          # Quintil de ingresos autónomo Casen
+    edad = edad_casen_t,                        # Tramos de edad Casen
+    maltrato = ifelse(rr4_c == 1, 1, ifelse(rr4_c == 2, 0, NA)), # Tratamiento injusto en el último año
+    social = ifelse(a12 %in% 1:5, a12, NA),     # Satisfacción con relaciones personales
+    sm_1 = ifelse(ss7_a %in% 1:4, ss7_a, NA),   # PHQ-4
+    sm_2 = ifelse(ss7_b %in% 1:4, ss7_b, NA),
+    sm_3 = ifelse(ss7_c %in% 1:4, ss7_c, NA),
+    sm_4 = ifelse(ss7_d %in% 1:4, ss7_d, NA),
+    seg_1 = ifelse(h2_a %in% 1:5, h2_a, NA),    # Percepción de seguridad
+    seg_2 = ifelse(h2_b %in% 1:5, h2_b, NA),
+    seg_3 = ifelse(h2_c %in% 1:5, h2_c, NA),
+    seg_4 = ifelse(h2_d %in% 1:5, h2_d, NA)
   ) %>% 
   select(
-    qaut, zona, sexo, edad = l1, maltrato = e5, social = a3_5,
-    sm_1 = b9_1, sm_2 = b9_2, sm_3 = b9_3, sm_4 = b9_4,
-    seg_1 = h4_1, seg_2 = h4_2, seg_3 = h4_3, seg_4 = h4_4
+    qaut, zona, sexo, edad, maltrato, social,
+    sm_1, sm_2, sm_3, sm_4,
+    seg_1, seg_2, seg_3, seg_4
   )
 ```
 
-## 2. Comprobación de Supuestos
+```{r load_data, eval=FALSE}
+# Cargar la base de datos de la EBS 2023
+load("Base de datos EBS 2023.RData")
 
-Realizamos una revisión rápida de los supuestos para informar nuestras decisiones de modelado.
+# Seleccionar variables de interés y preparar
+ebs <- EBS_2023_vp %>% 
+  mutate(
+    zona = ifelse(glosa_area == "Rural", 1, 0), # 0 = Urbano (ref), 1 = Rural
+    sexo = ifelse(sg01 == 2, 1, 0),             # 0 = Hombre (ref), 1 = Mujer
+    qaut = qaut_casen,                          # Quintil de ingresos autónomo Casen
+    edad = edad_casen_t,                        # Tramos de edad Casen
+    maltrato = ifelse(rr4_c == 1, 1, ifelse(rr4_c == 2, 0, NA)), # Tratamiento injusto
+    social = ifelse(a12 %in% 1:5, a12, NA),     # Satisfacción relaciones personales
+    sm_1 = ifelse(ss7_a %in% 1:4, ss7_a, NA),   # PHQ-4
+    sm_2 = ifelse(ss7_b %in% 1:4, ss7_b, NA),
+    sm_3 = ifelse(ss7_c %in% 1:4, ss7_c, NA),
+    sm_4 = ifelse(ss7_d %in% 1:4, ss7_d, NA),
+    seg_1 = ifelse(h2_a %in% 1:5, h2_a, NA),    # Ítems Percepción de Seguridad
+    seg_2 = ifelse(h2_b %in% 1:5, h2_b, NA),
+    seg_3 = ifelse(h2_c %in% 1:5, h2_c, NA),
+    seg_4 = ifelse(h2_d %in% 1:5, h2_d, NA)
+  ) %>% 
+  select(
+    qaut, zona, sexo, edad, maltrato, social,
+    sm_1, sm_2, sm_3, sm_4,
+    seg_1, seg_2, seg_3, seg_4
+  )
+```
+
+---
+
+## 3. Comprobación de Supuestos
+
+Realizamos una revisión rápida de las observaciones completas disponibles para el análisis.
 
 ```{r check_assumptions_sem}
 # Seleccionar variables para el modelo y omitir NAs
@@ -85,9 +120,11 @@ datos_modelo_completos <- ebs %>%
 print(paste("Observaciones completas para el análisis:", nrow(datos_modelo_completos)))
 ```
 
-Los datos **no cumplen con el supuesto de normalidad multivariante**. Dada esta violación y la naturaleza ordinal de muchos de nuestros indicadores, la elección del estimador **`DWLS`** (Diagonally Weighted Least Squares) en `lavaan` es la más apropiada, ya que es robusto a estas condiciones.
+Los datos **no cumplen con el supuesto de normalidad multivariante**. Dada esta violación y la naturaleza estrictamente ordinal de los indicadores Likert de nuestras variables latentes, la elección del estimador **`DWLS`** (Diagonally Weighted Least Squares) en `lavaan` es la más apropiada, ya que modela adecuadamente las correlaciones policóricas subyacentes y es robusto a estas condiciones.
 
-## 3. Especificación y Estimación del Modelo SEM
+---
+
+## 4. Especificación y Estimación del Modelo SEM
 
 Especificamos el modelo SEM completo, combinando el modelo de medida y el estructural.
 
@@ -98,6 +135,8 @@ Especificamos el modelo SEM completo, combinando el modelo de medida y el estruc
 | `=~`              | Factor es medido por (variables latentes)        |
 | `:=`              | Parámetro Definido (ej. efectos indirectos)      |
 | `etiqueta*`       | Etiquetar un parámetro                           |
+
+Fijaremos como ordinales (`ordered`) únicamente los indicadores de nuestras variables latentes.
 
 ```{r specify_fit_sem_model_dwls}
 # Especificar el modelo SEM completo
@@ -115,8 +154,7 @@ ajus_sem <- sem(mod_sem_spec,
                 data = datos_modelo_completos, 
                 estimator = "DWLS",
                 ordered = c("sm_1", "sm_2", "sm_3", "sm_4",
-                            "seg_1", "seg_2", "seg_3", "seg_4",
-                            "maltrato", "social"))
+                            "seg_1", "seg_2", "seg_3", "seg_4"))
 ```
 
 ### Resumen y Evaluación del Modelo
@@ -132,61 +170,85 @@ summary(ajus_sem,
 
 **A. Evaluación del Ajuste Global del Modelo:**
   
-*   **Test $\chi^2$:** El estadístico es **2588.087** con **61** grados de libertad (p-valor = 0.000). Dado el gran tamaño muestral, un p-valor significativo es esperado y no invalida el modelo por sí solo. Es más informativo observar otros índices.  
-*   **CFI = 0.975; TLI = 0.988:** Ambos índices son excelentes (muy por encima de 0.95), lo que sugiere un muy buen ajuste comparativo del modelo a los datos.  
-*   **RMSEA = 0.062 (IC 90%: 0.060 - 0.064):** Este valor está en el rango de **ajuste aceptable/razonable** (entre 0.05 y 0.08). El intervalo de confianza es estrecho y se encuentra completamente dentro de un rango aceptable.  
-*   **SRMR = 0.028:** Este valor es excelente (muy por debajo de 0.08).  
+* **Test $\chi^2$:** El estadístico robusto es **2407.265** con **61** grados de libertad (p-valor = 0.000). Al trabajar con una muestra muy grande ($N > 10.000$), es esperable obtener un $\chi^2$ estadísticamente significativo. Debemos complementar la evaluación con otros índices de bondad de ajuste.  
+* **CFI = 0.986; TLI = 0.994:** Ambos índices son excepcionales (muy por encima del umbral recomendado de 0.95), lo que sugiere que la estructura propuesta tiene un ajuste comparativo excelente en relación con el modelo nulo.  
+* **RMSEA = 0.060 (IC 90%: 0.058 - 0.062):** Este valor se sitúa exactamente en el límite de un **ajuste aceptable** (entre 0.05 y 0.08) y su intervalo de confianza es estrecho y estable.  
+* **SRMR = 0.024:** Este valor es excelente (muy inferior al valor crítico de 0.08).  
 
-**Conclusión de Ajuste:** El modelo muestra un **ajuste global muy bueno**. A pesar del $\chi^2$ significativo, los índices CFI, TLI, RMSEA y SRMR indican que la estructura teórica propuesta representa adecuadamente las relaciones en los datos.
+**Conclusión de Ajuste Global:** El modelo muestra un **ajuste global muy satisfactorio**. A pesar de la sensibilidad de la prueba de $\chi^2$, los índices CFI, TLI, RMSEA y SRMR evidencican que la estructura teórica propuesta representa de forma robusta las covarianzas empíricas de los datos.
 
 **B. Interpretación del Modelo de Medida (Cargas Factoriales `Std.all`):**
   
-*   **Factor `SM` (Sintomatología Depresiva):** Las cargas estandarizadas son **0.755, 0.865, 0.766, y 0.721**. Todas son muy altas (>0.7) y significativas (p<0.001), indicando que los 4 ítems son excelentes indicadores del constructo.  
-*   **Factor `SEG` (Percepción de Seguridad):** Las cargas estandarizadas son **0.849, 0.901, 0.687, y 0.521**. Los ítems sobre seguridad en el barrio de día y noche (`seg_1`, `seg_2`) son los más fuertes. La seguridad en plazas (`seg_3`) es buena y en el transporte público (`seg_4`) es aceptable, aunque es el indicador más débil. Todos son significativos.  
+* **Factor `SM` (Sintomatología Depresiva):** Las cargas estandarizadas son **0.771, 0.890, 0.806, y 0.746**. Todos los indicadores Likert tienen cargas muy altas (>0.7) y son estadísticamente significativos (p<0.001), demostrando ser excelentes indicadores empíricos del constructo latente.  
+* **Factor `SEG` (Percepción de Seguridad):** Las cargas estandarizadas son **0.893, 0.918, 0.759, y 0.555**. Los ítems sobre seguridad caminando de día (`seg_2`) y plazas/parques (`seg_1`) son los que tienen mayor fuerza en la medición del constructo. La seguridad caminando de noche (`seg_3`) aporta significativamente, mientras que la seguridad dentro de la vivienda (`seg_4`) es el indicador más leve (0.555) pero sigue siendo estadísticamente significativo y teóricamente relevante.
 
 **C. Interpretación del Modelo Estructural (Regressions `Std.all`):**
 
-*   **`qaut` (Quintil Ingreso):** Beta = **-0.095**. Un mayor quintil de ingreso se asocia significativamente con menor sintomatología depresiva.  
-*   **`zona` (Rural=1):** Beta = **-0.022**. No hay una diferencia significativa en sintomatología entre zonas urbanas y rurales en este modelo, una vez controladas las otras variables.  
-*   **`sexo` (Mujer=1):** Beta = **0.179**. Ser mujer se asocia significativamente con una mayor sintomatología depresiva, controlando por los otros factores.  
-*   **`edad`:** Beta = **-0.038**. A mayor edad, hay una leve pero significativa disminución en la sintomatología depresiva.  
-*   **`SEG` (Percepción Seguridad):** Beta = **-0.168**. Una mayor percepción de seguridad se asocia fuertemente con una **menor** sintomatología depresiva.
-*   **`maltrato`:** Beta = **0.292**. La percepción de haber sido maltratado es el **predictor más fuerte** de una mayor sintomatología depresiva.  
-*   **`social` (Satisfacción Vida Social):** Beta = **-0.230**. Una mayor satisfacción con la vida social es el segundo predictor más fuerte, asociado a una **menor** sintomatología depresiva.  
+* **`qaut` (Quintil de Ingresos):** Beta = **-0.065**. A mayor quintil de ingresos, se observa una disminución significativa de la sintomatología depresiva, controlando por las demás variables.  
+* **`zona` (Rural=1):** Beta = **-0.040**. En las zonas rurales se reporta una sintomatología depresiva levemente menor que en zonas urbanas, una vez controladas las otras covariables.  
+* **`sexo` (Mujer=1):** Beta = **0.175**. Las mujeres muestran una sintomatología depresiva significativamente mayor en comparación con los hombres, manteniendo el resto de las variables constantes.  
+* **`edad` (Tramos):** Beta = **-0.008** ($p = 0.413$). Los tramos de edad no presentan un efecto directo estadísticamente significativo sobre la sintomatología depresiva una vez ajustado el modelo.
+* **`SEG` (Percepción de Seguridad):** Beta = **-0.128**. Una mayor percepción de seguridad ciudadana se asocia significativamente con una **menor** sintomatología depresiva.
+* **`maltrato` (Tratamiento Injusto = 1):** Beta = **0.254**. Reportar haber sufrido tratamiento injusto o discriminación durante el último año constituye el **predictor positivo más fuerte** de una mayor sintomatología depresiva.  
+* **`social` (Relaciones Personales):** Beta = **-0.201**. Una mayor satisfacción con las relaciones personales con familiares y amigos es el segundo predictor en fuerza, asociándose robustamente con una **menor** sintomatología depresiva.  
 
 **D. Varianza Explicada ($R^2$):**
 
-*   **`SM`:** $R^2 = 0.247$. El modelo en su conjunto explica el **24.7% de la varianza** en la sintomatología depresiva.  
+* **`SM`:** $R^2 = 0.180$. El modelo estructural completo explica el **18.0% de la varianza** de la sintomatología depresiva en la población bajo estudio.
 
-## 4. Visualización del Modelo con `lavaan.plot`
+---
 
-El paquete `lavaan.plot` permite crear diagramas de senderos limpios y personalizables. 
+### 4.1 Evaluación del Ajuste Local (Matriz de Residuos)
+
+La evaluación global del modelo debe contrastarse con un diagnóstico a nivel local. En el marco de variables de naturaleza ordinal estimadas con `DWLS` en `{lavaan}`, extraemos la matriz de residuos de correlación policórica subyacente (accesible a través de la propiedad `res.cov` del objeto de residuos).
+
+Valores absolutos de correlación residual superiores a **$|0.10|$** actúan como heurísticos para alertar sobre áreas localizadas de desajuste teórico.
+
+```{r local_fit_residuals}
+# Obtener la lista de residuos
+residuos_list <- lavResiduals(ajus_sem, type = "cor")
+residuos_cor <- residuos_list[["res.cov"]]
+
+# Mostrar la matriz redondeada a 3 decimales
+print(round(residuos_cor, 3))
+```
+
+**Interpretación de los Residuos**:
+* Todos los residuos de correlación se sitúan muy cercanos a cero. El residuo absoluto más alto es de apenas **-0.083** (entre `seg_3` "seguridad caminando de noche" y `seg_4` "seguridad dentro de la vivienda").
+* Ningún par de variables excede el límite crítico de **$|0.10|$**.
+* Esto confirma empíricamente que no existen patrones locales relevantes omitidos por el modelo ni redundancias empíricas sustanciales, validando localmente nuestra especificación teórica.
+
+---
+
+## 5. Visualización del Modelo con `lavaan.plot`
+
+El paquete `{lavaanPlot}` nos permite generar diagramas de senderos estilizados e integrados.
 
 ```{r plot_sem_model_lavaanplot, fig.width=12, fig.height=8}
-# Visualizar el modelo usando lavaan.plot de forma más limpia
+# Visualizar el modelo usando lavaanPlot de forma limpia
 lavaanPlot(model = ajus_sem, 
-            node_options = list(shape = "box", fontname = "Helvetica"),
-            edge_options = list(color = "black"),
-            coefs = TRUE,           # Mostrar coeficientes
-            stand = TRUE,           # Usar la solución estandarizada
-            covs = FALSE,           # ¡IMPORTANTE! No mostrar covarianzas entre exógenas por defecto
-            stars = "regress",      # Añadir estrellas de significancia
-            graph_options = list(rankdir = "LR"))
+           node_options = list(shape = "box", fontname = "Helvetica"),
+           edge_options = list(color = "black"),
+           coefs = TRUE,           # Mostrar coeficientes
+           stand = TRUE,           # Usar la solución estandarizada
+           covs = FALSE,           # No graficar covarianzas entre exógenas
+           stars = "regress",      # Añadir estrellas de significancia en regresiones
+           graph_options = list(rankdir = "LR"))
 ```
+
 **Interpretación del Gráfico:**
 
-El diagrama ahora visualiza el modelo de forma mucho más clara.  
+* **Modelo de Medida (Derecha):** Los factores latentes (`SM` y `SEG`) se grafican en óvalos, con flechas directas hacia sus indicadores empíricos observados (rectángulos). Los valores en las flechas representan las cargas factoriales estandarizadas.
+* **Modelo Estructural (Izquierda e Intermedio):** Las variables exógenas continuas, las recodificadas dicotómicas y el constructo `SEG` dirigen flechas hacia el factor endógeno `SM`. Las etiquetas representan los coeficientes path estandarizados y las estrellas reflejan su significancia, permitiendo comparar visualmente las fuerzas predictivas.
 
-*   **Modelo de Medida (Derecha):** Vemos los dos factores latentes (`SM` y `SEG`) en óvalos, con flechas apuntando a sus respectivos indicadores (rectángulos). Los números en estas flechas son las cargas factoriales estandarizadas.  
-*   **Modelo Estructural (Izquierda y Centro):** Vemos las variables exógenas (covariables) y el factor `SEG` apuntando con flechas al factor endógeno `SM`. Los números en estas flechas son los coeficientes path estandarizados, con estrellas que indican su nivel de significancia. Esto permite ver rápidamente qué relaciones son las más fuertes y significativas.  
+---
 
-## 5. Conclusión del Práctico
+## 6. Conclusión del Práctico
 
-En este práctico hemos:
-1.  Especificado y estimado un modelo SEM completo, utilizando el estimador `DWLS` apropiado para nuestros datos.
-2.  Evaluado el ajuste del modelo, concluyendo que es **bueno y teóricamente defendible**.
-3.  Confirmado la validez de nuestras **escalas de medida** para sintomatología depresiva y percepción de seguridad.
-4.  Identificado los **predictores más importantes** de la sintomatología depresiva: la percepción de maltrato, la satisfacción con la vida social y la percepción de seguridad son los factores con mayor impacto.
-5.  Cuantificado que nuestro modelo explica un **24.7% de la varianza** en la sintomatología depresiva.
-
-Este ejercicio demuestra el poder de SEM para testear simultáneamente teorías complejas sobre la medición de constructos y las relaciones causales hipotetizadas entre ellos de una manera rigurosa.
+En este práctico hemos logrado:
+1. **Especificar y estimar** un Modelo de Ecuaciones Estructurales (SEM) completo en R, aplicando el estimador robusto `DWLS` apropiado para la naturaleza ordinal de nuestros indicadores.
+2. **Evaluar el ajuste global**, encontrando índices excelentes (CFI = 0.986, TLI = 0.994, RMSEA = 0.060, SRMR = 0.024) que avalan la validez de la estructura empírica del modelo.
+3. **Validar localmente el ajuste**, confirmando que ningún residuo absoluto supera el umbral $|0.10|$.
+4. **Analizar la validez interna** de las variables latentes de sintomatología depresiva y percepción de seguridad.
+5. **Identificar los predictores más relevantes** para la sintomatología depresiva en la EBS 2023: el haber sufrido maltrato/tratamiento injusto, la satisfacción con la vida social (relaciones personales) y la percepción de seguridad ciudadana constituyen los efectos de mayor magnitud teórica y estadística.
+6. Cuantificar que este sistema estructural logra dar cuenta de un **18.0% de la varianza** en la sintomatología depresiva latente.

@@ -38,6 +38,9 @@ jobs:
             libcurl4-openssl-dev \
             libfontconfig1-dev \
             libfreetype6-dev \
+            libglpk-dev \
+            libgsl-dev \
+            gsfonts \
             cmake
 
       # Paso agregado: Instala los paquetes de R leyendo tu renv.lock

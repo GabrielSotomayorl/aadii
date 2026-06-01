@@ -1,0 +1,35 @@
+---
+title: "Semana 11: Modelos de Ecuaciones Estructurales (SEM)"
+---
+
+En esta semana abordamos los **Modelos de Ecuaciones Estructurales (SEM)**, una de las metodologías multivariantes más potentes en las ciencias sociales, que representa la integración teórica y metodológica de las técnicas analizadas a lo largo del curso: el **Análisis Factorial Confirmatorio (AFC)** y el **Análisis de Senderos (Path Analysis)**.
+
+Discutimos cómo los modelos SEM se componen de dos partes esenciales que se estiman de forma simultánea:
+1. El **Modelo de Medida**, que vincula constructos latentes inobservables con sus indicadores empíricos directos, modelando explícitamente el error de medición de cada ítem.
+2. El **Modelo Estructural**, que define la red de relaciones direccionales (de asociación o predicción) entre las variables latentes y exógenas en el sistema.
+
+Estudiaremos las convenciones de los diagramas de senderos para variables latentes, observadas, términos de error de medición y perturbaciones estructurales. Además, revisaremos en detalle los supuestos teóricos del modelo, la formulación de grados de libertad, y las implicancias y diferencias entre estimar mediante **Máxima Verosimilitud (ML/MLR)** para variables continuas frente a **Mínimos Cuadrados Ponderados Diagonales (DWLS)** para indicadores de naturaleza estrictamente ordinal o categórica.
+
+## Clase Expositiva
+
+Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer clic [aquí](slides.qmd) para ver la presentación en pantalla completa. Usa las flechas de tu teclado para avanzar.
+
+<div class="container" style="position: relative;overflow: hidden;width: 100%;min-height:600px;">
+<iframe src="slides.html" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;min-height:600px;"></iframe>
+</div>
+
+## Taller Aplicado (Práctico 11)
+
+En este taller aplicado implementaremos un Modelo de Ecuaciones Estructurales completo en R utilizando el paquete `{lavaan}` con datos de la **Encuesta de Bienestar Social (EBS) 2023**. 
+
+Aprenderemos a recodificar y preparar indicadores categóricos y ordinales, a especificar de forma simultánea los factores latentes de Sintomatología Depresiva (`SM`) y Percepción de Seguridad (`SEG`), y a estimar el modelo bajo el estimador robusto **DWLS**. Asimismo, realizaremos una evaluación completa del ajuste global (Chi-cuadrado, CFI, TLI, RMSEA, SRMR) y del **ajuste local** mediante la matriz de correlaciones de residuos, concluyendo con la interpretación teórica de los coeficientes de regresión estandarizados y la varianza explicada.
+
+[Ir al Práctico 11: Modelos de Ecuaciones Estructurales](lab.qmd)
+
+## Lecturas Obligatorias
+
+- **Ruiz, M. A., Pardo, A., & San Martín, R. (2010).** Modelos de ecuaciones estructurales. *Papeles del Psicólogo*, *31*(1), 34–45. [https://www.papelesdelpsicologo.es/pdf/1794.pdf](https://www.papelesdelpsicologo.es/pdf/1794.pdf)
+
+## Dudas y Comunicación
+
+Recuerda que puedes utilizar los canales de comunicación establecidos o acercarte al profesor y ayudantes si tienes dudas sobre el curso.
