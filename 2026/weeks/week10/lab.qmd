@@ -22,7 +22,7 @@ En este práctico, aprenderemos a especificar, estimar e interpretar modelos de 
 
 1.  Comprender la **lógica y sintaxis** para definir modelos de senderos en `lavaan`.
 2.  Realizar una **revisión de supuestos** pertinente para el Análisis de Senderos, adaptando nuestras decisiones según los hallazgos.
-3.  **Estimar** los parámetros del modelo utilizando un estimador adecuado, en este caso, `DWLS` (Mínimos Cuadrados Ponderados Diagonalmente), debido a la naturaleza de nuestros datos.
+3.  **Estimar** los parámetros del modelo utilizando un estimador adecuado, en este caso, `MLR` (Máxima Verosimilitud Robusta), debido a la naturaleza continua de los índices promedio utilizados.
 4.  Evaluar el **ajuste global** del modelo a los datos mediante diversos índices.
 5.  **Interpretar** detalladamente los coeficientes path (directos e indirectos) y la varianza explicada ($R^2$).
 6.  **Visualizar** el modelo de senderos para una mejor comprensión gráfica.
@@ -61,7 +61,7 @@ Para este práctico, trabajaremos con la base de datos longitudinal **ELSOC_Long
 Dado que nuestro análisis se centra en el año 2016, filtraremos las observaciones correspondientes a la **Ola 1** y construiremos nuestras variables de interés a partir de los ítems originales de la encuesta:
 - **Autoritarismo de derechas (RWA):** Promedio de los ítems `c18_04` ("gobierno firme"), `c18_05` ("mandatario fuerte"), `c18_06` ("obediencia en niños") y `c18_07` ("obediencia y disciplina").
 - **Acuerdo con castigos severos (Punición):** Promedio de los ítems `f06_01` ("Asaltantes cumplir condena") y `f06_02` ("Condenas largas").
-- **Posición política:** Recodificamos la escala de autoubicación `c15` (0-10) en tres categorías excluyentes (`derecha` [7-10], `centro` [4-6], `izquierda` [0-3]). Los independientes o sin posición (`11` o `12`) actúan como categoría de referencia (`0` en todas las dummies).
+- **Posición política:** Recodificamos la escala de autoubicación `c15` (0-10) en tres dummies (`derecha` [7-10], `centro` [4-6], `izquierda` [0-3]), dejando a los independientes o sin posición (`11` o `12`) como categoría de referencia. Los coeficientes de cada dummy se interpretan en comparación con ese grupo.
 
 ```{r load_data_hidden, eval=TRUE, echo=FALSE}
 load("../../data/ELSOC_Long_2016_2023.RData")

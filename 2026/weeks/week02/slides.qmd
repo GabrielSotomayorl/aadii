@@ -218,6 +218,10 @@ mean(x)
 - Las opciones `#|` van al inicio del chunk
 - `{r}` indica el lenguaje (puede ser `{python}`, `{stata}`...)
 
+::: {.callout-important icon=false title="La ventaja clave"}
+Al cambiar los datos, **todo se recalcula automáticamente**. No más copiar y pegar resultados a mano.
+:::
+
 :::
 ::: {.column width="50%"}
 
@@ -232,9 +236,7 @@ mean(x)
 | `fig-height` / `fig-width` | Tamaño del gráfico |
 | `cache: true` | Guardar resultado en caché |
 
-::: {.callout-important icon=false title="La ventaja clave"}
-Al cambiar los datos, **todo se recalcula automáticamente**. No más copiar y pegar resultados a mano.
-:::
+
 
 :::
 :::::

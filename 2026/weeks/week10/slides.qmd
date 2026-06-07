@@ -318,8 +318,8 @@ digraph G {
 *   Para cada uno de esos diagramas, escriban la especificación del modelo correspondiente utilizando la sintaxis de `lavaan`.
 
 <br>
-<div style="font-size: 0.8em; line-height: 1.2;"> 
-**Recordatorio de Sintaxis `lavaan`:**  
+<div style="font-size: 0.8em; line-height: 1.2;">
+**Recordatorio de Sintaxis `lavaan`:**
 
 | Sintaxis | Operador | Descripción                                      |
 | :------- | :------- | :----------------------------------------------- |
@@ -327,5 +327,133 @@ digraph G {
 | `~~`     |          | (Co)Varianza                                     |
 | `:=`     |          | Parámetro Definido (ej. efectos indirectos)      |
 | `*`      |          | Etiquetar o Fijar parámetro                      |
+</div>
+
+---
+title_slide_background: "#008080"
+---
+
+# 4. Tratamiento de Variables No Continuas en Path Analysis
+
+## Tratamiento de variables no continuas {.smaller}
+
+<div style="font-size: 0.9em; line-height: 1.2;">
+
+El Path Analysis estándar (con ML o MLR) asume que las variables son continuas e intervalares. En la práctica sociológica es frecuente trabajar con variables que no cumplen este supuesto, y cada caso requiere un tratamiento distinto:
+
+*   **Predictores nominales** (ej. sexo, partido político, etnia): se incorporan al modelo mediante *dummy coding*, de manera análoga a como se hace en una RLM.
+*   **Predictores ordinales** (ej. nivel educacional, quintil de ingresos, ítems Likert individuales): pueden tratarse como continuos si tienen suficientes categorías, o bien declararse como variables ordenadas usando WLSMV.
+*   **Outcome (variable endógena) dicotómico** (ej. pobreza sí/no, vota/no vota): requiere un tratamiento distinto al de los predictores, ya que condiciona el estimador y la interpretación de todos los coeficientes del modelo.
+
+</div>
+
+## Predictores nominales: dummy coding {.smaller}
+
+<div style="font-size: 0.85em; line-height: 1.2;">
+
+Al igual que en una RLM, las variables nominales se incorporan como **variables dummy (indicadoras)**. Una variable con *k* categorías se convierte en *k* - 1 dummies binarias (0/1), dejando una **categoría de referencia** (la omitida) respecto a la cual se interpretan todos los coeficientes.
+
+**Ejemplo:** Posición política (Izquierda / Centro / Derecha / Independiente)
+
+```r
+datos <- datos %>%
+  mutate(
+    izquierda = ifelse(pos_pol == "Izquierda", 1, 0),
+    centro    = ifelse(pos_pol == "Centro",    1, 0),
+    derecha   = ifelse(pos_pol == "Derecha",   1, 0)
+    # Independiente = categoría de referencia (omitida)
+  )
+```
+
+En `lavaan`, las dummies se incluyen como cualquier otro predictor:
+
+```r
+modelo <- '
+  autoritarismo ~ izquierda + centro + derecha
+'
+```
+
+El coeficiente de `izquierda` indica la diferencia en autoritarismo entre quienes se ubican a la izquierda y quienes son independientes, controlando por las demás variables.
+
+</div>
+
+## Predictores ordinales {.smaller}
+
+<div style="font-size: 0.85em; line-height: 1.2;">
+
+Con variables ordinales hay dos opciones según la naturaleza de la variable:
+
+**Opción A: tratar como continua**
+Válida si la variable tiene 5 o más categorías y su distribución no es muy asimétrica. Se usa **MLR** para robustez ante no normalidad.
+```r
+modelo <- ' endogena ~ var_ordinal + otras_vars '
+fit <- sem(modelo, data = datos, estimator = "MLR")
+```
+
+**Opción B: tratar como ordinal**
+Se declara la variable como `ordered` y se usa **WLSMV**. `lavaan` estima automáticamente los **umbrales** ($\tau_1, \tau_2, ...$), que son los puntos de corte en la variable latente continua subyacente que dan origen a las categorías observadas, y calcula **correlaciones policóricas** entre variables.
+
+```r
+datos$nivel_educ <- ordered(datos$nivel_educ)
+
+modelo <- ' endogena ~ nivel_educ + otras_vars '
+fit <- sem(modelo, data = datos, estimator = "WLSMV")
+```
+
+Los coeficientes se interpretan como betas estandarizados sobre la variable latente subyacente.
+
+</div>
+
+## Outcome dicotómico: por qué ML/MLR no es adecuado {.smaller}
+
+<div style="font-size: 0.9em; line-height: 1.2;">
+
+Cuando la variable endógena es dicotómica (0/1), estimar el modelo con ML o MLR produce resultados incorrectos:
+
+*   Los valores predichos pueden caer fuera del rango [0, 1].
+*   La relación real entre X e Y es curvilínea (sigmoide), no lineal; asumir linealidad distorsiona los coeficientes.
+*   Los índices de ajuste global pierden su interpretación habitual.
+*   El modelo se estimará sin errores en R, pero los resultados no son válidos.
+
+La solución es declarar el outcome como variable ordenada (`ordered`) y usar el estimador **WLSMV**, que trata la variable dicotómica como la manifestación observable de una **variable latente continua subyacente** $Y^*$, cortada por un umbral $\tau$:
+
+$$Y = 1 \text{ si } Y^* > \tau, \qquad Y = 0 \text{ si } Y^* \leq \tau$$
+
+Los coeficientes path estiman el efecto sobre $Y^*$, no sobre $Y$ directamente.
+
+</div>
+
+## Outcome dicotómico: estimación en `lavaan` {.smaller}
+
+<div style="font-size: 0.85em; line-height: 1.2;">
+
+```r
+# Declarar el outcome como ordered
+datos$empleo <- ordered(datos$empleo)  # 0 = desempleado, 1 = empleado
+
+modelo <- '
+  empleo ~ educacion + experiencia + sexo
+'
+
+fit <- sem(modelo, data = datos, estimator = "WLSMV")
+summary(fit, fit.measures = TRUE, standardized = TRUE)
+```
+
+`lavaan` estimará automáticamente el umbral $\tau$ junto con los coeficientes path. En la salida aparecerá una sección `Thresholds` con el valor estimado de $\tau$, que representa el punto de corte en la escala latente.
+
+</div>
+
+## Outcome dicotómico: diferencias respecto al PA estándar {.smaller}
+
+<div style="font-size: 0.9em; line-height: 1.3;">
+
+| | PA con outcome continuo | PA con outcome dicotómico (WLSMV) |
+|:--|:--|:--|
+| **Beta estandarizado** | Cambio en DE de $Y$ observada | Cambio en DE de la variable latente $Y^*$ |
+| **$R^2$** | Varianza explicada de $Y$ | Varianza explicada de $Y^*$ |
+| **Efecto marginal** | Constante a lo largo de X | Varía según los valores de X |
+| **Umbral ($\tau$)** | No existe | Estimado por `lavaan` |
+| **Estimador** | ML / MLR | WLSMV |
+
 </div>
 

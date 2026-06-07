@@ -128,6 +128,8 @@ bibliography: references/references.bib
 csl: references/chicago-author-date.csl
 
 
+lang: es
+
 format:
   html:
     author:    Gabriel Sotomayor
@@ -137,7 +139,7 @@ format:
     email-obfuscation: javascript
     link-external-newwindow: true
     link-external-icon: true
-    link-external-filter: ^(?:http:|https:)\/\/(?:lse-dsi\.github\.io\/|localhost)
+    link-external-filter: ^(?:http:|https:)\/\/(?:gabrielsotomayorl\.github\.io\/aadii\/|localhost)
 
     theme:
       light:
