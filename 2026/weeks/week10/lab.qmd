@@ -317,9 +317,10 @@ En este práctico hemos:
 3.  Examinado el **Ajuste Local** mediante la **Matriz de Residuos de Correlación**, encontrando discrepancias mínimas e inferiores al $|0.10|$ recomendado (Kline, 2023).
 4.  Definido y testeado un **efecto indirecto estadístico significativo** (0.020) y un **efecto total** (0.062) de autoubicarse en la derecha sobre el acuerdo con el castigo, mediado por el autoritarismo.
 
-### Nota sobre la Inferencia Causal y Modelos Equivalentes (Kline, 2023)
+### Nota sobre la Inferencia Causal y Modelos Equivalentes
 
 Al trabajar con datos transversales (cross-sectional) como los de la Ola 1 de ELSOC, es fundamental interpretar estos resultados con cautela metodológica:
+
 *   **Ausencia de Precedencia Temporal**: La mediación teórica es un proceso causal dinámico que requiere precedencia temporal, es decir, que la causa anteceda a la variable intermedia, y esta al resultado en el tiempo ($X \longrightarrow M \longrightarrow Y$). Al haber medido todas las variables en un mismo instante, lo que estimamos son únicamente **efectos indirectos estadísticos** (asociaciones condicionadas).
 *   **Modelos Equivalentes**: Estadísticamente, existen especificaciones alternativas (ej. que el acuerdo con el castigo genere mayor autoritarismo, o que ambos sean explicados por un factor común omitido) que reproducirían exactamente la misma matriz de covarianza implicada y, por lo tanto, los mismos índices de ajuste global. 
 *   **Recomendación**: La validez de la direccionalidad de las flechas no descansa en los índices de ajuste de R, sino en la solidez de la teoría sociológica y en la explotación de **diseños longitudinales** (ej. analizando olas de seguimiento de ELSOC).
