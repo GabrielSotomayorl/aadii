@@ -47,18 +47,20 @@ Comenzamos cargando los paquetes que necesitaremos. `{lavaan}` será nuestra her
 # Cargar paquetes
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(
-  haven,      # importar datos SPSS/Stata/RData
-  lavaan,     # estimación de modelos de senderos/CFA
-  dplyr,      # manipulación de datos
-  lavaanPlot, # visualización de diagramas de senderos
-  texreg,     # tablas comparativas de resultados
-  MVN         # test de normalidad multivariante (Mardia)
+  lavaan,
+  dplyr,
+  lavaanPlot
 )
 ```
 
-Para este práctico, trabajaremos con la base de datos longitudinal **ELSOC_Long_2016_2023.RData**, la cual puedes descargar desde el sitio del curso y guardar en tu directorio de trabajo. Al cargarla se importará el objeto `elsoc_long_2016_2023`. 
+Para este práctico, trabajaremos con la base de datos longitudinal **ELSOC_Long_2016_2023.RData**. Puedes descargarla desde Dataverse:
+
+👉 [Descargar ELSOC\_Long\_2016\_2023.RData](https://dataverse.harvard.edu/file.xhtml?fileId=10797987&version=3.0)
+
+Descarga el archivo `.RData` y guárdalo en la **carpeta raíz de tu proyecto** (la misma donde está el archivo `.Rproj`). Al cargarla se importará el objeto `elsoc_long_2016_2023`.
 
 Dado que nuestro análisis se centra en el año 2016, filtraremos las observaciones correspondientes a la **Ola 1** y construiremos nuestras variables de interés a partir de los ítems originales de la encuesta:
+
 - **Autoritarismo de derechas (RWA):** Promedio de los ítems `c18_04` ("gobierno firme"), `c18_05` ("mandatario fuerte"), `c18_06` ("obediencia en niños") y `c18_07` ("obediencia y disciplina").
 - **Acuerdo con castigos severos (Punición):** Promedio de los ítems `f06_01` ("Asaltantes cumplir condena") y `f06_02` ("Condenas largas").
 - **Posición política:** Recodificamos la escala de autoubicación `c15` (0-10) en tres dummies (`derecha` [7-10], `centro` [4-6], `izquierda` [0-3]), dejando a los independientes o sin posición (`11` o `12`) como categoría de referencia. Los coeficientes de cada dummy se interpretan en comparación con ese grupo.
@@ -112,40 +114,43 @@ datos <- elsoc_long_2016_2023 %>%
   )
 ```
 
-## 2. Comprobación de Supuestos
+## 2. Revisión de Datos
 
 Antes de ajustar el modelo, revisamos las características de los datos y su relación con los supuestos de la técnica.
 
 ```{r check_assumptions}
-# Seleccionar solo las variables que se usarán en el modelo
 variables_modelo <- c("castigo_media", "rwa_media", "derecha", "izquierda", "centro")
-datos_modelo <- datos %>%
-  select(all_of(variables_modelo))
+datos_modelo <- select(datos, all_of(variables_modelo))
 
-# Manejo de Casos Perdidos (Listwise deletion para simplificar este práctico)
-print(paste("Observaciones antes de eliminar NAs:", nrow(datos_modelo)))
-datos_modelo_completos <- datos_modelo %>%
-  na.omit()
-print(paste("Observaciones después de eliminar NAs:", nrow(datos_modelo_completos)))
-print(paste("Observaciones perdidas:", nrow(datos_modelo) - nrow(datos_modelo_completos)))
+datos_modelo_completos <- na.omit(datos_modelo)
 
-# Matriz de Correlaciones (Pearson)
-matriz_cor <- cor(datos_modelo_completos, use = "pairwise.complete.obs") 
-print("Matriz de Correlaciones (Pearson):")
-print(round(matriz_cor, 2))
+casos <- data.frame(
+  momento = c("Antes de eliminar NA", "Después de eliminar NA", "Eliminadas"),
+  n = c(
+    nrow(datos_modelo),
+    nrow(datos_modelo_completos),
+    nrow(datos_modelo) - nrow(datos_modelo_completos)
+  )
+)
 
-# Normalidad Multivariante (Test de Mardia)
-resultados_mvn <- mvn(datos_modelo_completos, 
-                      mvn_test = "mardia", 
-                      univariate_test = "SW", 
-                      show_new_data = FALSE) 
-print("Resultados Test de Normalidad Multivariante (Mardia):")
-print(resultados_mvn$multivariateNormality)
-print("Resultados Test de Normalidad Univariante (Shapiro-Wilk):")
-print(resultados_mvn$univariateNormality)
+casos
+
+round(cor(datos_modelo_completos), 2)
+
+asimetria <- function(x) mean(((x - mean(x)) / sd(x))^3)
+curtosis <- function(x) mean(((x - mean(x)) / sd(x))^4) - 3
+
+normalidad <- data.frame(
+  variable = names(datos_modelo_completos),
+  asimetria = sapply(datos_modelo_completos, asimetria),
+  curtosis = sapply(datos_modelo_completos, curtosis)
+) %>%
+  mutate(across(where(is.numeric), function(x) round(x, 2)))
+
+normalidad
 ```
 
-**Interpretación Detallada de Supuestos:**
+Lectura:
 
 *   **Casos Perdidos:** Se eliminaron **120** observaciones debido a valores perdidos en alguna de las variables del modelo, quedando **2807** casos completos para el análisis. Esta pérdida es de aproximadamente 4.1%.
 *   **Correlaciones (Pearson):**
@@ -153,10 +158,7 @@ print(resultados_mvn$univariateNormality)
     *   `rwa_media` tiene una correlación positiva con `derecha` (**0.11**) y negativa con `izquierda` (**-0.19**), y prácticamente nula con `centro` (**-0.02**).
     *   `castigo_media` tiene una correlación positiva baja con `derecha` (**0.07**) y negativa con `izquierda` (**-0.09**) y `centro` (**-0.06**).
     *   No se observan correlaciones altas (ej. > 0.80) entre los predictores de `rwa_media`, lo que sugiere que la multicolinealidad no debiera dominar la estimación.
-*   **Normalidad:**
-    *   *Multivariante (Test de Mardia):* Los resultados para Asimetría (`Skewness`) y Curtosis (`Kurtosis`) muestran p-valores de **0.00**, lo que indica que **se rechaza la hipótesis de normalidad multivariante**.
-    *   *Univariante (Test de Shapiro-Wilk):* Para todas las variables analizadas, el p-valor es **< 0.001**. Esto significa que **ninguna de estas variables sigue una distribución normal univariante** por sí sola.
-    *   **Implicancia para la selección del estimador (Kline, 2023):** Dado que las variables dependientes que estamos modelando (`castigo_media` y `rwa_media`) son **índices promedio continuos** y no cumplen normalidad multivariante, usaremos **MLR (Maximum Likelihood Robust / Máxima Verosimilitud Robusta)**. Este estimador utiliza el algoritmo estándar de Máxima Verosimilitud (ML), pero aplica correcciones robustas (tipo Sandwich y correcciones de escala tipo Yuan-Bentler) a los errores estándar, valores *p* e índices de ajuste global.
+*   **Distribución:** La tabla de asimetría y curtosis muestra que las variables del modelo no siguen una forma normal simétrica. Dado que `castigo_media` y `rwa_media` son índices promedio continuos, usaremos **MLR (Maximum Likelihood Robust / Máxima Verosimilitud Robusta)** para estimar errores estándar e índices de ajuste con correcciones robustas.
 
 ## 3. Especificación y Estimación del Modelo de Senderos Inicial
 
@@ -185,7 +187,7 @@ ajus_sendero1 <- sem(model = mod_sendero1_spec,
                      estimator = "MLR") # Estimador robusto
 ```
 
-### Resumen y Evaluación del Modelo Inicial
+### Modelo inicial
 
 ```{r summary_path_model1}
 summary(ajus_sendero1, 
@@ -194,7 +196,7 @@ summary(ajus_sendero1,
         rsquare = TRUE)
 ```
 
-**Interpretación del Modelo Inicial (con MLR Robusto):**
+Lectura del modelo inicial:
 
 *   **Ajuste Global del Modelo:**
     *   **Test $\chi^2_{\text{scaled}}$ (corrección Yuan-Bentler):** El estadístico robusto es **19.411** con **3** grados de libertad ($p < 0.001$). Aunque el p-valor significativo sugiere desajuste, este estadístico es sensible al tamaño muestral en muestras grandes ($N = 2807$), por lo que conviene complementar su lectura con otros índices heurísticos (Kline, 2023).
@@ -222,13 +224,13 @@ Un residuo de correlación es la discrepancia entre la correlación observada em
 En `lavaan`, podemos extraer y visualizar la matriz de residuos de correlación utilizando `lavResiduals` con `type = "cor"` y accediendo al elemento `[["cov"]]` de la lista resultante:
 
 ```{r local_fit_residuals}
-# Calcular y visualizar la matriz de residuos de correlación
 residuos_list <- lavResiduals(ajus_sendero1, type = "cor")
 residuos_cor <- residuos_list[["cov"]]
-print(round(residuos_cor, 3))
+round(residuos_cor, 3)
 ```
 
-**Interpretación del Ajuste Local:**
+Lectura del ajuste local:
+
 * Como se observa en la consola, los residuos de correlación son pequeños. Las mayores discrepancias se presentan en la relación de `castigo_media` con las variables de posición política: ser de centro (**-0.052**), derecha (**0.042**) e izquierda (**-0.041**).
 * Estos residuos se encuentran bajo el umbral de 0.10, lo que sugiere que no hay desajustes locales grandes.
 * **Sustento para la Reespecificación**: Aunque los residuos son aceptables, su patrón entre posición política y acuerdo con el castigo sugiere evaluar si la ideología política se asocia con actitudes punitivas no solo a través del autoritarismo, sino también mediante un **efecto directo estadístico**. Esta reespecificación debe leerse como una extensión teóricamente motivada del modelo inicial.
@@ -260,7 +262,7 @@ ajus_sendero2 <- sem(model = mod_sendero2_spec,
                      estimator = "MLR")
 ```
 
-### Resumen y Evaluación del Modelo Modificado
+### Modelo modificado
 
 ```{r summary_path_model2}
 summary(ajus_sendero2, 
@@ -269,7 +271,7 @@ summary(ajus_sendero2,
         rsquare = TRUE)
 ```
 
-**Interpretación del Modelo Modificado (con MLR Robusto):**
+Lectura del modelo modificado:
 
 *   **Ajuste Global del Modelo Modificado:**
     *   **Test $\chi^2_{\text{scaled}}$:** **13.653** con **2** grados de libertad ($p = 0.001$). El estadístico disminuyó significativamente respecto al primer modelo (era 19.411), lo que refleja un mejor ajuste tras la inclusión del path directo. (Scaling correction factor = 1.076).
@@ -308,7 +310,7 @@ lavaanPlot(
 
 **Interpretación del Gráfico:** El diagrama visualiza el modelo especificado. Las flechas muestran los coeficientes de regresión estandarizados (`Std.all`). Las estrellas indican que todas las trayectorias representadas son estadísticamente significativas a un nivel de confianza del 95% o superior.
 
-## 6. Conclusión y Reflexión Metodológica
+## 6. Cierre
 
 En este práctico hemos:
 
