@@ -72,9 +72,9 @@ title_slide_background: "#008080"
 
 # 2. Pasos de Aplicación del Análisis de Senderos
 
-## Los 6 Pasos Fundamentales del Path Analysis {.smaller}
+## Los 6 Pasos del Path Analysis {.smaller}
 
-La aplicación rigurosa de un Análisis de Senderos sigue una secuencia lógica:
+La aplicación de un Análisis de Senderos sigue una secuencia lógica:
 
 1.  **Especificación del Modelo:**
     *   Traducir la teoría en un diagrama de senderos y/o un sistema de ecuaciones. Definir qué variables se relacionan y en qué dirección.
@@ -83,7 +83,7 @@ La aplicación rigurosa de un Análisis de Senderos sigue una secuencia lógica:
 3.  **Estimación de Parámetros:**
     *   Calcular los coeficientes path (fuerza de las relaciones), varianzas y covarianzas, usando un método de estimación apropiado (ej. Máxima Verosimilitud).
     
-## Los 6 Pasos Fundamentales del Path Analysis {.smaller}
+## Los 6 Pasos del Path Analysis {.smaller}
 
 4.  **Evaluación del Ajuste del Modelo:**
     *   Determinar qué tan bien el modelo teórico reproduce las relaciones (covarianzas/correlaciones) observadas en los datos empíricos, usando índices de bondad de ajuste.
@@ -95,15 +95,15 @@ La aplicación rigurosa de un Análisis de Senderos sigue una secuencia lógica:
 ## Paso 1: Especificación del Modelo {.smaller}  
 
 <div style="font-size: 0.9em; line-height: 1.2;"> 
-Este es el paso más **crucial y guiado por la teoría**.
+Este paso se define a partir de la teoría.
 
-*   **Base Teórica:** Se parte de un conocimiento teórico sólido sobre el fenómeno social que se quiere modelar. ¿Qué dice la literatura previa? ¿Cuáles son las hipótesis causales?
+*   **Base Teórica:** Se parte del conocimiento disponible sobre el fenómeno social que se quiere modelar. ¿Qué dice la literatura previa? ¿Cuáles son las hipótesis causales?
 *   **Selección de Variables:** Elegir las variables observables relevantes que representan los conceptos teóricos.
 *   **Definición de Relaciones:** Establecer las **direcciones de influencia** (qué variable afecta a cuál) y qué relaciones se esperan (positivas, negativas).
 *   **Errores de Especificación a Evitar:**
     *   **Interna:** Omitir paths importantes que la teoría sugiere, o incluir paths irrelevantes sin sustento.
-    *   **Externa:** Omitir variables exógenas cruciales que podrían explicar gran parte de la variación o generar relaciones espurias.
-*   *Ejemplo:* Si modelamos el rendimiento académico, la teoría podría sugerir que la autoeficacia (variable mediadora) es un camino importante entre el apoyo familiar (exógena) y el rendimiento (endógena final). Omitir la autoeficacia sería un error de especificación.
+    *   **Externa:** Omitir variables exógenas relevantes que podrían explicar variación o generar relaciones espurias.
+*   *Ejemplo:* Si modelamos el rendimiento académico, la teoría podría sugerir que la autoeficacia (variable mediadora) conecta el apoyo familiar (exógena) con el rendimiento (endógena final). Omitir la autoeficacia sería un error de especificación.
 </div>
  
  
@@ -118,8 +118,8 @@ Un modelo debe ser **identificado** para que sus parámetros puedan ser estimado
     *   $gl = (\text{Nº de varianzas/covarianzas únicas}) - (\text{Nº de parámetros libres a estimar})$
 *   **Estados del Modelo:**
     *   **Sub-identificado ($gl < 0$):** Hay más parámetros que información. Infinitas soluciones. **No se puede estimar.** Se necesita simplificar el modelo o añadir restricciones.
-    *   **Justo-identificado ($gl = 0$):** Hay tantos parámetros como piezas de información. El modelo reproducirá perfectamente los datos (ajuste perfecto). **No se puede testear la teoría**, ya que no hay "espacio" para el error.
-    *   **Sobre-identificado ($gl > 0$):** Hay más piezas de información que parámetros. Hay una solución única y el modelo **puede ser testeado** contra los datos. **Este es el estado deseado.**
+    *   **Justo-identificado ($gl = 0$):** Hay tantos parámetros como piezas de información. El modelo reproducirá las covarianzas observadas. **No se puede testear la teoría**, ya que no hay "espacio" para el error.
+    *   **Sobre-identificado ($gl > 0$):** Hay más piezas de información que parámetros. Hay una solución única y el modelo **puede ser testeado** contra los datos. Este estado permite evaluar el ajuste.
 </div>
 ## Paso 3: Estimación de Parámetros {.smaller}
 <div style="font-size: 0.9em; line-height: 1.2;"> 
@@ -129,8 +129,8 @@ Una vez especificado e identificado el modelo, se estiman los parámetros.
 *   **Matriz Residual:** $S - \Sigma(\theta)$. Si el modelo ajusta bien, esta matriz debería tener valores cercanos a cero.
 *   **Métodos de Estimación Comunes:**
     *   **Máxima Verosimilitud (Maximum Likelihood - ML):** El estándar tradicional. Asume normalidad multivariante.
-    *   **ML Robusto (MLR):** El estándar de oro moderno para variables **continuas** que violan la normalidad. Aplica correcciones robustas (Satorra-Bentler) a los errores estándar y al estadístico $\chi^2$.
-    *   **DWLS / WLSMV:** Estimador robusto diseñado **exclusivamente para variables ordinales/categóricas** (nunca usar con índices continuos promediados).
+    *   **ML Robusto (MLR):** Opción habitual para variables **continuas** que violan la normalidad. Aplica correcciones robustas (Satorra-Bentler) a los errores estándar y al estadístico $\chi^2$.
+    *   **DWLS / WLSMV:** Estimador para variables ordinales/categóricas.
 </div>
 ## Paso 4: Evaluación del Ajuste del Modelo {.smaller}
 <div style="font-size: 0.8em; line-height: 1.2;"> 
@@ -142,42 +142,32 @@ Una vez especificado e identificado el modelo, se estiman los parámetros.
     2.  **Ajuste de Partes del Modelo:** ¿Hay relaciones específicas mal representadas (residuos grandes)?
     3.  **Magnitud y Significancia de Parámetros:** ¿Los coeficientes path son sustantivos y estadísticamente significativos? ¿La varianza explicada ($R^2$) de las endógenas es aceptable?
 *   **Tipos de Índices de Ajuste Global:**
-    *   **Absolutos:** Evalúan el ajuste sin comparar con un modelo base (ej. $\chi^2$, RMSEA, GFI, SRMR).
-    *   **Incrementales/Comparativos:** Comparan el modelo propuesto con un modelo más restrictivo, usualmente el "modelo nulo" o de independencia (ej. CFI, TLI/NNFI, NFI).
-    *   **Parsimoniosos:** Consideran el ajuste y la complejidad (número de parámetros) del modelo (ej. PNFI, AIC, BIC - útiles para comparar modelos no anidados).
+    *   **Absolutos:** Evalúan el ajuste sin comparar con un modelo base (ej. $\chi^2$, RMSEA).
+    *   **Incrementales/Comparativos:** Comparan el modelo propuesto con un modelo más restrictivo, usualmente el "modelo nulo" o de independencia (ej. CFI, TLI).
+    *   **De comparación:** Consideran ajuste y complejidad del modelo (ej. AIC, BIC).
 </div>
 ## Evaluación del Ajuste: Criterios Comunes {.smaller}
 
-<div style="font-size: 0.65em; line-height: 1.15;"> 
-| Estadístico                                     | Abreviatura | Criterio de Buen/Aceptable Ajuste             |
-| :---------------------------------------------- | :---------- | :-------------------------------------------- |
-| **Ajuste Absoluto**                             |             |                                               |
-| Chi-cuadrado del Modelo                         | $\chi^2$    | p-valor > 0.05 (No significativo)            |
-| Razón Chi-cuadrado / grados de libertad         | $\chi^2/gl$ | < 2-3 (Bueno), < 5 (Aceptable)                |
-| Índice de Bondad de Ajuste                      | GFI         | $\geq$ 0.95 (Bueno), $\geq$ 0.90 (Aceptable)    |
-| Índice de Bondad de Ajuste Corregido            | AGFI        | $\geq$ 0.90 (Bueno), $\geq$ 0.85 (Aceptable)    |
-| Raíz del Residuo Cuadrático Medio               | RMR         | Pequeño, cercano a 0 (depende de escala)      |
-| Raíz del Residuo Cuadrático Medio Estandarizado | SRMR        | $\leq$ 0.08 (Bueno), $\leq$ 0.10 (Aceptable)  |
-| Raíz Cuadrada Media del Error de Aproximación   | RMSEA       | $\leq$ 0.05 (Bueno), $\leq$ 0.08 (Aceptable)  |
-| (IC 90% del RMSEA)                              |             | (Límite superior < 0.08 - 0.10)               |
-| **Ajuste Comparativo/Incremental**              |             |                                               |
-| Índice de Ajuste Comparativo                    | CFI         | $\geq$ 0.95 (Bueno), $\geq$ 0.90 (Aceptable)    |
-| Índice de Tucker-Lewis (o NNFI)                 | TLI (NNFI)  | $\geq$ 0.95 (Bueno), $\geq$ 0.90 (Aceptable)    |
-| Índice de Ajuste Normalizado                    | NFI         | $\geq$ 0.95 (Bueno), $\geq$ 0.90 (Aceptable)    |
-| **Ajuste Parsimonioso**                         |             |                                               |
-| Índice de Ajuste Normalizado Parsimonioso       | PNFI        | Valores más altos son mejores (comparando)    |
-| Criterio de Información de Akaike               | AIC         | Valores más bajos son mejores (comparando)    |
-| Criterio de Información Bayesiano               | BIC         | Valores más bajos son mejores (comparando)    |
+<div style="font-size: 0.72em; line-height: 1.18;"> 
+| Estadístico | Abreviatura | Uso e interpretación |
+| :--- | :--- | :--- |
+| Chi-cuadrado del modelo | $\chi^2$ | Evalúa discrepancia global; con N grande suele ser significativo. |
+| Razón chi-cuadrado / grados de libertad | $\chi^2/gl$ | Regla descriptiva: < 2-3 suele leerse como buen ajuste; < 5 como aceptable. |
+| Error de aproximación | RMSEA | $\leq$ 0.05 buen ajuste; $\leq$ 0.08 aceptable. Revisar también su IC 90%. |
+| Ajuste comparativo | CFI | $\geq$ 0.95 buen ajuste; $\geq$ 0.90 aceptable. |
+| Ajuste comparativo con penalización por complejidad | TLI | $\geq$ 0.95 buen ajuste; $\geq$ 0.90 aceptable. |
+| Criterio de información de Akaike | AIC | Útil para comparar modelos; valores más bajos indican mejor balance ajuste/complejidad. |
+| Criterio de información bayesiano | BIC | Útil para comparar modelos; penaliza más la complejidad que AIC. |
 </div>  
 
 
 ## Paso 5: Re-especificación del Modelo {.smaller}
 
 *   Si el ajuste del modelo inicial no es satisfactorio, se puede considerar **modificarlo (re-especificarlo)**.
-*   **¡ADVERTENCIA!** La re-especificación debe estar **fuertemente guiada por la teoría**. No se deben añadir o quitar paths solo para "mejorar los números" si no tienen sentido conceptual. Hacerlo puede llevar a modelos que ajustan bien a la muestra particular por azar, pero no generalizan (sobreajuste).
+*   **Cautela:** La re-especificación debe tener justificación teórica. Añadir o quitar paths solo para "mejorar los números" puede producir modelos que ajustan bien a la muestra particular por azar, pero no generalizan (sobreajuste).
 *   **Herramientas para guiar la re-especificación (con cautela):**
     *   **Índices de Modificación (IM):** Sugieren qué parámetro, si se liberara (se estimara en lugar de estar fijo en cero), produciría la mayor reducción en el $\chi^2$ del modelo. Un IM > 3.84 (para 1 gl) indica que el cambio sería estadísticamente significativo.
-    *   **Residuos Estandarizados:** Diferencias grandes (>|2.58|) entre las covarianzas observadas y las reproducidas por el modelo para pares específicos de variables pueden indicar paths omitidos o problemas locales.
+    *   **Residuos de correlación:** Diferencias con valor absoluto > 0.10 entre las correlaciones observadas y las reproducidas por el modelo pueden indicar paths omitidos o problemas locales. Este criterio se prefiere a los residuos estandarizados cuando hay muestras grandes, porque estos últimos son sensibles al tamaño muestral.
 *   Cualquier modelo re-especificado es, en parte, **exploratorio** y debería, idealmente, ser validado en una nueva muestra independiente.
 
 ## Paso 6: Interpretación de Resultados {.smaller}
@@ -208,7 +198,7 @@ Si el modelo tiene un ajuste aceptable, se procede a la interpretación sustanti
 *   **Ejemplo 2: `rwa_media ~ izquierda (Beta = -0.191, p < 0.001)`:** (izquierda es dummy 1=Sí, 0=Independiente)
     *   En promedio, ser de izquierdas (comparado con ser independiente) se asocia con una disminución de 0.191 DE en "autoritarismo de derechas", controlando por otras variables.
 
-**Componentes Clave de la Interpretación:** Tamaño, Dirección, Control Estadístico, Efecto Promedio, Significancia.
+**Componentes de la Interpretación:** Tamaño, Dirección, Control Estadístico, Efecto Promedio, Significancia.
 </div>
 ## Inferencia en Análisis de Senderos (Salida `lavaan`) {.smaller}
 <div style="font-size: 0.9em; line-height: 1.2;"> 
@@ -310,7 +300,7 @@ digraph G {
   ctd -> htd;
 }
 ```
-**Recordatorio Clave:** En `lavaan`, cada variable **endógena** (que recibe al menos una flecha) define una **nueva línea de ecuación** en la especificación del modelo (usando `~`).
+**Recordatorio:** En `lavaan`, cada variable **endógena** (que recibe al menos una flecha) define una **nueva línea de ecuación** en la especificación del modelo (usando `~`).
 
 ## Ejercicio 3: Especificando Modelos en `lavaan` {.smaller}
 
@@ -343,7 +333,7 @@ El Path Analysis estándar (con ML o MLR) asume que las variables son continuas 
 
 *   **Predictores nominales** (ej. sexo, partido político, etnia): se incorporan al modelo mediante *dummy coding*, de manera análoga a como se hace en una RLM.
 *   **Predictores ordinales** (ej. nivel educacional, quintil de ingresos, ítems Likert individuales): pueden tratarse como continuos si tienen suficientes categorías, o bien declararse como variables ordenadas usando WLSMV.
-*   **Outcome (variable endógena) dicotómico** (ej. pobreza sí/no, vota/no vota): requiere un tratamiento distinto al de los predictores, ya que condiciona el estimador y la interpretación de todos los coeficientes del modelo.
+*   **Outcome (variable endógena) dicotómico** (ej. pobreza sí/no, vota/no vota): suele requerir un tratamiento distinto al de los predictores, ya que condiciona el estimador y la interpretación de los coeficientes del modelo.
 
 </div>
 
@@ -404,18 +394,18 @@ Los coeficientes se interpretan como betas estandarizados sobre la variable late
 
 </div>
 
-## Outcome dicotómico: por qué ML/MLR no es adecuado {.smaller}
+## Outcome dicotómico: límites de ML/MLR {.smaller}
 
 <div style="font-size: 0.9em; line-height: 1.2;">
 
-Cuando la variable endógena es dicotómica (0/1), estimar el modelo con ML o MLR produce resultados incorrectos:
+Cuando la variable endógena es dicotómica (0/1), estimar el modelo con ML o MLR como si fuera continua puede generar problemas:
 
 *   Los valores predichos pueden caer fuera del rango [0, 1].
 *   La relación real entre X e Y es curvilínea (sigmoide), no lineal; asumir linealidad distorsiona los coeficientes.
 *   Los índices de ajuste global pierden su interpretación habitual.
-*   El modelo se estimará sin errores en R, pero los resultados no son válidos.
+*   El modelo puede estimarse sin errores en R, pero la interpretación no corresponde a un outcome binario.
 
-La solución es declarar el outcome como variable ordenada (`ordered`) y usar el estimador **WLSMV**, que trata la variable dicotómica como la manifestación observable de una **variable latente continua subyacente** $Y^*$, cortada por un umbral $\tau$:
+Una alternativa es declarar el outcome como variable ordenada (`ordered`) y usar el estimador **WLSMV**, que trata la variable dicotómica como la manifestación observable de una **variable latente continua subyacente** $Y^*$, cortada por un umbral $\tau$:
 
 $$Y = 1 \text{ si } Y^* > \tau, \qquad Y = 0 \text{ si } Y^* \leq \tau$$
 

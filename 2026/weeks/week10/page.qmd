@@ -2,9 +2,9 @@
 title: "Semana 10: Análisis de Senderos II"
 ---
 
-En esta semana profundizamos en el **Análisis de Senderos (Path Analysis)**, enfocándonos en los pasos prácticos para especificar, identificar, estimar, evaluar y reespecificar estos modelos en R utilizando el paquete `{lavaan}`.
+En esta semana profundizamos en el **Análisis de Senderos (Path Analysis)**, enfocándonos en los pasos para especificar, identificar, estimar, evaluar y reespecificar estos modelos en R utilizando el paquete `{lavaan}`.
 
-Revisamos la sintaxis del lenguaje de fórmulas de `lavaan` (`~` para regresiones directas, `~~` para covarianzas de residuos, y `:=` para calcular efectos indirectos y totales). Aprendimos a realizar una minuciosa comprobación de supuestos (casos perdidos, correlaciones y normalidad multivariante mediante el test de Mardia). Discutimos la selección del estimador robusto **MLR** ante violaciones de normalidad en variables continuas, y aprendimos a evaluar la bondad de ajuste global (Chi-cuadrado, RMSEA, CFI, TLI y SRMR) e interpretar coeficientes path directos, indirectos y varianza explicada ($R^2$). También abordamos el tratamiento de variables no continuas en el modelo: la incorporación de predictores nominales mediante *dummy coding*, el manejo de predictores ordinales con WLSMV, y las implicancias de tener un outcome dicotómico, que requiere declararlo como `ordered` y estimar los coeficientes sobre la variable latente subyacente.
+Revisamos la sintaxis del lenguaje de fórmulas de `lavaan` (`~` para regresiones directas, `~~` para covarianzas de residuos, y `:=` para calcular efectos indirectos y totales). Aprendimos a revisar supuestos (casos perdidos, correlaciones y normalidad multivariante mediante el test de Mardia). Discutimos la selección del estimador robusto **MLR** ante violaciones de normalidad en variables continuas, y aprendimos a evaluar la bondad de ajuste global (Chi-cuadrado, RMSEA, CFI, TLI y SRMR) e interpretar coeficientes path directos, indirectos y varianza explicada ($R^2$). También abordamos el tratamiento de variables no continuas en el modelo: la incorporación de predictores nominales mediante *dummy coding*, el manejo de predictores ordinales con WLSMV, y las implicancias de tener un outcome dicotómico, que puede declararse como `ordered` para estimar los coeficientes sobre la variable latente subyacente.
 
 ## Clase Expositiva
 
@@ -16,7 +16,7 @@ Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer
 
 ## Taller Aplicado (Práctico 10)
 
-En este laboratorio implementaremos un Análisis de Senderos completo con datos de la encuesta **ELSOC (Ola 1)**. Evaluaremos el supuesto de normalidad multivariante, estimaremos un modelo inicial mediante MLR, analizaremos sus índices de ajuste y coeficientes path, y luego especificaremos un modelo reespecificado que incluye efectos directos, calculando y testeando explícitamente los efectos indirectos de la orientación política sobre el acuerdo con castigos severos mediado por el autoritarismo.
+En este laboratorio implementaremos un Análisis de Senderos con datos de la encuesta **ELSOC (Ola 1)**. Evaluaremos el supuesto de normalidad multivariante, estimaremos un modelo inicial mediante MLR, analizaremos sus índices de ajuste y coeficientes path, y luego especificaremos un modelo reespecificado que incluye efectos directos y efectos indirectos de la orientación política sobre el acuerdo con castigos severos mediado por el autoritarismo.
 
 [Ir al Práctico 10: Análisis de Senderos](lab.qmd)
 
