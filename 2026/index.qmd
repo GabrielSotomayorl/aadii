@@ -7,9 +7,9 @@ format: html
 ::: {.callout-important collapse=false}
 ## 📢 Avisos
 
-(Mayo 2026)
+(Junio 2026)
 
-- La fecha de entrega del **Hito 2 (Trabajo Final)** se traslada al **25 de mayo**. 
+- Ya está disponible la **Encuesta Docente** del curso. Puedes responderla hasta el **10 de julio** a través de **Canvas**. Tu participación es importante para evaluar la experiencia del semestre y orientar mejoras futuras.
 :::
 
 
