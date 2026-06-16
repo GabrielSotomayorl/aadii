@@ -23,7 +23,7 @@ Puedes navegar por las diapositivas directamente en el recuadro de abajo o hacer
 
 En este taller aplicado implementaremos un Modelo de Ecuaciones Estructurales en R utilizando el paquete `{lavaan}` con datos de la **Encuesta de Bienestar Social (EBS) 2023**.
 
-Aprenderemos a recodificar y preparar indicadores categóricos y ordinales, a especificar de forma simultánea los factores latentes de Sintomatología Depresiva (`SM`) y Percepción de Seguridad (`SEG`), y a estimar el modelo con **DWLS**. También revisaremos el ajuste global (Chi-cuadrado, CFI, TLI, RMSEA, SRMR) y el **ajuste local** mediante la matriz de residuos de correlación, cerrando con la interpretación teórica de los coeficientes de regresión estandarizados y la varianza explicada.
+Aprenderemos a recodificar y preparar indicadores categóricos y ordinales, a especificar de forma simultánea los factores latentes de Sintomatología Depresiva (`SM`) y Percepción de Seguridad (`SEG`), y a estimar el modelo con **DWLS**. También revisaremos el ajuste global (Chi-cuadrado, CFI, TLI, RMSEA) y el **ajuste local** mediante la matriz de residuos de correlación, cerrando con la interpretación teórica de los coeficientes de regresión estandarizados y la varianza explicada.
 
 [Ir al Práctico 11: Modelos de Ecuaciones Estructurales](lab.qmd)
 

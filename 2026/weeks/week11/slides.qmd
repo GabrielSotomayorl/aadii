@@ -124,7 +124,7 @@ Un modelo SEM se puede entender como la unión de dos sub-modelos que se estiman
 
 **3. Término de Error:**
 
--   Cada variable **endógena** (latente u observada) debe tener un término de error asociado, representado por una flecha que apunta hacia ella.
+-   Cada variable **endógena** (latente u observada) se representa con un término de error asociado, indicado por una flecha que apunta hacia ella.
 
 ## Ejemplo de un Modelo SEM Completo {.smaller}
 
@@ -178,16 +178,16 @@ title_slide_background: "#008080"
 
 ## Paso 1: Especificación del Modelo {.smaller}
 
-1.  **Base Teórica:** La teoría que respalda el modelo debe estar formulada de tal manera que pueda ser probada con datos reales. Se deben incluir todas las variables consideradas teóricamente importantes.
+1.  **Base Teórica:** La teoría que respalda el modelo se formula de manera que pueda contrastarse con datos reales. Conviene incluir las variables centrales para el argumento sustantivo.
 2.  **Definir Relaciones:** Especificar las relaciones esperadas entre todas las variables: correlaciones entre exógenas, efectos directos (paths) en el modelo estructural, y qué indicadores miden qué factores en el modelo de medida.
 3.  **Formular en Diagrama:** Dibujar el modelo teórico en un formato gráfico. Esto ayuda a visualizar, clarificar y traducir las hipótesis en las ecuaciones y parámetros que el software estimará.
 
 ## Paso 2: Identificación del Modelo {.smaller}
 
--   Al igual que en el análisis de senderos, debemos asegurarnos que contamos con **información suficiente para estimar el modelo**.
--   Cada parámetro debe estar correctamente identificado y ser derivable de la información en la **matriz de varianzas-covarianzas** de las variables observadas.
--   Debemos revisar que los **grados de libertad (gl) sean mayores a 0**, lo que indica un modelo sobreidentificado y testeable.
--   **Estrategias para garantizar la identificación:** usar al menos tres indicadores por variable latente; fijar la métrica de cada variable latente (ej. fijando una carga a 1 o la varianza del factor a 1).
+-   Al igual que en el análisis de senderos, revisamos si contamos con **información suficiente para estimar el modelo**.
+-   Cada parámetro requiere estar identificado y ser derivable de la información en la **matriz de varianzas-covarianzas** de las variables observadas.
+-   Es útil revisar que los **grados de libertad (gl) sean mayores a 0**, lo que indica un modelo sobreidentificado y testeable.
+-   **Estrategias usuales de identificación:** usar al menos tres indicadores por variable latente; fijar la métrica de cada variable latente (ej. fijando una carga a 1 o la varianza del factor a 1).
 
 ## Paso 3: Estimación del Modelo {.smaller}
 
@@ -199,10 +199,10 @@ title_slide_background: "#008080"
 ## Paso 4: Evaluación de Ajuste {.smaller}
 
 1.  **Valorar el ajuste del modelo:** Evaluamos qué tan bien las estimaciones obtenidas reproducen la matriz de varianzas-covarianzas observada en los datos empíricos.
-2.  **Doble Nivel en SEM:** El ajuste debe leerse considerando **tanto el modelo de medición (AFC) como el modelo estructural (paths)**.
+2.  **Doble Nivel en SEM:** El ajuste se lee considerando **tanto el modelo de medición (AFC) como el modelo estructural (paths)**.
 3.  **Perspectiva del Ajuste de Dos Niveles (Kline, 2023)**:
     -   **Ajuste Global**: Índices que resumen la discrepancia media del modelo.
-    -   **Ajuste Local**: Análisis de discrepancias específicas entre pares de variables (residuos). Complementa el ajuste global, que puede ocultar problemas localizados.
+    -   **Ajuste Local**: Análisis de discrepancias específicas entre pares de variables (residuos). Complementa el ajuste global, porque pueden existir problemas localizados.
 
 ## Estadísticos de Bondad de Ajuste {.smaller}
 
@@ -228,22 +228,22 @@ title_slide_background: "#008080"
 
 ## Evaluación del Ajuste Local: La Matriz de Residuos {.smaller}
 
--   **La Limitación del Ajuste Global**: Un modelo puede tener un CFI \> 0.95 y un RMSEA \< 0.05, pero al mismo tiempo reproducir mal la relación entre un par específico de variables.
+-   **Límite del Ajuste Global**: Un modelo puede tener un CFI \> 0.95 y un RMSEA \< 0.05, pero al mismo tiempo reproducir mal la relación entre un par específico de variables.
 -   **Ajuste local**: Examinar la **Matriz de Residuos de Correlación** (o covarianza).
 -   **Interpretación de Residuos (Kline, 2023)**:
     -   Cada residuo representa la diferencia entre la correlación observada y la implicada por el modelo para un par de variables indicadoras.
-    -   Buscamos que los residuos sean lo más cercanos a 0 posible.
+    -   En general, residuos más cercanos a 0 indican menor discrepancia local.
     -   Valores residuales absolutos superiores a **$|0.10|$** sugieren un problema localizado de ajuste (ej. una relación teórica omitida o una redundancia de medición no modelada).
 
 ## Paso 5: Re-especificación {.smaller}
 
 -   Si el modelo presenta un ajuste insatisfactorio (global y/o local), se pueden introducir modificaciones (agregar o quitar parámetros).
 -   Este proceso puede apoyarse en los **índices de modificación** y el análisis de los **residuos**, pero requiere justificación teórica.
--   Los cambios propuestos deben ser coherentes con el marco conceptual. No se debe "cazar el ajuste" a costa del sentido teórico.
+-   Los cambios propuestos se evalúan en relación con el marco conceptual. La mejora del ajuste no reemplaza la justificación teórica.
 
 ## Paso 6: Interpretación de Resultados {.smaller}
 
 -   **Coeficientes Beta Estandarizados:** Se interpretan de manera análoga a la regresión múltiple. Representan el cambio en desviaciones estándar en la variable dependiente por un cambio de una DE en la predictora, controlando por las demás variables del sistema.
 -   **Significación de cada coeficiente:** Se evalúa con el p-valor (usualmente p \< 0.05) para determinar si el efecto estimado es significativamente diferente de cero.
 -   **R-cuadrado (**$R^2$): Representa el porcentaje de la varianza en cada **variable endógena** (tanto latente como observada) que es explicado por sus predictores en el modelo estructural.
--   **Doble Papel:** En SEM, los coeficientes describen tanto el **modelo de medición** (cargas) como el **modelo estructural** (paths). Ambos niveles deben interpretarse por separado.
+-   **Doble Papel:** En SEM, los coeficientes describen tanto el **modelo de medición** (cargas) como el **modelo estructural** (paths). Ambos niveles se interpretan por separado.
