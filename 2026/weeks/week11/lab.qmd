@@ -33,6 +33,86 @@ Trabajaremos con datos de la **Encuesta de Bienestar Social (EBS) 2023** para co
 * **Sintomatología Depresiva (`SM`):** Medida a través de 4 ítems de la escala PHQ-4 (`ss7_a` a `ss7_d` en la base de datos).
 * **Percepción de Seguridad (`SEG`):** Medida a través de 4 ítems sobre la seguridad que percibe la persona en plazas, de día, de noche, y dentro de su vivienda (`h2_a` a `h2_d`).
 
+Para que la lectura del ejemplo sea más clara, la siguiente tabla resume cada variable usada en el modelo.
+
+```{r tabla_variables_intro, echo=FALSE}
+load("../../data/Base de datos EBS 2023.RData")
+
+variables_modelo <- data.frame(
+  nombre = c(
+    "qaut", "zona", "sexo", "edad", "maltrato", "social",
+    "sm_1", "sm_2", "sm_3", "sm_4",
+    "seg_1", "seg_2", "seg_3", "seg_4"
+  ),
+  original = c(
+    "qaut_casen", "glosa_area", "sg01", "edad_casen_t", "rr4_c", "a12",
+    "ss7_a", "ss7_b", "ss7_c", "ss7_d",
+    "h2_a", "h2_b", "h2_c", "h2_d"
+  ),
+  stringsAsFactors = FALSE
+)
+
+valores_usados <- list(
+  qaut_casen = 1:5,
+  edad_casen_t = 0:5,
+  a12 = 1:5,
+  ss7_a = 1:4,
+  ss7_b = 1:4,
+  ss7_c = 1:4,
+  ss7_d = 1:4,
+  h2_a = 1:5,
+  h2_b = 1:5,
+  h2_c = 1:5,
+  h2_d = 1:5
+)
+
+recodificaciones <- list(
+  glosa_area = c("0" = "Urbano", "1" = "Rural"),
+  sg01 = c("0" = "Hombre", "1" = "Mujer"),
+  rr4_c = c("0" = "No", "1" = "Sí")
+)
+
+limpiar_enunciado <- function(variable) {
+  enunciado <- attr(EBS_2023_vp[[variable]], "label")
+  sub("^\\s*[^.]+\\.\\s*", "", enunciado)
+}
+
+limpiar_categoria <- function(categoria) {
+  sub("^\\s*-?[0-9]+\\.\\s*", "", categoria)
+}
+
+extraer_categorias <- function(variable) {
+  if (!is.null(recodificaciones[[variable]])) {
+    recod <- recodificaciones[[variable]]
+    return(paste(paste(names(recod), recod, sep = " = "), collapse = "; "))
+  }
+
+  etiquetas <- attr(EBS_2023_vp[[variable]], "labels")
+
+  if (!is.null(etiquetas)) {
+    if (!is.null(valores_usados[[variable]])) {
+      etiquetas <- etiquetas[etiquetas %in% valores_usados[[variable]]]
+    }
+
+    categorias <- limpiar_categoria(names(etiquetas))
+    return(paste(paste(unname(etiquetas), categorias, sep = " = "), collapse = "; "))
+  }
+
+  categorias <- sort(unique(EBS_2023_vp[[variable]]))
+  paste(categorias[!is.na(categorias)], collapse = "; ")
+}
+
+tabla_variables <- data.frame(
+  `Nombre en el modelo` = paste0("`", variables_modelo$nombre, "`"),
+  `Variable original` = paste0("`", variables_modelo$original, "`"),
+  Enunciado = vapply(variables_modelo$original, limpiar_enunciado, character(1)),
+  Categorías = vapply(variables_modelo$original, extraer_categorias, character(1)),
+  check.names = FALSE
+)
+
+knitr::kable(tabla_variables)
+```
+
 ---
 
 ## 2. Carga de Paquetes y Preparación de Datos

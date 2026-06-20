@@ -48,7 +48,7 @@ En resumen, los SEM permiten evaluar teorías sociológicas que involucran tanto
 ## La Lógica "Confirmatoria" de los SEM {.smaller}
 
 -   **Guiados por la Teoría:** Los SEM son de naturaleza **confirmatoria**, lo que significa que el investigador propone, *a priori*, una estructura que modela el tipo y dirección de las relaciones de interés, basándose en la teoría sociológica o en la literatura científica.
--   **Objetivo:** El interés es evaluar si la estructura teórica propuesta es **consistente con** los datos empíricos observados en una muestra (lo que Kline denomina lógica de no-refutación), no "confirmar" de forma absoluta una verdad empírica.
+-   **Objetivo Principal:** El interés es evaluar si la estructura teórica propuesta es **consistente con** los datos empíricos observados en una muestra (lógica de no-refutación), no "confirmar" de forma absoluta una verdad empírica.
 -   **Base Empírica:** La estimación del modelo compara la **matriz de varianzas y covarianzas observada** contra la **matriz implicada** por las ecuaciones del modelo conceptual. Si la discrepancia entre ambas es baja, el modelo resulta compatible con los datos.
 
 ## Ejemplo de Aplicación en Salud {.smaller}
@@ -192,7 +192,7 @@ title_slide_background: "#008080"
 ## Paso 3: Estimación del Modelo {.smaller}
 
 1.  Se estiman los parámetros del modelo (cargas factoriales, coeficientes de trayectoria o paths, varianzas de error y perturbaciones) a partir del modelo especificado.
-2.  **Métodos de Estimación y Naturaleza de las Variables (Kline, 2023)**:
+2.  **Métodos de Estimación y Naturaleza de las Variables**:
     -   **Máxima Verosimilitud (ML/MLR)**: Opción habitual en `{lavaan}` para variables indicadoras continuas. MLR incorpora correcciones ante no-normalidad.
     -   **Mínimos Cuadrados Ponderados Diagonales (DWLS/WLSMV)**: Opción para modelos con indicadores ordinales o categóricos (como ítems Likert de 4 o 5 categorías). Modela matrices de **correlaciones policóricas** subyacentes.
 
