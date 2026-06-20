@@ -45,7 +45,7 @@ variables_modelo <- data.frame(
     "seg_1", "seg_2", "seg_3", "seg_4"
   ),
   original = c(
-    "qaut_casen", "glosa_area", "sg01", "edad_casen_t", "rr4_c", "a12",
+    "qaut_casen", "glosa_area", "sg01", "tramoebs2", "rr4_c", "a12",
     "ss7_a", "ss7_b", "ss7_c", "ss7_d",
     "h2_a", "h2_b", "h2_c", "h2_d"
   ),
@@ -54,7 +54,7 @@ variables_modelo <- data.frame(
 
 valores_usados <- list(
   qaut_casen = 1:5,
-  edad_casen_t = 0:5,
+  tramoebs2 = 1:5,
   a12 = 1:5,
   ss7_a = 1:4,
   ss7_b = 1:4,
